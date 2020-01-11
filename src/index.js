@@ -1,12 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createBrowserHistory } from "history";
+import { Router, Route, Switch } from "react-router-dom";
+import * as ROUTES from 'constants/routes';
 
-import * as serviceWorker from './serviceWorker';
-import App from './components/App';
+import "assets/scss/material-kit-react.scss?v=1.8.0";
+
+// pages for this product
+import LandingPage from "views/LandingPage/LandingPage.js";
+import ProfilePage from "views/ProfilePage/ProfilePage.js";
+import LoginPage from "views/LoginPage/LoginPage.js";
+
+var hist = createBrowserHistory();
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+  <Router history={hist}>
+    <Switch>
+      <Route exact path={ROUTES.HOME} component={LandingPage} />
+      <Route path={ROUTES.ACCOUNT} component={ProfilePage} />
+      <Route path={ROUTES.SIGN_IN} component={LoginPage} />
+    </Switch>
+  </Router>,
+  document.getElementById("root")
 );
-
-serviceWorker.unregister();
