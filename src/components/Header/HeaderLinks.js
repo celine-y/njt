@@ -40,34 +40,24 @@ export default function HeaderLinks(props) {
       <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
-          buttonText="Components"
+          buttonText="Volunteer"
           buttonProps={{
             className: classes.navLink,
             color: "transparent"
           }}
-          buttonIcon={Apps}
           dropdownList={[
-            <Link to="/" className={classes.dropdownLink}>
-              All components
+            <Link to={ROUTES.TAKE_SUITCASE} className={classes.dropdownLink}>
+              Take a Suitcase
             </Link>,
             <a
-              href="https://creativetimofficial.github.io/material-kit-react/#/documentation?ref=mkr-navbar"
+              href={ROUTES.VOLUNTEER}
               target="_blank"
               className={classes.dropdownLink}
             >
-              Documentation
+              Help Pack Supplies
             </a>
           ]}
         />
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Button
-          href={ROUTES.VOLUNTEER}
-          color="transparent"
-          target="_blank"
-          className={classes.navLink}
-        >Volunteer
-        </Button>
       </ListItem>
       <ListItem className={classes.listItem}>
         <Button
@@ -76,6 +66,33 @@ export default function HeaderLinks(props) {
           target="_blank"
           className={classes.navLink}
         >Donate
+        </Button>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+          href={ROUTES.SUBMIT_CLINIC}
+          color="transparent"
+          target="_blank"
+          className={classes.navLink}
+        >Submit a Clinic
+        </Button>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+          href={ROUTES.START_CHAPTER}
+          color="transparent"
+          target="_blank"
+          className={classes.navLink}
+        >Start a Chapter
+        </Button>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+          href={ROUTES.CONTACT_US}
+          color="transparent"
+          target="_blank"
+          className={classes.navLink}
+        >Contact
         </Button>
       </ListItem>
     </List>

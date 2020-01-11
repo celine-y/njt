@@ -60,18 +60,18 @@ export default function LandingPage(props) {
               <Button
                 color="primary"
                 size="lg"
-                href={ROUTES.VOLUNTEER}
+                href={ROUTES.TAKE_SUITCASE}
                 target="_blank"
                 rel="noopener noreferrer"
-              >Volunteer
+              >Take a Suitcase
               </Button>
               <Button
                 color="secondary"
                 size="lg"
-                href={ROUTES.DONATE}
+                href={ROUTES.VOLUNTEER}
                 target="_blank"
                 rel="noopener noreferrer"
-              >Donate
+              >Volunteer
               </Button>
             </GridItem>
           </GridContainer>
