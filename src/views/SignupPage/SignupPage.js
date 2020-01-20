@@ -27,7 +27,7 @@ import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
-export default function LoginPage(props) {
+export default function SignUpPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function() {
     setCardAnimation("");
@@ -57,7 +57,7 @@ export default function LoginPage(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
+                    <h4>Sign Up</h4>
                     <div className={classes.socialLine}>
                       <Button
                         justIcon
@@ -90,6 +90,21 @@ export default function LoginPage(props) {
                   </CardHeader>
                   <p className={classes.divider}>Or Be Classical</p>
                   <CardBody>
+                    <CustomInput
+                      labelText="First Name..."
+                      id="first"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
                     <CustomInput
                       labelText="Email..."
                       id="email"
@@ -126,11 +141,11 @@ export default function LoginPage(props) {
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button color="secondary" size="lg"
-                      href={ROUTES.SIGN_UP}>
-                      Sign Up
+                      href={ROUTES.LOGIN}>
+                      Login In
                     </Button>
                     <Button color="primary" size="lg">
-                      Login
+                      Sign Up
                     </Button>
                   </CardFooter>
                 </form>

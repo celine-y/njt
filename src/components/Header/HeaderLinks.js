@@ -95,6 +95,16 @@ export default function HeaderLinks(props) {
         >Contact
         </Button>
       </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+          href={ROUTES.LOGIN}
+          className={classes.registerNavLink}
+          color="primary"
+          round
+        >
+          Login
+        </Button>
+      </ListItem>
     </List>
   );
 }
