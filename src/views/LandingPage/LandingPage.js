@@ -66,7 +66,6 @@ export default function LandingPage(props) {
               >Take a Suitcase
               </Button>
               <Button
-                color="secondary"
                 size="lg"
                 href={ROUTES.VOLUNTEER}
                 target="_blank"

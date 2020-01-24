@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -28,10 +28,26 @@ import * as ROUTES from 'constants/routes';
 const useStyles = makeStyles(styles);
 
 export default function SignUpPage(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [cardAnimaton, setCardAnimation] = useState("cardHidden");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('');
+  const [pass1, setPass1] = useState('');
+  const [pass2, setPass2] = useState('');
+  const [error, setError] = useState(null);
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
+  const onSubmit = e => {
+    console.log("On Submit")
+  };
+  const onChange = e => {
+    console.log("onChange")
+    console.log(e.target)
+    // console.log(e.target.name, e.target.value)
+    // setState({[e.target.name]: e.target.value})
+  };
   const classes = useStyles();
   const { ...rest } = props;
   return (
@@ -91,12 +107,14 @@ export default function SignUpPage(props) {
                   <p className={classes.divider}>Or Be Classical</p>
                   <CardBody>
                     <CustomInput
+                      value={firstName}
                       labelText="First Name..."
-                      id="first"
+                      id="first-name"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => setFirstName(e.target.value),
                         type: "text",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -106,12 +124,31 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
+                      value={lastName}
+                      labelText="Last Name..."
+                      id="last-name"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: (e) => setLastName(e.target.value),
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      value={email}
                       labelText="Email..."
                       id="email"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => setEmail(e.target.value),
                         type: "email",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -121,12 +158,34 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
+                      value={pass1}
                       labelText="Password"
-                      id="pass"
+                      id="pass1"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => setPass1(e.target.value),
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Icon className={classes.inputIconsColor}>
+                              lock_outline
+                            </Icon>
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off"
+                      }}
+                    />
+                    <CustomInput
+                      value={pass1}
+                      labelText="Confirm Password"
+                      id="pass2"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: (e) => setPass2(e.target.value),
                         type: "password",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -140,11 +199,13 @@ export default function SignUpPage(props) {
                     />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button color="secondary" size="lg"
+                    <Button size="lg"
                       href={ROUTES.LOGIN}>
                       Login In
                     </Button>
-                    <Button color="primary" size="lg">
+                    <Button
+                      color="primary" size="lg"
+                      onClick={onSubmit}>
                       Sign Up
                     </Button>
                   </CardFooter>
