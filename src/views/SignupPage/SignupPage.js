@@ -35,6 +35,11 @@ export default function SignUpPage(props) {
   const [pass1, setPass1] = useState('');
   const [pass2, setPass2] = useState('');
   const [error, setError] = useState(null);
+  const isInvalid =
+      passwordOne !== passwordTwo ||
+      passwordOne === '' ||
+      email === '' ||
+      username === '';
 
   setTimeout(function() {
     setCardAnimation("");
@@ -204,6 +209,7 @@ export default function SignUpPage(props) {
                       Login In
                     </Button>
                     <Button
+                      disabled={isInvalid}
                       color="primary" size="lg"
                       onClick={onSubmit}>
                       Sign Up
