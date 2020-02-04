@@ -19,11 +19,9 @@ export default function SupplyMapSection() {
   return (
     <div className={classes.section}>
       <GridContainer justify="center">
-        <GridItem cs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Supply Map</h2>
-          <h4 className={classes.description}>
-            TODO: this is where the map will go
-          </h4>
+        <GridItem cs={12} sm={12} md={12}>
+          <h2 className={classes.title}>Our travellers have been to</h2>
+          <iframe width="100%" height="600px" src="https://tayakitt.github.io/njt-map/"></iframe>
         </GridItem>
       </GridContainer>
     </div>
