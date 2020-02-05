@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, withRouter } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -18,6 +19,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
@@ -25,31 +27,62 @@ import image from "assets/img/bg7.jpg";
 
 import * as ROUTES from 'constants/routes';
 
+// Custom hooksLibs
+import { useFormFields } from "libs/hooksLibs";
+
+// Firebase
+import { withFirebase } from 'components/Firebase';
+
 const useStyles = makeStyles(styles);
 
-export default function SignUpPage(props) {
+const SignUpPage = (props) => {
   const [cardAnimaton, setCardAnimation] = useState("cardHidden");
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('');
-  const [pass1, setPass1] = useState('');
-  const [pass2, setPass2] = useState('');
+
+  const initialState = {
+    email: "",
+    pass1: "",
+    pass2: "",
+    firstName: "",
+    lastName: ""
+  }
+
+  const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
+
+  function validateForm() {
+    return (
+      fields.email.length > 0 &&
+      fields.pass1.length > 0 &&
+      fields.pass1 === fields.pass2 &&
+      fields.firstName.length > 0 &&
+      fields.lastName.length > 0
+    );
+  }
 
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
-  const onSubmit = e => {
-    console.log("On Submit")
-  };
-  const onChange = e => {
-    console.log("onChange")
-    console.log(e.target)
-    // console.log(e.target.name, e.target.value)
-    // setState({[e.target.name]: e.target.value})
-  };
+
+  function onSubmit(e) {
+    props.firebase
+      .doCreateUserWithEmailAndPassword(fields.email, fields.pass1)
+      .then(authUser => {
+        // TODO: reset fields - this currently does not work
+        // fields.resetFields(initialState)
+        // TODO: reroute to account page
+        props.history.push(ROUTES.HOME);
+      })
+      .catch(error => {
+        setError(null)
+        setError(error)
+        console.log(error)
+      });
+    e.preventDefault();
+  }
+
   const classes = useStyles();
   const { ...rest } = props;
+
   return (
     <div>
       <Header
@@ -105,16 +138,23 @@ export default function SignUpPage(props) {
                     </div>
                   </CardHeader>
                   <p className={classes.divider}>Or Be Classical</p>
+                  { error &&
+                    <SnackbarContent
+                     message={error.message}
+                     close
+                     color="danger"
+                     icon="info_outline"/>
+                   }
                   <CardBody>
                     <CustomInput
-                      value={firstName}
+                      value={fields.firstName}
                       labelText="First Name..."
-                      id="first-name"
+                      id="firstName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (e) => setFirstName(e.target.value),
+                        onChange: (e) => handleFieldChange(e),
                         type: "text",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -124,14 +164,14 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
-                      value={lastName}
+                      value={fields.lastName}
                       labelText="Last Name..."
-                      id="last-name"
+                      id="lastName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (e) => setLastName(e.target.value),
+                        onChange: (e) => handleFieldChange(e),
                         type: "text",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -141,14 +181,14 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
-                      value={email}
+                      value={fields.email}
                       labelText="Email..."
                       id="email"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (e) => setEmail(e.target.value),
+                        onChange: (e) => handleFieldChange(e),
                         type: "email",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -158,14 +198,14 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
-                      value={pass1}
+                      value={fields.pass2}
                       labelText="Password"
                       id="pass1"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (e) => setPass1(e.target.value),
+                        onChange: (e) => handleFieldChange(e),
                         type: "password",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -178,14 +218,14 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
-                      value={pass1}
+                      value={fields.pass2}
                       labelText="Confirm Password"
                       id="pass2"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (e) => setPass2(e.target.value),
+                        onChange: (e) => handleFieldChange(e),
                         type: "password",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -204,6 +244,7 @@ export default function SignUpPage(props) {
                       Login In
                     </Button>
                     <Button
+                      disabled={!validateForm()}
                       color="primary" size="lg"
                       onClick={onSubmit}>
                       Sign Up
@@ -219,3 +260,5 @@ export default function SignUpPage(props) {
     </div>
   );
 }
+
+export default withRouter(withFirebase(SignUpPage));

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState} from "react";
+import { Link, withRouter } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -17,6 +18,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
@@ -24,15 +26,55 @@ import image from "assets/img/bg7.jpg";
 
 import * as ROUTES from 'constants/routes';
 
+// Custom hooksLibs
+import { useFormFields } from "libs/hooksLibs";
+
+// Firebase
+import { withFirebase } from 'components/Firebase';
+
 const useStyles = makeStyles(styles);
 
-export default function LoginPage(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+const LoginPage = (props) => {
+  const [cardAnimaton, setCardAnimation] = useState("cardHidden");
+
+  const initialState = {
+    email: "",
+    password: ""
+  }
+
+  const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
+
+  const [error, setError] = useState(null);
+
+  function validateForm() {
+    return (
+      fields.email.length > 0 &&
+      fields.password.length > 0
+    )
+  }
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+  function onSubmit(e) {
+    props.firebase
+      .doSignInWithEmailAndPassword(fields.email, fields.password)
+      .then(() => {
+        // TODO: reset fields
+        // TODO: reroute to account page
+        props.history.push(ROUTES.HOME)
+      })
+      .catch(error => {
+        setError(null)
+        setError(error)
+        console.log(error)
+      });
+    e.preventDefault();
+  }
+
   return (
     <div>
       <Header
@@ -88,6 +130,13 @@ export default function LoginPage(props) {
                     </div>
                   </CardHeader>
                   <p className={classes.divider}>Or Be Classical</p>
+                  { error &&
+                    <SnackbarContent
+                     message={error.message}
+                     close
+                     color="danger"
+                     icon="info_outline"/>
+                  }
                   <CardBody>
                     <CustomInput
                       labelText="Email..."
@@ -96,6 +145,7 @@ export default function LoginPage(props) {
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => handleFieldChange(e),
                         type: "email",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -106,11 +156,12 @@ export default function LoginPage(props) {
                     />
                     <CustomInput
                       labelText="Password"
-                      id="pass"
+                      id="password"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => handleFieldChange(e),
                         type: "password",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -128,7 +179,10 @@ export default function LoginPage(props) {
                       href={ROUTES.SIGN_UP}>
                       Sign Up
                     </Button>
-                    <Button color="primary" size="lg">
+                    <Button
+                      disabled={!validateForm()}
+                      onClick={onSubmit}
+                      color="primary" size="lg">
                       Login
                     </Button>
                   </CardFooter>
@@ -142,3 +196,5 @@ export default function LoginPage(props) {
     </div>
   );
 }
+
+export default withRouter(withFirebase(LoginPage));
