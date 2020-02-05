@@ -68,7 +68,7 @@ const SignUpPage = (props) => {
       .doCreateUserWithEmailAndPassword(fields.email, fields.pass1)
       .then(authUser => {
         // TODO: reset fields - this currently does not work
-        fields.resetFields(initialState)
+        // fields.resetFields(initialState)
         // TODO: reroute to account page
         props.history.push(ROUTES.HOME);
       })
