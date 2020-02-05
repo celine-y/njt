@@ -127,7 +127,9 @@ export default function RequestSuitcasePage(props) {
                       type: "text",
                       endAdornment: (
                         <InputAdornment position="end">
-                          <People className={classes.inputIconsColor} />
+                        <Icon className={classes.inputIconsColor}>
+                          lock_outline
+                        </Icon>
                         </InputAdornment>
                       )
                     }}
