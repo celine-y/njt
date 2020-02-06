@@ -27,6 +27,7 @@ import * as ROUTES from 'constants/routes';
 
 export default function HeaderLinks(props) {
   const classes = useStyles();
+  const { authUser } = props;
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
@@ -96,6 +97,7 @@ export default function HeaderLinks(props) {
         >Contact
         </Button>
       </ListItem>
+      {!authUser &&
       <ListItem className={classes.listItem}>
         <Button
           href={ROUTES.LOGIN}
@@ -105,7 +107,10 @@ export default function HeaderLinks(props) {
           Login
         </Button>
       </ListItem>
+      }
+      {authUser &&
       <LogoutButton />
+      }
     </List>
   );
 }
