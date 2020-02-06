@@ -64,8 +64,7 @@ const LoginPage = (props) => {
       .doSignInWithEmailAndPassword(fields.email, fields.password)
       .then(() => {
         // TODO: reset fields
-        // TODO: reroute to account page
-        props.history.push(ROUTES.HOME)
+        props.history.push(ROUTES.ACCOUNT)
       })
       .catch(error => {
         setError(null)
@@ -77,13 +76,6 @@ const LoginPage = (props) => {
 
   return (
     <div>
-      <Header
-        absolute
-        color="transparent"
-        brand="NJT"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />
       <div
         className={classes.pageHeader}
         style={{

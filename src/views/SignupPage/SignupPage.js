@@ -69,8 +69,7 @@ const SignUpPage = (props) => {
       .then(authUser => {
         // TODO: reset fields - this currently does not work
         // fields.resetFields(initialState)
-        // TODO: reroute to account page
-        props.history.push(ROUTES.HOME);
+        props.history.push(ROUTES.ACCOUNT);
       })
       .catch(error => {
         setError(null)
@@ -85,13 +84,6 @@ const SignUpPage = (props) => {
 
   return (
     <div>
-      <Header
-        absolute
-        color="transparent"
-        brand="NJT"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />
       <div
         className={classes.pageHeader}
         style={{
