@@ -17,6 +17,7 @@ import { Apps } from "@material-ui/icons";
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
+import LogoutButton from "components/Header/LogoutButton.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 
@@ -100,11 +101,11 @@ export default function HeaderLinks(props) {
           href={ROUTES.LOGIN}
           className={classes.registerNavLink}
           color="primary"
-          round
-        >
+          round>
           Login
         </Button>
       </ListItem>
+      <LogoutButton />
     </List>
   );
 }
