@@ -16,7 +16,13 @@ import LoginPage from "views/LoginPage/LoginPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.js";
 
+import Header from "components/Header/Header.js";
+import HeaderLinks from "components/Header/HeaderLinks.js";
+
 var hist = createBrowserHistory();
+
+const dashboardRoutes = [];
+
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
