@@ -18,12 +18,14 @@ import { Apps } from "@material-ui/icons";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
 import LogoutButton from "components/Header/LogoutButton.js";
+import LoginButton from "components/Header/LoginButton.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
 import * as ROUTES from 'constants/routes';
+import { AuthUserContext } from 'components/Session';
 
 export default function HeaderLinks(props) {
   const classes = useStyles();
@@ -97,20 +99,11 @@ export default function HeaderLinks(props) {
         >Contact
         </Button>
       </ListItem>
-      {!authUser &&
-      <ListItem className={classes.listItem}>
-        <Button
-          href={ROUTES.LOGIN}
-          className={classes.registerNavLink}
-          color="primary"
-          round>
-          Login
-        </Button>
-      </ListItem>
+      <AuthUserContext.Consumer>
+      { authUser =>
+        authUser ? <LogoutButton />: <LoginButton />
       }
-      {authUser &&
-      <LogoutButton />
-      }
+    </AuthUserContext.Consumer>
     </List>
   );
 }

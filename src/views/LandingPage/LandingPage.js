@@ -7,12 +7,12 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 
 // core components
-import Header from "components/Header/Header.js";
+// import Header from "components/Header/Header.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
+// import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 
 import styles from "assets/jss/material-kit-react/views/landingPage.js";
@@ -24,7 +24,7 @@ import JoinUsSection from "./Sections/JoinUsSection.js";
 import SupplyMapSection from "./Sections/SupplyMapSection.js";
 import SeenOnSection from "./Sections/SeenOnSection.js";
 
-const dashboardRoutes = [];
+// const dashboardRoutes = [];
 
 const useStyles = makeStyles(styles);
 
