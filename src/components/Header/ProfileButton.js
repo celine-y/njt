@@ -12,24 +12,33 @@ import { withFirebase } from 'components/Firebase';
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
+import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
-
-const LogoutButton = ({ firebase }) => {
+const ProfileButton = ({ firebase }) => {
   const classes = useStyles();
 
   return (
+    <div>
+      <ListItem className={classes.listItem}>
+        <Button
+          href={ROUTES.ACCOUNT}
+          className={classes.registerNavLink}
+          color="primary">
+        Account
+        </Button>
+      </ListItem>
       <ListItem className={classes.listItem}>
         <Button
           className={classes.registerNavLink}
-          color="primary"
-          onClick={firebase.doSignOut}
-          round>
+          color="transparent"
+          onClick={firebase.doSignOut}>
         Logout
         </Button>
       </ListItem>
+    </div>
   );
 }
 
-export default withFirebase(LogoutButton);
+export default withFirebase(ProfileButton);

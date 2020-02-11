@@ -11,9 +11,7 @@ import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 import * as ROUTES from 'constants/routes';
 
-
 const useStyles = makeStyles(styles);
-
 
 const LoginButton = ({ firebase }) => {
   const classes = useStyles();

@@ -17,8 +17,8 @@ import { Apps } from "@material-ui/icons";
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
-import LogoutButton from "components/Header/LogoutButton.js";
 import LoginButton from "components/Header/LoginButton.js";
+import ProfileButton from "components/Header/ProfileButton.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 
@@ -101,7 +101,7 @@ export default function HeaderLinks(props) {
       </ListItem>
       <AuthUserContext.Consumer>
       { authUser =>
-        authUser ? <LogoutButton />: <LoginButton />
+        authUser ? <ProfileButton />: <LoginButton />
       }
     </AuthUserContext.Consumer>
     </List>
