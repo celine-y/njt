@@ -19,6 +19,7 @@ const useStyles = makeStyles(styles);
 const ProfileButton = ({ firebase }) => {
   const classes = useStyles();
 
+// TODO remove logout button after testing is done
   return (
     <div>
       <ListItem className={classes.listItem}>

@@ -18,38 +18,37 @@ import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
 // Firebase
-import { withFirebase } from 'components/Firebase';
-import { AuthUserContext } from 'components/Session';
+// import { withFirebase } from 'components/Firebase';
+import { withAuthentication } from 'components/Session';
 
 var hist = createBrowserHistory();
 
 const dashboardRoutes = [];
 
 const App = (props) => {
-  const [state, setState] = useState(
-    () => {
-      const user = props.firebase.auth.currentUser
-      return { initializing: !user, user, }
-    })
-
-  useEffect(() => {
-    const unsubscribe = props.firebase.auth.onAuthStateChanged(
-      authUser => {
-        if (authUser) {
-          console.log(authUser)
-          setState({ initializing: false, authUser })
-        } else {
-          setState({ authUser: null })
-        }
-      }
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  // const [state, setState] = useState(
+  //   () => {
+  //     const user = props.firebase.auth.currentUser
+  //     return { initializing: !user, user, }
+  //   })
+  //
+  // useEffect(() => {
+  //   const unsubscribe = props.firebase.auth.onAuthStateChanged(
+  //     authUser => {
+  //       if (authUser) {
+  //         console.log(authUser)
+  //         setState({ initializing: false, authUser })
+  //       } else {
+  //         setState({ authUser: null })
+  //       }
+  //     }
+  //   );
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
   return (
-    <AuthUserContext.Provider value={state.authUser}>
       <Router history={hist}>
         <div>
         <Header
@@ -71,8 +70,7 @@ const App = (props) => {
           </Switch>
         </div>
       </Router>
-    </AuthUserContext.Provider>
   )
 }
 
-export default withFirebase(App);
+export default withAuthentication(App);
