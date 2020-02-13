@@ -14,6 +14,7 @@ import LandingPage from "views/LandingPage/LandingPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
+import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.js";
 
 var hist = createBrowserHistory();
 
@@ -25,6 +26,7 @@ ReactDOM.render(
         <Route path={ROUTES.ACCOUNT} component={ProfilePage} />
         <Route path={ROUTES.LOGIN} component={LoginPage} />
         <Route path={ROUTES.SIGN_UP} component={SignupPage} />
+        <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
       </Switch>
     </Router>
   </FirebaseContext.Provider>,

@@ -10,4 +10,5 @@ export const VOLUNTEER = '/volunteer';
 export const DONATE = '/donate';
 export const CONTACT_US = '/contact';
 export const START_CHAPTER = '/start-chapter';
-export const SUBMIT_CLINIC = '/submit-clinic'
+export const SUBMIT_CLINIC = '/submit-clinic';
+export const REQUEST_SUITCASE = '/request-suitcase';
