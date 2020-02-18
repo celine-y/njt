@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
@@ -26,27 +26,6 @@ var hist = createBrowserHistory();
 const dashboardRoutes = [];
 
 const App = (props) => {
-  // const [state, setState] = useState(
-  //   () => {
-  //     const user = props.firebase.auth.currentUser
-  //     return { initializing: !user, user, }
-  //   })
-  //
-  // useEffect(() => {
-  //   const unsubscribe = props.firebase.auth.onAuthStateChanged(
-  //     authUser => {
-  //       if (authUser) {
-  //         console.log(authUser)
-  //         setState({ initializing: false, authUser })
-  //       } else {
-  //         setState({ authUser: null })
-  //       }
-  //     }
-  //   );
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
 
   return (
       <Router history={hist}>
