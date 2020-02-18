@@ -1,41 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import AuthUserContext from './context';
 import { withFirebase } from 'components/Firebase';
 
+import useAuthentication from './useAuthentication';
+
 import * as ROUTES from 'constants/routes';
 
+// function withAuthentication(props) {
+//
+//   return withFirebase(useAuthentication(props));
+// }
 
-const withAuthentication = Component => {
-  const withAuthent = (props) => {
-    const [state, setState] = useState(
-      () => {
-        const user = props.firebase.auth.currentUser
-        return { initializing: !user, user, }
-      })
+const withAuthentication = Component => props => {
+  const { state } = withFirebase(useAuthentication())
 
-      useEffect(() => {
-        const unsubscribe = props.firebase.auth.onAuthStateChanged(
-          authUser => {
-            if (authUser) {
-              setState({ initializing: false, authUser })
-              console.log(authUser)
-            } else {
-              props.history.push(ROUTES.SIGN_IN)
-              setState({ authUser: null })
-            }
-          }
-        );
-        return () => {
-          unsubscribe();
-        };
-      }, []);
-
-    return (
-      <Component {...this.props} />;
+  if (!state) {
+    console.log(state)
+    return(
+      <AuthUserContext.Provider value={state}>
+        <Component {...props} />
+      </AuthUserContext.Provider>
     )
   }
 
-  return withFirebase(withAuthent);
-};
+  console.log(state)
+  return (
+    <AuthUserContext.Provider value={state.authUser}>
+      <Component {...props} />
+    </AuthUserContext.Provider>
+  )
+}
+
 export default withAuthentication;
