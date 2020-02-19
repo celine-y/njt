@@ -8,8 +8,6 @@ import Icon from "@material-ui/core/Icon";
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -69,8 +67,7 @@ const SignUpPage = (props) => {
       .then(authUser => {
         // TODO: reset fields - this currently does not work
         // fields.resetFields(initialState)
-        // TODO: reroute to account page
-        props.history.push(ROUTES.HOME);
+        props.history.push(ROUTES.ACCOUNT);
       })
       .catch(error => {
         setError(null)
@@ -85,13 +82,6 @@ const SignUpPage = (props) => {
 
   return (
     <div>
-      <Header
-        absolute
-        color="transparent"
-        brand="NJT"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />
       <div
         className={classes.pageHeader}
         style={{

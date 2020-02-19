@@ -45,7 +45,7 @@ export default function JoinUsSection() {
               vertical
             />
             <Button
-              href={ROUTES.TAKE_SUITCASE}
+              href={ROUTES.REQUEST_SUITCASE}
               color="primary"
               target="_blank"
             >Learn More
