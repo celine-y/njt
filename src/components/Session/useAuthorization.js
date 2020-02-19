@@ -5,19 +5,15 @@ import { withFirebase } from 'components/Firebase';
 
 import * as ROUTES from 'constants/routes';
 
-const useAuthentication = (props) => {
-  const [authUser, setAuthUser] = useState(null)
+const useAuthorization = (props) => {
+  // const [authUser, setAuthUser] = useState(null)
 
     useEffect(() => {
-      console.log("useAuthentication")
       const unsubscribe = props.firebase.auth.onAuthStateChanged(
         authUser => {
-          console.log("useAuthentication change", authUser)
-          if (authUser) {
-            setAuthUser(authUser);
-          } else {
+          console.log("useAuthorization change", authUser)
+          if (!props.condition(authUser)) {
             props.history.push(ROUTES.LOGIN)
-            setAuthUser(null)
           }
         }
       );
@@ -26,7 +22,7 @@ const useAuthentication = (props) => {
       };
     });
 
-  return authUser;
+  return {};
 }
 
-export default useAuthentication;
+export default useAuthorization;

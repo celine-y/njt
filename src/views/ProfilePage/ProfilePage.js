@@ -15,6 +15,9 @@ import GridItem from "components/Grid/GridItem.js";
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
 
+// Authorization
+import { withAuthorization } from 'components/Session';
+
 import profile from "assets/img/faces/christian.jpg";
 
 import studio1 from "assets/img/examples/studio-1.jpg";
@@ -32,7 +35,7 @@ import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 const useStyles = makeStyles(styles);
 
-export default function ProfilePage(props) {
+function ProfilePage(props) {
   const classes = useStyles();
   const { ...rest } = props;
   const imageClasses = classNames(
@@ -200,3 +203,7 @@ export default function ProfilePage(props) {
     </div>
   );
 }
+
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(ProfilePage);
