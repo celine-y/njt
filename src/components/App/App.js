@@ -43,7 +43,10 @@ const App = (props) => {
             <Route path={ROUTES.ACCOUNT} component={ProfilePage} />
             <Route path={ROUTES.LOGIN} component={LoginPage} />
             <Route path={ROUTES.SIGN_UP} component={SignupPage} />
+<<<<<<< HEAD
             <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
+=======
+>>>>>>> a556b33ade90b117c5793053d74892e82e4f906e
           </Switch>
         </div>
       </Router>
