@@ -5,7 +5,6 @@ export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ABOUT_US = '/about';
-export const TAKE_SUITCASE = '/take-suitecase';
 export const VOLUNTEER = '/volunteer';
 export const DONATE = '/donate';
 export const CONTACT_US = '/contact';

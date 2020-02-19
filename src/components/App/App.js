@@ -5,9 +5,6 @@ import * as ROUTES from 'constants/routes';
 
 import "assets/scss/material-kit-react.scss?v=1.8.0";
 
-// Firebase
-// import Firebase, { FirebaseContext } from 'components/Firebase';
-
 // pages for this product
 import LandingPage from "views/LandingPage/LandingPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
@@ -19,7 +16,6 @@ import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
 // Firebase
-// import { withFirebase } from 'components/Firebase';
 import { withAuthentication } from 'components/Session';
 
 var hist = createBrowserHistory();

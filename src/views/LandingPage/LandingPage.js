@@ -48,7 +48,7 @@ export default function LandingPage(props) {
               <Button
                 color="primary"
                 size="lg"
-                href={ROUTES.TAKE_SUITCASE}
+                href={ROUTES.REQUEST_SUITCASE}
                 target="_blank"
                 rel="noopener noreferrer"
               >Take a Suitcase

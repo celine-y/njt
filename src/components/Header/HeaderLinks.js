@@ -17,19 +17,15 @@ import { Apps } from "@material-ui/icons";
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
-import LoginButton from "components/Header/LoginButton.js";
-import ProfileButton from "components/Header/ProfileButton.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
 import * as ROUTES from 'constants/routes';
-import { AuthUserContext } from 'components/Session';
 
 export default function HeaderLinks(props) {
   const classes = useStyles();
-  const { authUser } = props;
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
@@ -50,7 +46,7 @@ export default function HeaderLinks(props) {
             color: "transparent"
           }}
           dropdownList={[
-            <Link to={ROUTES.TAKE_SUITCASE} className={classes.dropdownLink}>
+            <Link to={ROUTES.REQUEST_SUITCASE} className={classes.dropdownLink}>
               Take a Suitcase
             </Link>,
             <a
@@ -99,11 +95,16 @@ export default function HeaderLinks(props) {
         >Contact
         </Button>
       </ListItem>
-      <AuthUserContext.Consumer>
-      { authUser =>
-        authUser ? <ProfileButton />: <LoginButton />
-      }
-    </AuthUserContext.Consumer>
+      <ListItem className={classes.listItem}>
+        <Button
+          href={ROUTES.LOGIN}
+          className={classes.registerNavLink}
+          color="primary"
+          round
+        >
+          Login
+        </Button>
+      </ListItem>
     </List>
   );
 }
