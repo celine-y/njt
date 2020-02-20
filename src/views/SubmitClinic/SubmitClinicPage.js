@@ -44,7 +44,7 @@ import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
-export default function RequestSuitcasePage(props) {
+export default function SubmitClinicPage(props) {
   const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
   const wrapperDiv = classNames(
@@ -85,7 +85,7 @@ export default function RequestSuitcasePage(props) {
       >
       <div className={classes.container}>
         <GridContainer justify="center">
-          <GridItem xs={24} sm={24} md={11}>
+          <GridItem xs={24} sm={24} md={8}>
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form}>
                 <CardHeader color="primary" className={classes.cardHeader}>
