@@ -2,10 +2,7 @@ import React, { Component } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
-import Email from "@material-ui/icons/Email";
-import People from "@material-ui/icons/People";
+
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -125,13 +122,6 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "text",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                        <Icon className={classes.inputIconsColor}>
-                          lock_outline
-                        </Icon>
-                        </InputAdornment>
-                      )
                     }}
                   />
                   <CustomInput
@@ -142,12 +132,7 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "text",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Email className={classes.inputIconsColor} />
-                        </InputAdornment>
-                      )
-                    }}
+                      }}
                   />
                   <CustomInput
                     labelText="What are you willing to carry..."
@@ -157,13 +142,6 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "text",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Icon className={classes.inputIconsColor}>
-                            lock_outline
-                          </Icon>
-                        </InputAdornment>
-                      ),
                       autoComplete: "off"
                     }}
                   />
@@ -175,13 +153,6 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "password",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Icon className={classes.inputIconsColor}>
-                            lock_outline
-                          </Icon>
-                        </InputAdornment>
-                      ),
                       autoComplete: "off"
                     }}
                   />
@@ -193,13 +164,6 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "password",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Icon className={classes.inputIconsColor}>
-                            lock_outline
-                          </Icon>
-                        </InputAdornment>
-                      ),
                       autoComplete: "off"
                     }}
                   />
@@ -211,13 +175,6 @@ export default function RequestSuitcasePage(props) {
                       }}
                       inputProps={{
                         type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
                         autoComplete: "off"
                       }}
                     />
