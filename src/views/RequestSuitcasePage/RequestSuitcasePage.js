@@ -3,7 +3,9 @@ import React, { Component } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
-
+// @material-ui/icons
+import Email from "@material-ui/icons/Email";
+import People from "@material-ui/icons/People";
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -16,6 +18,8 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+//gives imaage at the top
+import Parallax from "components/Parallax/Parallax.js";
 import classNames from "classnames";
 //creates dropdown
 import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
@@ -28,6 +32,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 // @material-ui/icons
 import Check from "@material-ui/icons/Check";
 // material-ui components
+import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
@@ -80,7 +85,7 @@ export default function RequestSuitcasePage(props) {
       >
       <div className={classes.container}>
         <GridContainer justify="center">
-          <GridItem xs={24} sm={24} md={8}>
+          <GridItem xs={24} sm={24} md={11}>
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form}>
                 <CardHeader color="primary" className={classes.cardHeader}>
@@ -120,6 +125,13 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "text",
+                      endAdornment: (
+                        <InputAdornment position="end">
+                        <Icon className={classes.inputIconsColor}>
+                          lock_outline
+                        </Icon>
+                        </InputAdornment>
+                      )
                     }}
                   />
                   <CustomInput
@@ -130,6 +142,11 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "text",
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Email className={classes.inputIconsColor} />
+                        </InputAdornment>
+                      )
                     }}
                   />
                   <CustomInput
@@ -140,6 +157,13 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "text",
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Icon className={classes.inputIconsColor}>
+                            lock_outline
+                          </Icon>
+                        </InputAdornment>
+                      ),
                       autoComplete: "off"
                     }}
                   />
@@ -151,6 +175,13 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "password",
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Icon className={classes.inputIconsColor}>
+                            lock_outline
+                          </Icon>
+                        </InputAdornment>
+                      ),
                       autoComplete: "off"
                     }}
                   />
@@ -162,6 +193,13 @@ export default function RequestSuitcasePage(props) {
                     }}
                     inputProps={{
                       type: "password",
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Icon className={classes.inputIconsColor}>
+                            lock_outline
+                          </Icon>
+                        </InputAdornment>
+                      ),
                       autoComplete: "off"
                     }}
                   />
@@ -173,6 +211,13 @@ export default function RequestSuitcasePage(props) {
                       }}
                       inputProps={{
                         type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Icon className={classes.inputIconsColor}>
+                              lock_outline
+                            </Icon>
+                          </InputAdornment>
+                        ),
                         autoComplete: "off"
                       }}
                     />
