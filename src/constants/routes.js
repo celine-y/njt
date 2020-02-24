@@ -11,4 +11,5 @@ export const CONTACT_US = '/contact';
 export const START_CHAPTER = '/start-chapter';
 export const SUBMIT_CLINIC = '/submit-clinic'
 export const REQUEST_SUITCASE = '/request-suitcase';
+export const ADMIN_TRIP_LOG = '/admin-trips-log';
 export const SIGNOUT = '/signout'
