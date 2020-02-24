@@ -21,9 +21,6 @@ import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
 import Badge from 'components/Badge/Badge.js';
 // datetime dropdown
 import Datetime from "react-datetime";
-
-// @material-ui/icons
-import Check from "@material-ui/icons/Check";
 // material-ui components
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -33,15 +30,14 @@ import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js"
 
 import image from "assets/img/bg7.jpg";
 
+import CheckboxRadioSwitch from "./CheckboxRadioSwitch.js";
 import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
-const useStyles2 = makeStyles(styles2);
 
 export default function RequestSuitcasePage(props) {
   const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
-  const classes2 = useStyles2();
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
@@ -197,6 +193,7 @@ export default function RequestSuitcasePage(props) {
                   <p>
                   6) Any photos received by Not Just Tourists become the property of the organization and can be used for marketing and promotional purposes.
                   </p>
+                  <CheckboxRadioSwitch />
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
                   <Button color="primary" size="lg"
