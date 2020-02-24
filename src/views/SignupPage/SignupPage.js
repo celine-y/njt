@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { Link, withRouter } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -7,8 +8,6 @@ import Icon from "@material-ui/core/Icon";
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -18,6 +17,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
@@ -25,24 +25,63 @@ import image from "assets/img/bg7.jpg";
 
 import * as ROUTES from 'constants/routes';
 
+// Custom hooksLibs
+import { useFormFields } from "libs/hooksLibs";
+
+// Firebase
+import { withFirebase } from 'components/Firebase';
+
 const useStyles = makeStyles(styles);
 
-export default function SignUpPage(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+const SignUpPage = (props) => {
+  const [cardAnimaton, setCardAnimation] = useState("cardHidden");
+
+  const initialState = {
+    email: "",
+    pass1: "",
+    pass2: "",
+    firstName: "",
+    lastName: ""
+  }
+
+  const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
+  const [error, setError] = useState(null);
+
+  function validateForm() {
+    return (
+      fields.email.length > 0 &&
+      fields.pass1.length > 0 &&
+      fields.pass1 === fields.pass2 &&
+      fields.firstName.length > 0 &&
+      fields.lastName.length > 0
+    );
+  }
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
+
+  function onSubmit(e) {
+    props.firebase
+      .doCreateUserWithEmailAndPassword(fields.email, fields.pass1)
+      .then(authUser => {
+        // TODO: reset fields - this currently does not work
+        // fields.resetFields(initialState)
+        props.history.push(ROUTES.ACCOUNT);
+      })
+      .catch(error => {
+        setError(null)
+        setError(error)
+        console.log(error)
+      });
+    e.preventDefault();
+  }
+
   const classes = useStyles();
   const { ...rest } = props;
+
   return (
     <div>
-      <Header
-        absolute
-        color="transparent"
-        brand="NJT"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />
       <div
         className={classes.pageHeader}
         style={{
@@ -89,14 +128,23 @@ export default function SignUpPage(props) {
                     </div>
                   </CardHeader>
                   <p className={classes.divider}>Or Be Classical</p>
+                  { error &&
+                    <SnackbarContent
+                     message={error.message}
+                     close
+                     color="danger"
+                     icon="info_outline"/>
+                   }
                   <CardBody>
                     <CustomInput
+                      value={fields.firstName}
                       labelText="First Name..."
-                      id="first"
+                      id="firstName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => handleFieldChange(e),
                         type: "text",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -106,12 +154,31 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
+                      value={fields.lastName}
+                      labelText="Last Name..."
+                      id="lastName"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: (e) => handleFieldChange(e),
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      value={fields.email}
                       labelText="Email..."
                       id="email"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => handleFieldChange(e),
                         type: "email",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -121,12 +188,34 @@ export default function SignUpPage(props) {
                       }}
                     />
                     <CustomInput
+                      value={fields.pass2}
                       labelText="Password"
-                      id="pass"
+                      id="pass1"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => handleFieldChange(e),
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Icon className={classes.inputIconsColor}>
+                              lock_outline
+                            </Icon>
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off"
+                      }}
+                    />
+                    <CustomInput
+                      value={fields.pass2}
+                      labelText="Confirm Password"
+                      id="pass2"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: (e) => handleFieldChange(e),
                         type: "password",
                         endAdornment: (
                           <InputAdornment position="end">
@@ -140,11 +229,14 @@ export default function SignUpPage(props) {
                     />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button color="secondary" size="lg"
+                    <Button size="lg"
                       href={ROUTES.LOGIN}>
                       Login In
                     </Button>
-                    <Button color="primary" size="lg">
+                    <Button
+                      disabled={!validateForm()}
+                      color="primary" size="lg"
+                      onClick={onSubmit}>
                       Sign Up
                     </Button>
                   </CardFooter>
@@ -158,3 +250,5 @@ export default function SignUpPage(props) {
     </div>
   );
 }
+
+export default withRouter(withFirebase(SignUpPage));

@@ -7,8 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
+// import CustomInput from "components/CustomInput/CustomInput.js";
+// import Button from "components/CustomButtons/Button.js";
+import logo from "assets/img/as-seen-on.png";
 
 import styles from "assets/jss/material-kit-react/views/landingPageSections/workStyle.js";
 
@@ -19,11 +20,9 @@ export default function SeenOnSection() {
   return (
     <div className={classes.section}>
       <GridContainer justify="center">
-        <GridItem cs={12} sm={12} md={8}>
+        <GridItem cs={12} sm={12} md={10}>
           <h2 className={classes.title}>As Seen On</h2>
-          <h4 className={classes.description}>
-            TODO: As seen on section
-          </h4>
+          <img src={logo} width="100%"></img>
         </GridItem>
       </GridContainer>
     </div>
