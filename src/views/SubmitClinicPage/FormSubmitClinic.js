@@ -29,17 +29,14 @@ import Badge from 'components/Badge/Badge.js';
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-//import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
-
 import image from "assets/img/bg2.jpg";
 import * as ROUTES from 'constants/routes';
 
-const useStyles = makeStyles(styles);
 
+const useStyles = makeStyles(styles);
 export default function FormSubmitClinic(props){
   const classes = useStyles();
   const { ...rest } = props;
-
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function() {
     setCardAnimation("");
@@ -65,11 +62,6 @@ export default function FormSubmitClinic(props){
                 }}
                 inputProps={{
                   type: "text",
-                  endAdornment: (
-                    <InputAdornment position="end">
-
-                    </InputAdornment>
-                  ),
                   autoComplete: "off"
                 }}
               />
@@ -81,11 +73,6 @@ export default function FormSubmitClinic(props){
                 }}
                 inputProps={{
                   type: "text",
-                  endAdornment: (
-                    <InputAdornment position="end">
-
-                    </InputAdornment>
-                  )
                 }}
               />
               <CustomInput
@@ -96,10 +83,6 @@ export default function FormSubmitClinic(props){
                 }}
                 inputProps={{
                   type: "text",
-                  endAdornment: (
-                    <InputAdornment position="end">
-                    </InputAdornment>
-                  )
                 }}
               />
               <CustomInput
@@ -110,11 +93,6 @@ export default function FormSubmitClinic(props){
                 }}
                 inputProps={{
                   type: "text",
-                  endAdornment: (
-                    <InputAdornment position="end">
-
-                    </InputAdornment>
-                  ),
                   autoComplete: "off"
                 }}
               />
@@ -126,11 +104,6 @@ export default function FormSubmitClinic(props){
                 }}
                 inputProps={{
                   type: "password",
-                  endAdornment: (
-                    <InputAdornment position="end">
-
-                    </InputAdornment>
-                  ),
                   autoComplete: "off"
                 }}
               />
@@ -142,11 +115,6 @@ export default function FormSubmitClinic(props){
                   }}
                   inputProps={{
                     type: "password",
-                    endAdornment: (
-                      <InputAdornment position="end">
-
-                      </InputAdornment>
-                    ),
                     autoComplete: "off"
                   }}
                 />

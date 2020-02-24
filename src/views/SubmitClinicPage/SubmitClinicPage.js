@@ -10,30 +10,12 @@ import HomeIcon from '@material-ui/icons/Home';
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Footer from "components/Footer/Footer.js";
-//import GridContainer from "components/Grid/GridContainer.js";
-//import GridItem from "components/Grid/GridItem.js";
-//import Button from "components/CustomButtons/Button.js";
-//import Card from "components/Card/Card.js";
-//import CardBody from "components/Card/CardBody.js";
-//import CardHeader from "components/Card/CardHeader.js";
-//import CardFooter from "components/Card/CardFooter.js";
-//import CustomInput from "components/CustomInput/CustomInput.js";
 import classNames from "classnames";
-
-//creates dropdown
-//import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
-//import Badge from 'components/Badge/Badge.js';
-
-// material-ui components
-//import InputLabel from "@material-ui/core/InputLabel";
-//import FormControl from "@material-ui/core/FormControl";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-//import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
-
 import image from "assets/img/bg2.jpg";
 import * as ROUTES from 'constants/routes';
 
-//import form section
+//import form section page
 import FormSubmitClinic from "./FormSubmitClinic.js";
 
 
