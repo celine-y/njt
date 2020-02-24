@@ -15,17 +15,13 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-//gives imaage at the top
-import Parallax from "components/Parallax/Parallax.js";
 import classNames from "classnames";
 //creates dropdown
 import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
 import Badge from 'components/Badge/Badge.js';
 // datetime dropdown
 import Datetime from "react-datetime";
-//checkbox
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+
 // @material-ui/icons
 import Check from "@material-ui/icons/Check";
 // material-ui components
@@ -33,17 +29,19 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-//import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
+import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
 
 import image from "assets/img/bg7.jpg";
 
 import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
+const useStyles2 = makeStyles(styles2);
 
 export default function RequestSuitcasePage(props) {
   const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
+  const classes2 = useStyles2();
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
@@ -199,39 +197,6 @@ export default function RequestSuitcasePage(props) {
                   <p>
                   6) Any photos received by Not Just Tourists become the property of the organization and can be used for marketing and promotional purposes.
                   </p>
-                  <div className={wrapperDiv}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          tabIndex={-1}
-                          onClick={() => handleToggle(21)}
-                          checkedIcon={<Check className={classes.checkedIcon} />}
-                          icon={<Check className={classes.uncheckedIcon} />}
-                          classes={{ checked: classes.checked }}
-                        />
-                      }
-                      classes={{ label: classes.label }}
-                      label="Yes"
-                    />
-                  </div>
-                  <div className={wrapperDiv}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          tabIndex={-1}
-                          onClick={() => handleToggle(22)}
-                          checked={
-                            checked.indexOf(22) !== -1 ? true : false
-                          }
-                          checkedIcon={<Check className={classes.checkedIcon} />}
-                          icon={<Check className={classes.uncheckedIcon} />}
-                          classes={{ checked: classes.checked }}
-                        />
-                      }
-                      classes={{ label: classes.label }}
-                      label="No"
-                    />
-                  </div>
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
                   <Button color="primary" size="lg"
