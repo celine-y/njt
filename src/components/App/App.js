@@ -12,7 +12,7 @@ import LoginPage from "views/LoginPage/LoginPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.js";
 import SubmitClinicPage from "views/SubmitClinicPage/SubmitClinicPage.js";
-import AdminTripsLog from "views/AdminTripsLog/AdminTripsLog.js";
+import AdminTrips from "views/AdminTrips/AdminTrips.js";
 
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -47,7 +47,7 @@ const App = (props) => {
           <Route path={ROUTES.SIGN_UP} component={SignupPage} />
           <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
           <Route path={ROUTES.SUBMIT_CLINIC} component={SubmitClinicPage} />
-          <Route path={ROUTES.ADMIN_TRIP_LOG} component={AdminTripsLog} />
+          <Route path={ROUTES.ADMIN_TRIPS} component={AdminTrips} />
         </Switch>
       </div>
     </Router>
