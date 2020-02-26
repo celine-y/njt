@@ -24,6 +24,7 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import image from "assets/img/bg7.jpg";
 
 import * as ROUTES from 'constants/routes';
+import * as ROLES from 'constants/roles'
 
 // Custom hooksLibs
 import { useFormFields } from "libs/hooksLibs";
@@ -47,6 +48,8 @@ const SignUpPage = (props) => {
   const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
 
+  const roles = {};
+
   function validateForm() {
     return (
       fields.email.length > 0 &&
@@ -62,9 +65,25 @@ const SignUpPage = (props) => {
   }, 700);
 
   function onSubmit(e) {
+    const { email, pass1, firstName, lastName } = fields;
+    // is a njt user
+    if (fields.email.includes("@njt.net")){
+      roles[ROLES.ADMIN] = ROLES.ADMIN
+    }
+
     props.firebase
-      .doCreateUserWithEmailAndPassword(fields.email, fields.pass1)
+      .doCreateUserWithEmailAndPassword(email, pass1)
       .then(authUser => {
+        return props.firebase
+          .user(authUser.user.uid)
+          .set({
+            email,
+            firstName,
+            lastName,
+            roles
+          })
+      })
+      .then(() => {
         // TODO: reset fields - this currently does not work
         // fields.resetFields(initialState)
         props.history.push(ROUTES.ACCOUNT);
