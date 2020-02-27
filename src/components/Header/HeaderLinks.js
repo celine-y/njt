@@ -25,11 +25,10 @@ import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js
 const useStyles = makeStyles(styles);
 
 import * as ROUTES from 'constants/routes';
-import { AuthUserContext } from 'components/Session';
+import { AuthUserContext, helpers } from 'components/Session';
 
-export default function HeaderLinks(props) {
+function HeaderLinks(props) {
   const classes = useStyles();
-  const { authUser } = props;
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
@@ -44,6 +43,7 @@ export default function HeaderLinks(props) {
       <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
+          left
           buttonText="Volunteer"
           buttonProps={{
             className: classes.navLink,
@@ -101,9 +101,11 @@ export default function HeaderLinks(props) {
       </ListItem>
       <AuthUserContext.Consumer>
       { authUser =>
-        authUser ? <ProfileButton />: <LoginButton />
+        authUser ? <ProfileButton initials={helpers.getInitials(authUser)}/>: <LoginButton />
       }
-    </AuthUserContext.Consumer>
+      </AuthUserContext.Consumer>
     </List>
   );
 }
+
+export default HeaderLinks;
