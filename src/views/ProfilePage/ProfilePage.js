@@ -64,7 +64,17 @@ function ProfilePage(props) {
   return (
     <AuthUserContext.Consumer>
       { authUser =>
-        showProfilePage(authUser)
+        <div>
+          <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
+          <div className={classNames(classes.main, classes.mainRaised)}>
+            <div>
+              <div className={classes.container}>
+              {showProfilePage(authUser)}
+              </div>
+            </div>
+          </div>
+          <Footer />
+        </div>
       }
     </AuthUserContext.Consumer>
   );

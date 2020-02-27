@@ -35,39 +35,29 @@ function Admin(props) {
   return (
     <AuthUserContext.Consumer>
       { authUser => (
-        <div>
-          <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
-          <div className={classNames(classes.main, classes.mainRaised)}>
-            <div>
-              <div className={classes.container}>
-                <GridContainer justify="center">
-                  <GridItem xs={12} sm={12} md={6}>
-                    <div className={classes.profile}>
-                      <div>
-                      <img src={profile} alt="..." className={imageClasses} />
-                      </div>
-                      <div className={classes.name}>
-                        <h3 className={classes.title}>{helpers.getFullName(authUser)}</h3>
-                        <h6>ADMIN</h6>
-                      </div>
-                    </div>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
-                    <div className={classes.description}>
-                      <p>
-                        An artist of considerable range, Chet Faker — the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-                        and records all of his own music, giving it a warm, intimate
-                        feel with a solid groove structure.{" "}
-                      </p>
-                    </div>
-                  </GridItem>
-                </GridContainer>
+          <GridContainer justify="center">
+            <GridItem xs={12} sm={12} md={12}>
+              <div className={classes.profile}>
+                <div>
+                <img src={profile} alt="..." className={imageClasses} />
+                </div>
+                <div className={classes.name}>
+                  <h3 className={classes.title}>{helpers.getFullName(authUser)}</h3>
+                  <h6>ADMIN</h6>
+                </div>
               </div>
-            </div>
-          </div>
-          <Footer />
-        </div>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <div className={classes.description}>
+                <p>
+                  An artist of considerable range, Chet Faker — the name taken by
+                  Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
+                  and records all of his own music, giving it a warm, intimate
+                  feel with a solid groove structure.{" "}
+                </p>
+              </div>
+            </GridItem>
+          </GridContainer>
       )}
     </AuthUserContext.Consumer>
   );
