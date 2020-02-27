@@ -28,8 +28,13 @@ class Firebase {
   constructor() {
     app.initializeApp(config);
 
+    // Helper
+    this.fieldValue = app.firestore.fieldValue;
+
     this.auth = app.auth();
     this.db = app.firestore();
+
+    this.user = this.user.bind(this);
   }
 
   // *** Auth API ***
@@ -47,7 +52,32 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
 
     // user API
-  user = uid => this.db.collection('users').doc(uid);
+  user = uid => this.db.doc(`users/${uid}`);
   users = () => this.db.collection('users');
+
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.user(authUser.uid)
+          .get()
+          .then(snapshot => {
+            const dbUser = snapshot.data();
+
+            if (!dbUser.roles) {
+              dbUser.roles = {};
+            }
+
+            authUser = {
+              uid: authUser.uid,
+              email: authUser.email,
+              ...dbUser
+            };
+
+            next(authUser);
+          });
+      } else {
+        fallback();
+      }
+    })
 }
 export default Firebase;

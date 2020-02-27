@@ -19,12 +19,11 @@ import Parallax from "components/Parallax/Parallax.js";
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
 
 import profile from "assets/img/faces/christian.jpg";
-
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 const useStyles = makeStyles(styles);
 
-function Traveller(props) {
+function Admin(props) {
   const classes = useStyles();
   const { ...rest } = props;
   const imageClasses = classNames(
@@ -45,11 +44,22 @@ function Traveller(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <div className={classes.profile}>
                       <div>
-                        <img src={profile} alt="..." className={imageClasses} />
+                      <img src={profile} alt="..." className={imageClasses} />
                       </div>
                       <div className={classes.name}>
                         <h3 className={classes.title}>{helpers.getFullName(authUser)}</h3>
+                        <h6>ADMIN</h6>
                       </div>
+                    </div>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <div className={classes.description}>
+                      <p>
+                        An artist of considerable range, Chet Faker — the name taken by
+                        Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
+                        and records all of his own music, giving it a warm, intimate
+                        feel with a solid groove structure.{" "}
+                      </p>
                     </div>
                   </GridItem>
                 </GridContainer>
@@ -63,4 +73,4 @@ function Traveller(props) {
   );
 }
 
-export default Traveller;
+export default Admin;
