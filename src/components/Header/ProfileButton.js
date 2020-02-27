@@ -45,7 +45,10 @@ const ProfileButton = (props) => {
             <Link to={ROUTES.ACCOUNT} className={classes.dropdownLink}>
               Profile
             </Link>,
-            <Link to={ROUTES.SIGNOUT} className={classes.dropdownLink}>
+            <Link
+              onClick={props.firebase.doSignOut}
+              className={classes.dropdownLink}
+              color="transparent">
               Sign Out
             </Link>
           ]}
@@ -54,4 +57,4 @@ const ProfileButton = (props) => {
   );
 }
 
-export default ProfileButton;
+export default withFirebase(ProfileButton);
