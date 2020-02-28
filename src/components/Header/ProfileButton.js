@@ -1,44 +1,59 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import Avatar from "@material-ui/core/Avatar"
 
 // Firebase
 import { withFirebase } from 'components/Firebase';
 
 // core components
 import Button from "components/CustomButtons/Button.js";
+import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
-const ProfileButton = ({ firebase }) => {
+const ProfileButton = (props) => {
   const classes = useStyles();
-
-// TODO remove logout button after testing is done
+  const { initials } = props;
   return (
-    <div>
       <ListItem className={classes.listItem}>
-        <Button
-          href={ROUTES.ACCOUNT}
-          className={classes.registerNavLink}
-          color="primary">
-        Account
-        </Button>
+        <CustomDropdown
+          noLiPadding
+          left
+          caret={false}
+          hoverColor="black"
+          buttonText={
+            <Avatar
+              className={classes.img, classes.avatar}
+              alt="profile">
+              {initials}
+              </Avatar>
+          }
+          buttonProps={{
+            className:
+              classes.navLink + " " + classes.imageDropdownButton,
+            color: "transparent"
+          }}
+          dropdownList={[
+            <Link to={ROUTES.ACCOUNT} className={classes.dropdownLink}>
+              Profile
+            </Link>,
+            <Link
+              onClick={props.firebase.doSignOut}
+              className={classes.dropdownLink}
+              color="transparent">
+              Sign Out
+            </Link>
+          ]}
+        />
       </ListItem>
-      <ListItem className={classes.listItem}>
-        <Button
-          className={classes.registerNavLink}
-          color="transparent"
-          onClick={firebase.doSignOut}>
-        Logout
-        </Button>
-      </ListItem>
-    </div>
   );
 }
 

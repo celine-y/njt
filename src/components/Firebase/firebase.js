@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 const prodConfig = {
   apiKey: process.env.REACT_APP_PROD_API_KEY,
@@ -20,11 +21,20 @@ const devConfig = {
 const config =
   process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 
+config['userProfile'] = 'users';
+config['useFirestoreForProfile'] = true;
+
 class Firebase {
   constructor() {
     app.initializeApp(config);
 
+    // Helper
+    this.fieldValue = app.firestore.fieldValue;
+
     this.auth = app.auth();
+    this.db = app.firestore();
+
+    this.user = this.user.bind(this);
   }
 
   // *** Auth API ***
@@ -40,5 +50,34 @@ class Firebase {
 
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
+
+    // user API
+  user = uid => this.db.doc(`users/${uid}`);
+  users = () => this.db.collection('users');
+
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.user(authUser.uid)
+          .get()
+          .then(snapshot => {
+            const dbUser = snapshot.data();
+
+            if (!dbUser.roles) {
+              dbUser.roles = {};
+            }
+
+            authUser = {
+              uid: authUser.uid,
+              email: authUser.email,
+              ...dbUser
+            };
+
+            next(authUser);
+          });
+      } else {
+        fallback();
+      }
+    })
 }
 export default Firebase;
