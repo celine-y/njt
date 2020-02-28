@@ -64,7 +64,7 @@ export default function AdminTrips(props) {
               </GridItem>
             </GridContainer>
             <div>
-              {/* cards */}
+              {/* filtered cards by chapter */}
               <Card style={{ width: "50%" }}>
                 <CardBody>
                   <h4 className={classes.cardTitle}>Traveller Name</h4>
@@ -86,6 +86,6 @@ export default function AdminTrips(props) {
         </div>
       </div>
       <Footer />
-    </div>
+    </div >
   );
 }
