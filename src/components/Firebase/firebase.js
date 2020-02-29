@@ -51,7 +51,7 @@ class Firebase {
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
 
-    // user API
+  // user API
   user = uid => this.db.doc(`users/${uid}`);
   users = () => this.db.collection('users');
 
@@ -78,6 +78,11 @@ class Firebase {
       } else {
         fallback();
       }
-    })
+    });
+
+  // *** OTHER APIs ***
+
+  // get chapters
+  getChapters = () => this.db.collection('chapters');
 }
 export default Firebase;
