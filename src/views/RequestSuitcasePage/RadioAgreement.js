@@ -12,7 +12,7 @@ import styles from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
 const useStyles = makeStyles(styles);
 
 
-export default function CheckboxRadioSwitch(){
+export default function RadioAgreement(){
   const [selectedEnabled, setSelectedEnabled] = React.useState("b");
   const classes = useStyles();
   const wrapperDiv = classNames(
@@ -46,7 +46,7 @@ export default function CheckboxRadioSwitch(){
           classes={{
             label: classes.label
           }}
-          label="I agree with the statements above."
+          label= "I agree"
         />
       </div>
       <div className={wrapperDiv}>
@@ -74,7 +74,7 @@ export default function CheckboxRadioSwitch(){
           classes={{
             label: classes.label
           }}
-          label="I do not agree with the statements above."
+          label= "I do not agree"
         />
       </div>
     </div>

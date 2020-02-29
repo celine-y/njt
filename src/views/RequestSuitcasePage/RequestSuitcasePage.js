@@ -1,5 +1,5 @@
 //import React, { Component } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -27,20 +27,19 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import image from "assets/img/bg7.jpg";
-
 // Checkbox Radio Switch
-import CheckboxRadioSwitch from "./CheckboxRadioSwitch.js";
+import RadioAgreement from "./RadioAgreement.js";
 import * as ROUTES from 'constants/routes';
-
 // Custom hooksLibs
 import { useFormFields } from "libs/hooksLibs";
-
+// Authorization
+import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
 // Firebase
 import { withFirebase } from 'components/Firebase';
 
 const useStyles = makeStyles(styles);
 
-export default function RequestSuitcasePage(props) {
+function RequestSuitcasePage(props) {
   const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
   const { ...rest } = props;
@@ -48,7 +47,6 @@ export default function RequestSuitcasePage(props) {
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
   );
-
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   /*const handleToggle = value => {
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
@@ -63,23 +61,25 @@ export default function RequestSuitcasePage(props) {
   }; */
   const initialState = {
     destination: "",
-    flightno: "",
-    willingToCarry: "",
-    whyTakeSuitcase:"",
-    hearAboutNJT: "",
     comments: ""
   }
-
   const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
+  const [chapterList, setChapterList] = useState([]);
+  const [selectedChapter, setSelectedChapter] = useState("Select a Chapter");
+
+  useEffect(() => {
+    props.firebase.getChapters().onSnapshot(snapshot => {
+      let chapterList = [];
+      snapshot.forEach(doc => chapterList.push({ ...doc.data(), uid: doc.id }));
+      setChapterList(chapterList);
+      console.log(chapterList);
+    });
+  }, []);
 
   function validateForm() {
     return (
       fields.destination.length > 0 &&
-      fields.flightno.length > 0 &&
-      fields.willingToCarry.length > 0 &&
-      fields.whyTakeSuitcase.length > 0 &&
-      fields.hearAboutNJT.length > 0 &&
       fields.comments.length > 0
     );
   }
@@ -88,10 +88,10 @@ export default function RequestSuitcasePage(props) {
     setCardAnimation("");
   }, 700);
 
-  function onSubmit(event) {
+  function onSubmit(e) {
     const { destination, flightno, willingToCarry, whyTakeSuitcase, hearAboutNJT, comments } = fields;
-
-    props.firebase
+    const chapterId = chapterList.filter(chapter => chapter.name === selectedChapter)[0].uid;
+    /*props.firebase
       .then({
         .set({
           destination,
@@ -107,11 +107,12 @@ export default function RequestSuitcasePage(props) {
         setError(error)
         console.log(error)
       });
-    event.preventDefault();
+    e.preventDefault();*/
   }
 
 
   return (
+  <AuthUserContext.Consumer>{ authUser => (
     <div>
       <Header
         absolute
@@ -141,27 +142,33 @@ export default function RequestSuitcasePage(props) {
                 <CardBody>
                   <p>Please select which chapter you belong to</p>
                     <div>
-                    // WAIT FOR TAYA'S PART
                       <CustomDropdown
-                        buttonText="Select Chapter"
-                        dropdownList={[
-                          "Calgary",
-                          "Halifax",
-                          "London"
-                        ]}
+                        buttonText={selectedChapter}
+                        dropdownList={chapterList.map(chapter => chapter.name)}
+                        onClick={(value) => {
+                          setSelectedChapter(value);
+                        }}
                       />
                     </div>
                     <br />
                     <div>
-                    <p>Please select a date and time for available luggage pick-up</p>
+                    <p>Please indicate your departure date and time</p>
                       <FormControl fullWidth>
                         <Datetime
-                          inputProps={{ placeholder: "Select date and time..." }}
+                          inputProps={{ placeholder: "Select departure date and time..." }}
+                        />
+                      </FormControl>
+                    </div>
+                    <br />
+                    <div>
+                    <p>Please indicate your return date and time</p>
+                      <FormControl fullWidth>
+                        <Datetime
+                          inputProps={{ placeholder: "Select return date and time..." }}
                         />
                       </FormControl>
                     </div>
                   <CustomInput
-                    //NEED TO FIX
                     value={fields.destination}
                     labelText="Destination..."
                     id="destination"
@@ -169,61 +176,8 @@ export default function RequestSuitcasePage(props) {
                       fullWidth: true
                     }}
                     inputProps={{
-                      //NEED TO FIX
                       onChange: (e) => handleFieldChange(e),
                       type: "text",
-                      autoComplete: "off"
-                    }}
-                  />
-                  <CustomInput
-                    value={fields.flightno}
-                    labelText="Flight Number..."
-                    id="flightno"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      onChange: (e) => handleFieldChange(e),
-                      type: "text",
-                      autoComplete: "off"
-                      }}
-                  />
-                  <CustomInput
-                    value={fields.willingToCarry}
-                    labelText="What are you willing to carry..."
-                    id="willingToCarry"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      onChange: (e) => handleFieldChange(e),
-                      type: "text",
-                      autoComplete: "off"
-                    }}
-                  />
-                  <CustomInput
-                    value={fields.whyTakeSuitcase}
-                    labelText="Why do you want to take a suitcase?"
-                    id="whyTakeSuitcase"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      onChange: (e) => handleFieldChange(e),
-                      type: "password",
-                      autoComplete: "off"
-                    }}
-                  />
-                  <CustomInput
-                    value={fields.hearAboutNJT}
-                    labelText="How did you hear about us?"
-                    id="hearAboutNJT"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      onChange: (e) => handleFieldChange(e),
-                      type: "password",
                       autoComplete: "off"
                     }}
                   />
@@ -261,7 +215,7 @@ export default function RequestSuitcasePage(props) {
                   <p>
                   6) Any photos received by Not Just Tourists become the property of the organization and can be used for marketing and promotional purposes.
                   </p>
-                  <CheckboxRadioSwitch />
+                  <RadioAgreement />
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
                   <Button
@@ -280,5 +234,9 @@ export default function RequestSuitcasePage(props) {
     <Footer whiteFont />
     </div>
   </div>
+  )}
+  </ AuthUserContext.Consumer>
   );
 }
+
+export default withFirebase(RequestSuitcasePage);
