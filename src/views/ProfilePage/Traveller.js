@@ -21,6 +21,7 @@ import { AuthUserContext, withAuthorization, helpers } from 'components/Session'
 import profile from "assets/img/faces/christian.jpg";
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
+import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
@@ -55,6 +56,15 @@ function Traveller(props) {
                     <div className={classes.title}>
                       <h3>Trips</h3>
                     </div>
+                    <br />
+                    <Button
+                      color="primary"
+                      size="lg"
+                      href={ROUTES.TRIP_DETAILS}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >Trip Details
+                    </Button>
                   </GridItem>
                   </GridContainer>
                 </GridItem>
