@@ -1,4 +1,9 @@
-import { container, title } from "assets/jss/material-kit-react.js";
+import {
+  container,
+  cardTitle,
+  cardSubtitle,
+  title
+ } from "assets/jss/material-kit-react.js";
 
 import imagesStyle from "assets/jss/material-kit-react/imagesStyles.js";
 
