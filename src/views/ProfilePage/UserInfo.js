@@ -30,7 +30,7 @@ const useStyles = makeStyles(styles);
 
 function UserInfo(props) {
   const classes = useStyles();
-  
+
     function displayInfo(authUser){
       return(
         <div>
