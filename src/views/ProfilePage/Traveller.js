@@ -1,102 +1,105 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// @material-ui/icons
-import Camera from "@material-ui/icons/Camera";
-import Palette from "@material-ui/icons/Palette";
-import Favorite from "@material-ui/icons/Favorite";
+
 // core components
-import Footer from "components/Footer/Footer.js";
-import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import NavPills from "components/NavPills/NavPills.js";
-import Parallax from "components/Parallax/Parallax.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
+
+import UserInfo from "./UserInfo";
+import TripCard from "./TripCard";
 
 // Authorization
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
+// firebase
+import { withFirebase } from 'components/Firebase';
 
-import profile from "assets/img/faces/christian.jpg";
+import * as ROUTES from 'constants/routes';
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
-import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
 function Traveller(props) {
   const classes = useStyles();
   const { ...rest } = props;
-  const imageClasses = classNames(
-    classes.imgRaised,
-    classes.imgRoundedCircle,
-    classes.imgFluid
-  );
-  const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+
+  const [loading, setLoading] = useState(true);
+  const [tripList, setTripList] = useState([]);
+
+  useEffect(() => {
+    if (!hasTrips(props.authUser)){
+      setLoading(false);
+    }
+    props.firebase.tripsByUser(props.authUser.uid)
+      .onSnapshot(snapshot => {
+        setLoading(false);
+        var trips = [];
+        snapshot.forEach(doc => {
+          console.log(doc)
+          trips.push(
+            { destination: doc.data().destination,
+              date: doc.data().departure_date.toDate(),
+              status: "TODO",
+              id: doc.id }
+          );
+        });
+        setTripList(trips);
+      });
+  }, []);
+
+  function hasTrips(authUser){
+    return !!authUser.trips
+  }
+
+  function displayTrips(authUser){
+    if (loading) {
+      return(<p>Loading...</p>)
+    }
+
+    if(!hasTrips(authUser)){
+      return (
+        <p>You do not have any trips right now.
+        To request a suitcase follow  this {" "}
+          <Link
+            to={ROUTES.REQUEST_SUITCASE}>
+            link
+          </Link>.
+        </p>
+      )
+    } else {
+      return(tripList.map(trip => <TripCard
+              tripId ={trip.id}
+              destination={trip.destination}
+              date={trip.date}
+              status={trip.status} />
+            )
+          );
+    }
+  }
+
   return (
     <AuthUserContext.Consumer>
       { authUser => (
           <GridContainer justify="center" spacing={2}>
             <GridItem xs={12}>
               <GridContainer justify="center">
-                <GridItem xs={12} sm={12} md={3}>
-                  <div>
-                    <div className={classes.title}>
-                      <h3>{helpers.getFullName(authUser)}</h3>
-                    </div>
-                    <div className={classes.description}>
-                      <p>Email Address:</p>
-                    </div>
-                  </div>
+                <GridItem xs={12} sm={12} md={4}>
+                  <UserInfo />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={9}>
+                <GridItem xs={12} sm={12} md={8}>
                   <GridContainer>
-                  <GridItem xs={12}>
-                    <div className={classes.title}>
-                      <h3>Trips</h3>
-                    </div>
-                    <br />
-                    <div>
-                      {/* filtered cards by chapter */}
-                      <Card style={{ width: "50%" }}>
-                        <CardBody>
-                          <h4 className={classes.cardTitle}>Country</h4>
-                          <p className={classes.cardTitle}>When</p>
-                          <p className={classes.cardTitle}>Status</p>
-                          <Button
-                            color="primary"
-                            size="sm"
-                            href={ROUTES.TRIP_DETAILS}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >Trip Details
-                          </Button>
-
-                        </CardBody>
-                      </Card>
-
-                      {/* filtered cards by chapter */}
-                      <Card style={{ width: "50%" }}>
-                        <CardBody>
-                          <h4 className={classes.cardTitle}>Country</h4>
-                          <p className={classes.cardTitle}>When</p>
-                          <p className={classes.cardTitle}>Status</p>
-                          <Button
-                            color="primary"
-                            size="sm"
-                            href={ROUTES.TRIP_DETAILS}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >Trip Details
-                          </Button>
-
-                        </CardBody>
-                      </Card>
-                    </div>
-                  </GridItem>
+                    <GridItem xs={12}>
+                      <div className={classes.cardTitle}>
+                        <h3>Trips</h3>
+                      </div>
+                    </GridItem>
+                    <GridItem xs={12}>
+                      {displayTrips(authUser)}
+                    </GridItem>
                   </GridContainer>
                 </GridItem>
               </GridContainer>
@@ -107,4 +110,4 @@ function Traveller(props) {
   );
 }
 
-export default Traveller;
+export default withFirebase(Traveller);
