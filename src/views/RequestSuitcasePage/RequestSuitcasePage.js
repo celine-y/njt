@@ -29,6 +29,8 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import image from "assets/img/bg7.jpg";
 // Checkbox Radio Switch
 import RadioAgreement from "./RadioAgreement.js";
+import RadioCanTransport from "./RadioCanTransport.js";
+
 import * as ROUTES from 'constants/routes';
 // Custom hooksLibs
 import { useFormFields } from "libs/hooksLibs";
@@ -110,7 +112,6 @@ function RequestSuitcasePage(props) {
     e.preventDefault();*/
   }
 
-
   return (
   <AuthUserContext.Consumer>{ authUser => (
     <div>
@@ -181,6 +182,14 @@ function RequestSuitcasePage(props) {
                       autoComplete: "off"
                     }}
                   />
+                  <br />
+                  <p>I can transport the following: </p>
+                  // TO FIX
+                  <RadioCanTransport />
+                  <br />
+                  <p>I am comfortable bringing the following: </p>
+                  // TO DO: add checklist
+
                   <CustomInput
                       value={fields.comments}
                       labelText="Comments/Questions?"
