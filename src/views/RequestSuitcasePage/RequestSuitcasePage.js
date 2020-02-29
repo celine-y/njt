@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+//import React, { Component } from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -37,7 +38,6 @@ import { useFormFields } from "libs/hooksLibs";
 // Firebase
 import { withFirebase } from 'components/Firebase';
 
-
 const useStyles = makeStyles(styles);
 
 export default function RequestSuitcasePage(props) {
@@ -48,7 +48,9 @@ export default function RequestSuitcasePage(props) {
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
   );
-  const handleToggle = value => {
+
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  /*const handleToggle = value => {
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -58,7 +60,7 @@ export default function RequestSuitcasePage(props) {
       newChecked.splice(currentIndex, 1);
     }
     setChecked(newChecked);
-  };
+  }; */
   const initialState = {
     destination: "",
     flightno: "",
@@ -86,11 +88,26 @@ export default function RequestSuitcasePage(props) {
     setCardAnimation("");
   }, 700);
 
-  function onSubmit(e) {
-    const { destination, flightno, willingToCarry, hearAboutNJT, comments } = fields;
-    props.firebase
+  function onSubmit(event) {
+    const { destination, flightno, willingToCarry, whyTakeSuitcase, hearAboutNJT, comments } = fields;
 
-    // TO DO
+    props.firebase
+      .then({
+        .set({
+          destination,
+          flightno,
+          willingToCarry,
+          whyTakeSuitcase,
+          hearAboutNJT,
+          comments
+        })
+      })
+      .catch(error => {
+        setError(null)
+        setError(error)
+        console.log(error)
+      });
+    event.preventDefault();
   }
 
 
@@ -124,15 +141,13 @@ export default function RequestSuitcasePage(props) {
                 <CardBody>
                   <p>Please select which chapter you belong to</p>
                     <div>
+                    // WAIT FOR TAYA'S PART
                       <CustomDropdown
-                        buttonText="Select"
+                        buttonText="Select Chapter"
                         dropdownList={[
                           "Calgary",
                           "Halifax",
-                          "London",
-                          "Niagara",
-                          "Toronto",
-                          "Waterloo",
+                          "London"
                         ]}
                       />
                     </div>
@@ -200,7 +215,7 @@ export default function RequestSuitcasePage(props) {
                     }}
                   />
                   <CustomInput
-                    value={field.hearAboutNJT}
+                    value={fields.hearAboutNJT}
                     labelText="How did you hear about us?"
                     id="hearAboutNJT"
                     formControlProps={{
@@ -213,7 +228,7 @@ export default function RequestSuitcasePage(props) {
                     }}
                   />
                   <CustomInput
-                      value={field.comments}
+                      value={fields.comments}
                       labelText="Comments/Questions?"
                       id="comments"
                       formControlProps={{
