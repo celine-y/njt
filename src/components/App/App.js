@@ -14,7 +14,7 @@ import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.j
 import SubmitClinicPage from "views/SubmitClinicPage/SubmitClinicPage.js"
 import AdminTrips from "views/AdminTrips/AdminTrips.js";
 import ClinicPage from "views/ClinicPage/ClinicPage.js"
-import TripDetails from "views/ProfilePage/TripDetails.js"
+import TripDetails from "views/TravellerTrips/TripDetails.js"
 
 
 import Header from "components/Header/Header.js";

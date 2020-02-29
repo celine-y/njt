@@ -31,7 +31,7 @@ export default function ClinicPage(props) {
     const { ...rest } = props;
     return (
       <div>
-        <Parallax filter image={require("assets/img/black-texture.jpg")}>
+        <Parallax filter image={require("assets/img/profile-bg.jpg")}>
           <div className={classes.container}>
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
