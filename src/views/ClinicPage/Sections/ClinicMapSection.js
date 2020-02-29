@@ -11,14 +11,13 @@ import styles from "assets/jss/material-kit-react/views/landingPageSections/work
 
 const useStyles = makeStyles(styles);
 
-export default function SupplyMapSection() {
+export default function ClinicMapSection() {
   const classes = useStyles();
   return (
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={12}>
-          <h2 className={classes.title}>Our travellers have been to</h2>
-          <iframe width="100%" height="600px" src="https://tayakitt.github.io/njt-map/"></iframe>
+          <iframe width="100%" height="1500px" frameBorder="0" src="https://13satwant.github.io/index.html"></iframe>
         </GridItem>
       </GridContainer>
     </div>

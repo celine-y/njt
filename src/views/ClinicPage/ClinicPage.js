@@ -20,58 +20,36 @@ import styles from "assets/jss/material-kit-react/views/landingPage.js";
 import * as ROUTES from 'constants/routes';
 
 // Sections for this page
-import JoinUsSection from "./Sections/JoinUsSection.js";
-import SupplyMapSection from "./Sections/SupplyMapSection.js";
-import SeenOnSection from "./Sections/SeenOnSection.js";
+import ClinicMapSection from "./Sections/ClinicMapSection.js";
 
 // const dashboardRoutes = [];
 
 const useStyles = makeStyles(styles);
 
-export default function LandingPage(props) {
-  const classes = useStyles();
-  const { ...rest } = props;
-  return (
-    <div>
-      <Parallax filter image={require("assets/img/landing-bg.jpg")}>
-        <div className={classes.container}>
-          <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Take a suitecase, change a life.</h1>
-              <h4>
-                Every landing page needs a small description after the big bold
-                title, that{"'"}s why we added this text here. Add here all the
-                information that can make you or your product create the first
-                impression.
-              </h4>
-              <br />
-              <Button
-                color="primary"
-                size="lg"
-                href={ROUTES.REQUEST_SUITCASE}
-                target="_blank"
-                rel="noopener noreferrer"
-              >Take a Suitcase
-              </Button>
-              <Button
-                size="lg"
-                href={ROUTES.VOLUNTEER}
-                target="_blank"
-                rel="noopener noreferrer"
-              >Volunteer
-              </Button>
-            </GridItem>
-          </GridContainer>
+export default function ClinicPage(props) {
+    const classes = useStyles();
+    const { ...rest } = props;
+    return (
+      <div>
+        <Parallax filter image={require("assets/img/black-texture.jpg")}>
+          <div className={classes.container}>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={6}>
+                <h1 className={classes.title}>List Of Clinics For Delivery</h1>
+                <h4>
+                  Please SELECT the Country and City you are visiting to view a list of clinics you can deliver supplies to. Scroll to the bottom of this page (below the map) to see all the clinic details.
+                </h4>
+                <br />
+              </GridItem>
+            </GridContainer>
+          </div>
+        </Parallax>
+        <div className={classNames(classes.main, classes.mainRaised)}>
+          <div className={classes.container}>
+            <ClinicMapSection />
+          </div>
         </div>
-      </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          <JoinUsSection />
-          <SupplyMapSection />
-          <SeenOnSection />
-        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
   );
 }

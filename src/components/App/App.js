@@ -12,6 +12,7 @@ import LoginPage from "views/LoginPage/LoginPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.js";
 import SubmitClinicPage from "views/SubmitClinicPage/SubmitClinicPage.js"
+import ClinicPage from "views/ClinicPage/ClinicPage.js"
 
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -46,6 +47,7 @@ const App = (props) => {
             <Route path={ROUTES.SIGN_UP} component={SignupPage} />
             <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
             <Route path={ROUTES.SUBMIT_CLINIC} component={SubmitClinicPage} />
+            <Route path={ROUTES.CLINIC_MAP} component={ClinicPage} />
           </Switch>
         </div>
       </Router>
