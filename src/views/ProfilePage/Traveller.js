@@ -52,8 +52,8 @@ function Traveller(props) {
                 <GridItem xs={12} sm={12} md={9}>
                   <GridContainer>
                   <GridItem xs={12}>
-                    <div className={classes.name}>
-                      <h3 className={classes.title}>Trips</h3>
+                    <div className={classes.title}>
+                      <h3>Trips</h3>
                     </div>
                   </GridItem>
                   </GridContainer>
