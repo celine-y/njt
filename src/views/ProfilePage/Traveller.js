@@ -14,6 +14,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
 
 // Authorization
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
@@ -57,14 +59,43 @@ function Traveller(props) {
                       <h3>Trips</h3>
                     </div>
                     <br />
-                    <Button
-                      color="primary"
-                      size="lg"
-                      href={ROUTES.TRIP_DETAILS}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >Trip Details
-                    </Button>
+                    <div>
+                      {/* filtered cards by chapter */}
+                      <Card style={{ width: "50%" }}>
+                        <CardBody>
+                          <h4 className={classes.cardTitle}>Country</h4>
+                          <p className={classes.cardTitle}>When</p>
+                          <p className={classes.cardTitle}>Status</p>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            href={ROUTES.TRIP_DETAILS}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >Trip Details
+                          </Button>
+
+                        </CardBody>
+                      </Card>
+
+                      {/* filtered cards by chapter */}
+                      <Card style={{ width: "50%" }}>
+                        <CardBody>
+                          <h4 className={classes.cardTitle}>Country</h4>
+                          <p className={classes.cardTitle}>When</p>
+                          <p className={classes.cardTitle}>Status</p>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            href={ROUTES.TRIP_DETAILS}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >Trip Details
+                          </Button>
+
+                        </CardBody>
+                      </Card>
+                    </div>
                   </GridItem>
                   </GridContainer>
                 </GridItem>
