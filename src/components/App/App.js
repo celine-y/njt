@@ -14,6 +14,7 @@ import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.j
 import SubmitClinicPage from "views/SubmitClinicPage/SubmitClinicPage.js"
 import AdminTrips from "views/AdminTrips/AdminTrips.js";
 import ClinicPage from "views/ClinicPage/ClinicPage.js"
+import TripDetails from "views/TravellerTrips/TripDetails.js"
 
 
 import Header from "components/Header/Header.js";
@@ -51,6 +52,7 @@ const App = (props) => {
             <Route path={ROUTES.SUBMIT_CLINIC} component={SubmitClinicPage} />
             <Route path={ROUTES.ADMIN_TRIPS} component={AdminTrips} />
             <Route path={ROUTES.CLINIC_MAP} component={ClinicPage} />
+            <Route path={ROUTES.TRIP_DETAILS} component={TripDetails} />
           </Switch>
         </div>
       </Router>

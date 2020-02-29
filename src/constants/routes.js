@@ -14,3 +14,4 @@ export const CLINIC_MAP = '/clinic-map'
 export const REQUEST_SUITCASE = '/request-suitcase';
 export const ADMIN_TRIPS = '/admin-trips';
 export const SIGNOUT = '/signout'
+export const TRIP_DETAILS = '/trip-details'

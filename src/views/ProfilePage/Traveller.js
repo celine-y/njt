@@ -14,6 +14,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
 
 // Authorization
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
@@ -21,6 +23,7 @@ import { AuthUserContext, withAuthorization, helpers } from 'components/Session'
 import profile from "assets/img/faces/christian.jpg";
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
+import * as ROUTES from 'constants/routes';
 
 const useStyles = makeStyles(styles);
 
@@ -54,6 +57,44 @@ function Traveller(props) {
                   <GridItem xs={12}>
                     <div className={classes.title}>
                       <h3>Trips</h3>
+                    </div>
+                    <br />
+                    <div>
+                      {/* filtered cards by chapter */}
+                      <Card style={{ width: "50%" }}>
+                        <CardBody>
+                          <h4 className={classes.cardTitle}>Country</h4>
+                          <p className={classes.cardTitle}>When</p>
+                          <p className={classes.cardTitle}>Status</p>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            href={ROUTES.TRIP_DETAILS}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >Trip Details
+                          </Button>
+
+                        </CardBody>
+                      </Card>
+
+                      {/* filtered cards by chapter */}
+                      <Card style={{ width: "50%" }}>
+                        <CardBody>
+                          <h4 className={classes.cardTitle}>Country</h4>
+                          <p className={classes.cardTitle}>When</p>
+                          <p className={classes.cardTitle}>Status</p>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            href={ROUTES.TRIP_DETAILS}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >Trip Details
+                          </Button>
+
+                        </CardBody>
+                      </Card>
                     </div>
                   </GridItem>
                   </GridContainer>
