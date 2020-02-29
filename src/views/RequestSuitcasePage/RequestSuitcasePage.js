@@ -24,25 +24,32 @@ import Datetime from "react-datetime";
 // material-ui components
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
-
 import image from "assets/img/bg7.jpg";
 
+// Checkbox Radio Switch
 import CheckboxRadioSwitch from "./CheckboxRadioSwitch.js";
 import * as ROUTES from 'constants/routes';
+
+// Custom hooksLibs
+import { useFormFields } from "libs/hooksLibs";
+
+// Firebase
+import { withFirebase } from 'components/Firebase';
+
 
 const useStyles = makeStyles(styles);
 
 export default function RequestSuitcasePage(props) {
   const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
+  const { ...rest } = props;
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
   );
   const handleToggle = value => {
+    const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
     if (currentIndex === -1) {
@@ -52,11 +59,41 @@ export default function RequestSuitcasePage(props) {
     }
     setChecked(newChecked);
   };
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const initialState = {
+    destination: "",
+    flightno: "",
+    willingToCarry: "",
+    whyTakeSuitcase:"",
+    hearAboutNJT: "",
+    comments: ""
+  }
+
+  const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
+  const [error, setError] = useState(null);
+
+  function validateForm() {
+    return (
+      fields.destination.length > 0 &&
+      fields.flightno.length > 0 &&
+      fields.willingToCarry.length > 0 &&
+      fields.whyTakeSuitcase.length > 0 &&
+      fields.hearAboutNJT.length > 0 &&
+      fields.comments.length > 0
+    );
+  }
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
-  const { ...rest } = props;
+
+  function onSubmit(e) {
+    const { destination, flightno, willingToCarry, hearAboutNJT, comments } = fields;
+    props.firebase
+
+    // TO DO
+  }
+
+
   return (
     <div>
       <Header
@@ -109,65 +146,81 @@ export default function RequestSuitcasePage(props) {
                       </FormControl>
                     </div>
                   <CustomInput
+                    //NEED TO FIX
+                    value={fields.destination}
                     labelText="Destination..."
-                    id="first"
+                    id="destination"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      //NEED TO FIX
+                      onChange: (e) => handleFieldChange(e),
                       type: "text",
+                      autoComplete: "off"
                     }}
                   />
                   <CustomInput
+                    value={fields.flightno}
                     labelText="Flight Number..."
-                    id="email"
+                    id="flightno"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      onChange: (e) => handleFieldChange(e),
                       type: "text",
+                      autoComplete: "off"
                       }}
                   />
                   <CustomInput
+                    value={fields.willingToCarry}
                     labelText="What are you willing to carry..."
-                    id="pass"
+                    id="willingToCarry"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      onChange: (e) => handleFieldChange(e),
                       type: "text",
                       autoComplete: "off"
                     }}
                   />
                   <CustomInput
+                    value={fields.whyTakeSuitcase}
                     labelText="Why do you want to take a suitcase?"
-                    id="text"
+                    id="whyTakeSuitcase"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      onChange: (e) => handleFieldChange(e),
                       type: "password",
                       autoComplete: "off"
                     }}
                   />
                   <CustomInput
+                    value={field.hearAboutNJT}
                     labelText="How did you hear about us?"
-                    id="text"
+                    id="hearAboutNJT"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      onChange: (e) => handleFieldChange(e),
                       type: "password",
                       autoComplete: "off"
                     }}
                   />
                   <CustomInput
+                      value={field.comments}
                       labelText="Comments/Questions?"
-                      id="text"
+                      id="comments"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
+                        onChange: (e) => handleFieldChange(e),
                         type: "password",
                         autoComplete: "off"
                       }}
@@ -196,8 +249,11 @@ export default function RequestSuitcasePage(props) {
                   <CheckboxRadioSwitch />
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
-                  <Button color="primary" size="lg"
-                    href={ROUTES.LOGIN}>
+                  <Button
+                    disabled={!validateForm()}
+                    color="primary" size="lg"
+                    onClick={onSubmit}
+                    href={ROUTES.HOME}>
                     Submit
                   </Button>
                 </CardFooter>
