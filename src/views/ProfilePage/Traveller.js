@@ -6,17 +6,11 @@ import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 
 // core components
-import Footer from "components/Footer/Footer.js";
-import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import Parallax from "components/Parallax/Parallax.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
 
 import UserInfo from "./UserInfo";
-
-// Custom hooksLibs
-import { useFormFields } from "libs/hooksLibs";
+import TripCard from "./TripCard";
 
 // Authorization
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
@@ -40,16 +34,16 @@ function Traveller(props) {
 
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-  function hasTrips(){
+  function hasTrips(authUser){
     // TODO: implement
     return false;
   }
 
-  function displayTrips(){
-    if(!hasTrips()){
+  function displayTrips(authUser){
+    if(!hasTrips(authUser)){
       return (
         <p>You do not have any trips right now.
-        To request a suitcase follow  this
+        To request a suitcase follow  this {" "}
           <Link
             to={ROUTES.REQUEST_SUITCASE}>
             link
@@ -57,7 +51,9 @@ function Traveller(props) {
         </p>
       )
     } else {
-
+      return (
+        <p>hasTrips</p>
+      )
     }
   }
 
@@ -72,11 +68,14 @@ function Traveller(props) {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={8}>
                   <GridContainer>
-                  <GridItem xs={12}>
-                    <div className={classes.title}>
-                      <h3>Trips</h3>
-                    </div>
-                  </GridItem>
+                    <GridItem xs={12}>
+                      <div className={classes.cardTitle}>
+                        <h3>Trips</h3>
+                      </div>
+                    </GridItem>
+                    <GridItem xs={12}>
+                      {displayTrips(authUser)}
+                    </GridItem>
                   </GridContainer>
                 </GridItem>
               </GridContainer>
