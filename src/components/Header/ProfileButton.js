@@ -16,6 +16,7 @@ import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 import * as ROUTES from 'constants/routes';
+import * as ROLES from 'constants/roles';
 import { AuthUserContext } from 'components/Session';
 
 const useStyles = makeStyles(styles);
@@ -47,7 +48,7 @@ const ProfileButton = (props) => {
             Profile
             </Link>,
           <AuthUserContext.Consumer>
-            {authUser => authUser && authUser.roles.admin && <Link to={ROUTES.ADMIN_TRIPS} className={classes.dropdownLink}>Admin Logs</Link>}
+            {authUser => authUser && authUser.roles[ROLES.ADMIN] && <Link to={ROUTES.ADMIN_TRIPS} className={classes.dropdownLink}>Admin Logs</Link>}
           </AuthUserContext.Consumer>,
           <Link
             to="#"

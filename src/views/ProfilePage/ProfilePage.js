@@ -49,11 +49,11 @@ function ProfilePage(props) {
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-  function showProfilePage(authUser){
+  function showProfilePage(authUser) {
     console.log(authUser)
     if (authUser.roles[ROLES.ADMIN]) {
-      return(
-        <Admin />
+      return (
+        <Admin authUser={authUser} />
       )
     } else {
       return (<Traveller />)
@@ -63,13 +63,13 @@ function ProfilePage(props) {
 
   return (
     <AuthUserContext.Consumer>
-      { authUser =>
+      {authUser =>
         <div>
           <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
           <div className={classNames(classes.main, classes.mainRaised)}>
             <div>
               <div className={classes.container}>
-              {showProfilePage(authUser)}
+                {showProfilePage(authUser)}
               </div>
             </div>
           </div>

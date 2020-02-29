@@ -22,7 +22,8 @@ import Button from "components/CustomButtons/Button.js";
 import { cardTitle } from "assets/jss/material-kit-react.js";
 
 // Authorization
-import { AuthUserContext, withAuthorization } from 'components/Session';
+import * as ROLES from 'constants/roles';
+import { AuthUserContext } from 'components/Session';
 
 import profile from "assets/img/faces/christian.jpg";
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
@@ -49,43 +50,39 @@ export default function AdminTrips(props) {
 
   const { ...rest } = props;
   return (
-    <div>
-      <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
-      <div className={classNames(classes.main, classes.mainRaised)}>
+    <AuthUserContext.Consumer>
+      {authUser => authUser && authUser.roles[ROLES.ADMIN] && (
         <div>
-          <div className={classes.container}>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={6}>
-                <div className={classes.profile}>
-                  <div>
-                    <img src={profile} alt="..." className={imageClasses} />
-                  </div>
-                </div>
-              </GridItem>
-            </GridContainer>
+          <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
+          <div className={classNames(classes.main, classes.mainRaised)}>
             <div>
-              {/* filtered cards by chapter */}
-              <Card style={{ width: "50%" }}>
-                <CardBody>
-                  <h4 className={classes.cardTitle}>Traveller Name</h4>
-                  <p>
-                    Traveller's status: requested
+              <div className={classes.container}>
+                <GridContainer justify="center">
+                  <GridItem xs={12} sm={12} md={6}>
+                    <div>
+                      <h3 className={classes.title}>Logs</h3>
+                    </div>
+                    {/* filtered cards by chapter */}
+                    <Card style={{ width: "100%" }}>
+                      <CardBody>
+                        <h4 className={classes.cardTitle}>Traveller Name</h4>
+                        <p>
+                          Traveller's status: requested
                     </p>
-                  <p>
-                    Country:
+                        <p>
+                          Country:
                   </p>
-                  <Button color="primary">View Details</Button>
-                </CardBody>
-              </Card>
+                        <Button color="primary">View Details</Button>
+                      </CardBody>
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              </div>
             </div>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
-              </GridItem>
-            </GridContainer>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </div >
+          <Footer />
+        </div >
+      )}
+    </AuthUserContext.Consumer>
   );
 }
