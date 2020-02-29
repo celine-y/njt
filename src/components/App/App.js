@@ -15,6 +15,7 @@ import SubmitClinicPage from "views/SubmitClinicPage/SubmitClinicPage.js"
 import AdminTrips from "views/AdminTrips/AdminTrips.js";
 import ClinicPage from "views/ClinicPage/ClinicPage.js"
 
+
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
@@ -28,8 +29,8 @@ const dashboardRoutes = [];
 const App = (props) => {
 
   return (
-      <Router history={hist}>
-        <div>
+    <Router history={hist}>
+      <div>
         <Header
           color="transparent"
           routes={dashboardRoutes}
