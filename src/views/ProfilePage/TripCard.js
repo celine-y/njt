@@ -35,14 +35,14 @@ function TripCard(props) {
   } = props;
 
   return (
-    <Card>
+    <Card key={tripId}>
       <CardBody>
         <h4 className={classes.cardTitle}>
           Trip to {destination}
         </h4>
         <ListItem>
          <ListItemIcon><Event /></ListItemIcon>
-         <ListItemText primary={date} />
+         <ListItemText primary={date.toString()} />
         </ListItem>
         <p>Status: {status}</p>
         <Button color="primary">Details</Button>

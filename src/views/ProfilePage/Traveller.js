@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -26,20 +26,40 @@ const useStyles = makeStyles(styles);
 function Traveller(props) {
   const classes = useStyles();
   const { ...rest } = props;
-  const imageClasses = classNames(
-    classes.imgRaised,
-    classes.imgRoundedCircle,
-    classes.imgFluid
-  );
 
-  const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+  const [loading, setLoading] = useState(true);
+  const [tripList, setTripList] = useState([]);
+
+  useEffect(() => {
+    if (!hasTrips(props.authUser)){
+      setLoading(false);
+    }
+    props.firebase.tripsByUser(props.authUser.uid)
+      .onSnapshot(snapshot => {
+        setLoading(false);
+        var trips = [];
+        snapshot.forEach(doc => {
+          console.log(doc)
+          trips.push(
+            { destination: doc.data().destination,
+              date: doc.data().departure_date.toDate(),
+              status: "TODO",
+              id: doc.id }
+          );
+        });
+        setTripList(trips);
+      });
+  }, []);
 
   function hasTrips(authUser){
-    // TODO: implement
-    return false;
+    return !!authUser.trips
   }
 
   function displayTrips(authUser){
+    if (loading) {
+      return(<p>Loading...</p>)
+    }
+
     if(!hasTrips(authUser)){
       return (
         <p>You do not have any trips right now.
@@ -51,9 +71,13 @@ function Traveller(props) {
         </p>
       )
     } else {
-      return (
-        <p>hasTrips</p>
-      )
+      return(tripList.map(trip => <TripCard
+              tripId ={trip.id}
+              destination={trip.destination}
+              date={trip.date}
+              status={trip.status} />
+            )
+          );
     }
   }
 
