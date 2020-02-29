@@ -50,6 +50,7 @@ const ProfileButton = (props) => {
             {authUser => authUser && authUser.roles.admin && <Link to={ROUTES.ADMIN_TRIPS} className={classes.dropdownLink}>Admin Logs</Link>}
           </AuthUserContext.Consumer>,
           <Link
+            to="#"
             onClick={props.firebase.doSignOut}
             className={classes.dropdownLink}
             color="transparent">
