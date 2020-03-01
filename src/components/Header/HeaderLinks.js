@@ -86,13 +86,11 @@ function HeaderLinks(props) {
             <Link to={ROUTES.SUBMIT_CLINIC} className={classes.dropdownLink}>
               Submit a Clinic
             </Link>,
-            <a
-              href={ROUTES.CLINIC_MAP}
-              target="_blank"
-              className={classes.dropdownLink}
-            >
+            <Link
+              to={ROUTES.CLINIC_MAP}
+              className={classes.dropdownLink}>
               List of Clinics for Delivery
-            </a>
+            </Link>
           ]}
         />
       </ListItem>
