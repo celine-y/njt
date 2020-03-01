@@ -81,11 +81,11 @@ export default function RadioCanTransport(){
         <FormControlLabel
           control={
             <Radio
-              checked={selectedEnabled === "b"}
-              onChange={() => setSelectedEnabled("b")}
-              value="b"
+              checked={selectedEnabled === "c"}
+              onChange={() => setSelectedEnabled("c")}
+              value="c"
               name="radio button enabled"
-              aria-label="B"
+              aria-label="C"
               icon={
                 <FiberManualRecord
                   className={classes.radioUnchecked}
@@ -109,11 +109,11 @@ export default function RadioCanTransport(){
         <FormControlLabel
           control={
             <Radio
-              checked={selectedEnabled === "b"}
-              onChange={() => setSelectedEnabled("b")}
-              value="b"
+              checked={selectedEnabled === "d"}
+              onChange={() => setSelectedEnabled("d")}
+              value="d"
               name="radio button enabled"
-              aria-label="B"
+              aria-label="D"
               icon={
                 <FiberManualRecord
                   className={classes.radioUnchecked}

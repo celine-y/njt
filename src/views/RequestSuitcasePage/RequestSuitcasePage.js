@@ -184,7 +184,6 @@ function RequestSuitcasePage(props) {
                   />
                   <br />
                   <p>I can transport the following: </p>
-                  // TO FIX
                   <RadioCanTransport />
                   <br />
                   <p>I am comfortable bringing the following: </p>
