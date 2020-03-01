@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+//import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
+// import { withRouter } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
+import Select from '@material-ui/core/Select'
 
 // core components
 import Header from "components/Header/Header.js";
@@ -18,50 +20,128 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import classNames from "classnames";
 //creates dropdown
-import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
+// import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
 import Badge from 'components/Badge/Badge.js';
 // datetime dropdown
 import Datetime from "react-datetime";
-//checkbox
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-// @material-ui/icons
-import Check from "@material-ui/icons/Check";
 // material-ui components
+import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-//import styles2 from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
-
 import image from "assets/img/bg7.jpg";
 
-import * as ROUTES from 'constants/routes';
+// checkboxes and radio switches
+import RadioAgreement from "./RadioAgreement.js";
+import RadioCanTransport from "./RadioCanTransport.js";
+import CheckboxBringingSupplies from "./CheckboxBringingSupplies.js";
 
+import * as ROUTES from 'constants/routes';
+// Custom hooksLibs
+import { useFormFields } from "libs/hooksLibs";
+// Authorization
+import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
+// Firebase
+import { withFirebase } from 'components/Firebase';
 const useStyles = makeStyles(styles);
 
-export default function RequestSuitcasePage(props) {
-  const [checked, setChecked] = React.useState([24, 22]);
+function RequestSuitcasePage(props) {
   const classes = useStyles();
+  const { ...rest } = props;
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
   );
-  const handleToggle = value => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-    setChecked(newChecked);
-  };
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+
+  const initialState = {
+    destination: "",
+    airline: "",
+    comments: "",
+    departureDate: "",
+    returnDate: "",
+    supplies: [],
+    suitcase: "",
+    chapterId: ""
+  }
+
+  const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
+  const [error, setError] = useState(null);
+  const [chapterList, setChapterList] = useState([]);
+  const [selectedChapter, setSelectedChapter] = useState("");
+  const [isAgreed, setIsAgreed] = useState(false);
+
+  useEffect(() => {
+    props.firebase.getChapters().onSnapshot(snapshot => {
+      let chapterList = [];
+      snapshot.forEach(doc => chapterList.push({ ...doc.data(), id: doc.id }));
+      setChapterList(chapterList);
+    });
+  }, []);
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
-  const { ...rest } = props;
+
+  function onDepartureDateChange(e) {
+    const dateValue = e.toDate()
+    fields.departureDate = dateValue
+  }
+
+  function onReturnDateChange(e) {
+    const dateValue = e.toDate()
+    fields.returnDate = dateValue
+  }
+
+  function onSubmit(authUser) {
+    return function(event) {
+      const uid = authUser.uid
+      console.log("fields: ", fields)
+      props.firebase.setNewTrip(uid, fields)
+      .then(() => {
+        // TODO: present modal for submit confirmation
+        props.history.push(ROUTES.HOME)
+      })
+      .catch(error => {
+        setError(null)
+        setError(error)
+        console.log(error)
+      });
+      event.preventDefault();
+    }
+  }
+
+  function suitcaseCallback(data) {
+    // use suitcase data
+    fields.suitcase = data
+  }
+
+  function suppliesCallback(data) {
+    // use supplies data
+    fields.supplies = data
+  }
+
+  function agreementCallback(data) {
+    setIsAgreed(data)
+  }
+
+  function validateForm() {
+    return (
+      fields.destination.length > 0 &&
+      fields.airline.length > 0 &&
+      fields.departureDate.toString().length > 0 &&
+      fields.returnDate.toString().length > 0 &&
+      isAgreed
+    );
+  }
+
+  function handleChapterChange(e) {
+    const chapter = chapterList.find(chapter => chapter.id == e.target.value)
+    fields.chapterId = chapter.id
+    setSelectedChapter(chapter.name)
+  }
+
   return (
+  <AuthUserContext.Consumer>{ authUser => (
     <div>
       <Header
         absolute
@@ -80,7 +160,7 @@ export default function RequestSuitcasePage(props) {
       >
       <div className={classes.container}>
         <GridContainer justify="center">
-          <GridItem xs={24} sm={24} md={11}>
+          <GridItem xs={12}>
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form}>
                 <CardHeader color="primary" className={classes.cardHeader}>
@@ -91,88 +171,83 @@ export default function RequestSuitcasePage(props) {
                 <CardBody>
                   <p>Please select which chapter you belong to</p>
                     <div>
-                      <CustomDropdown
-                        buttonText="Select"
-                        dropdownList={[
-                          "Calgary",
-                          "Halifax",
-                          "London",
-                          "Niagara",
-                          "Toronto",
-                          "Waterloo",
-                        ]}
-                      />
+                      <Select
+                        native
+                        id="chapterId"
+                        onChange={(e) => handleChapterChange(e)}
+                      >
+                      <option value="" />
+                        {chapterList.map(chapter => (
+                          <option
+                            key={chapter.id}
+                            value={chapter.id}>{chapter.name}</option>
+                        ))}
+                      </Select>
                     </div>
                     <br />
                     <div>
-                    <p>Please select a date and time for available luggage pick-up</p>
+                    <p>Please indicate your departure date and time</p>
                       <FormControl fullWidth>
                         <Datetime
-                          inputProps={{ placeholder: "Select date and time..." }}
+                          onChange={onDepartureDateChange}
+                          inputProps={{ placeholder: "Select departure date and time..." }}
+                        />
+                      </FormControl>
+                    </div>
+                    <br />
+                    <div>
+                    <p>Please indicate your return date and time</p>
+                      <FormControl fullWidth>
+                        <Datetime
+                          onChange={onReturnDateChange}
+                          inputProps={{ placeholder: "Select return date and time..." }}
                         />
                       </FormControl>
                     </div>
                   <CustomInput
+                    value={fields.destination}
                     labelText="Destination..."
-                    id="first"
+                    id="destination"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
-                      type: "text",
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Flight Number..."
-                    id="email"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      type: "text",
-                    }}
-                  />
-                  <CustomInput
-                    labelText="What are you willing to carry..."
-                    id="pass"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
+                      onChange: (e) => handleFieldChange(e),
                       type: "text",
                       autoComplete: "off"
                     }}
                   />
+                  <br />
                   <CustomInput
-                    labelText="Why do you want to take a suitcase?"
-                    id="text"
+                    value={fields.airline}
+                    labelText="Airline..."
+                    id="airline"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
-                      type: "password",
+                      onChange: (e) => handleFieldChange(e),
+                      type: "text",
                       autoComplete: "off"
                     }}
                   />
+                  <br />
+                  <p>I can transport the following: </p>
+                  <RadioCanTransport callbackFromParent={suitcaseCallback}/>
+                  <br />
+                  <p>I am comfortable bringing the following: </p>
+                  <CheckboxBringingSupplies callbackFromParent={suppliesCallback}/>
+                  <br />
                   <CustomInput
-                    labelText="How did you hear about us?"
-                    id="text"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      type: "password",
-                      autoComplete: "off"
-                    }}
-                  />
-                  <CustomInput
+                      value={fields.comments}
                       labelText="Comments/Questions?"
-                      id="text"
+                      id="comments"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        type: "password",
+                        onChange: (e) => handleFieldChange(e),
+                        type: "text",
                         autoComplete: "off"
                       }}
                     />
@@ -197,43 +272,14 @@ export default function RequestSuitcasePage(props) {
                   <p>
                   6) Any photos received by Not Just Tourists become the property of the organization and can be used for marketing and promotional purposes.
                   </p>
-                  <div className={wrapperDiv}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          tabIndex={-1}
-                          onClick={() => handleToggle(21)}
-                          checkedIcon={<Check className={classes.checkedIcon} />}
-                          icon={<Check className={classes.uncheckedIcon} />}
-                          classes={{ checked: classes.checked }}
-                        />
-                      }
-                      classes={{ label: classes.label }}
-                      label="Yes"
-                    />
-                  </div>
-                  <div className={wrapperDiv}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          tabIndex={-1}
-                          onClick={() => handleToggle(22)}
-                          checked={
-                            checked.indexOf(22) !== -1 ? true : false
-                          }
-                          checkedIcon={<Check className={classes.checkedIcon} />}
-                          icon={<Check className={classes.uncheckedIcon} />}
-                          classes={{ checked: classes.checked }}
-                        />
-                      }
-                      classes={{ label: classes.label }}
-                      label="No"
-                    />
-                  </div>
+                  <RadioAgreement callbackFromParent={agreementCallback}/>
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
-                  <Button color="primary" size="lg"
-                    href={ROUTES.LOGIN}>
+                  <Button
+                    disabled={!validateForm()}
+                    color="primary" size="lg"
+                    onClick={onSubmit(authUser)}
+                    href={ROUTES.HOME}>
                     Submit
                   </Button>
                 </CardFooter>
@@ -245,5 +291,9 @@ export default function RequestSuitcasePage(props) {
     <Footer whiteFont />
     </div>
   </div>
+  )}
+  </ AuthUserContext.Consumer>
   );
 }
+
+export default withFirebase(RequestSuitcasePage);
