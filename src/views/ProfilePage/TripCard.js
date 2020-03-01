@@ -45,7 +45,11 @@ function TripCard(props) {
          <ListItemText primary={date.toString()} />
         </ListItem>
         <p>Status: {status}</p>
-        <Button color="primary">Details</Button>
+        <Button
+          color="primary"
+          component={Link} to={`${ROUTES.TRIP_DETAILS}/${tripId}`}>
+          Details
+        </Button>
       </CardBody>
     </Card>
   )
