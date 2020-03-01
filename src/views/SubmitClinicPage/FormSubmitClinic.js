@@ -66,7 +66,7 @@ export default function FormSubmitClinic(props){
                 }}
               />
               <CustomInput
-                labelText="Street Name..."
+                labelText="Street Name and Number..."
                 id="first"
                 formControlProps={{
                   fullWidth: true
@@ -76,45 +76,30 @@ export default function FormSubmitClinic(props){
                 }}
               />
               <CustomInput
-                labelText="Street Number..."
-                id="email"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "text",
-                }}
-              />
-              <CustomInput
                 labelText="Country..."
-                id="pass"
                 formControlProps={{
                   fullWidth: true
                 }}
                 inputProps={{
                   type: "text",
-                  autoComplete: "off"
+                  autoComplete: "on"
                 }}
               />
               <CustomInput
                 labelText="Province..."
-                id="text"
                 formControlProps={{
                   fullWidth: true
                 }}
                 inputProps={{
-                  type: "password",
                   autoComplete: "off"
                 }}
               />
               <CustomInput
                   labelText="Additional Comments"
-                  id="text"
                   formControlProps={{
                     fullWidth: true
                   }}
                   inputProps={{
-                    type: "password",
                     autoComplete: "off"
                   }}
                 />
