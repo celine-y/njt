@@ -73,7 +73,7 @@ function Traveller(props) {
       return(tripList.map(trip => <TripCard
               tripId ={trip.id}
               destination={trip.destination}
-              date={trip.depature_date}
+              date={trip.departure_date.toDate()}
               status={trip.status} />
             )
           );
