@@ -11,7 +11,7 @@ import styles from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
 
 const useStyles = makeStyles(styles);
 
-export default function CheckboxBringingSupplies(){
+export default function CheckboxBringingSupplies(props) {
   const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
   const wrapperDiv = classNames(
@@ -29,6 +29,13 @@ export default function CheckboxBringingSupplies(){
     }
     setChecked(newChecked);
   };
+
+  // function onChangeSuppliesValue(radioValue, supplesValue) {
+  //   setSelectedEnabled(radioValue)
+  //   setSuitcaseValue(suitcaseValue)
+  //   props.suitcaseCallback(suitcaseValue)
+  // }
+
   return (
     <div>
       <div className={wrapperDiv}>

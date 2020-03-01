@@ -12,13 +12,20 @@ import styles from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
 const useStyles = makeStyles(styles);
 
 
-export default function RadioCanTransport(){
-  const [selectedEnabled, setSelectedEnabled] = React.useState("b");
+export default function RadioCanTransport(props) {
+  const [selectedEnabled, setSelectedEnabled] = React.useState("a");
   const classes = useStyles();
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
   );
+
+  function onChangeSuitcaseValue(radioValue, suitcaseValue) {
+    // TODO: fix too many re-renders when using React.useState
+    // setSelectedEnabled(radioValue)
+    //props.callbackFromParent(suitcaseValue)
+  }
+
   return (
     <div>
       <div className={wrapperDiv}>
@@ -26,6 +33,7 @@ export default function RadioCanTransport(){
           control={
             <Radio
               checked={selectedEnabled === "a"}
+              //onChange={onChangeSuitcaseValue("a", "Small Package (5kg)")}
               onChange={() => setSelectedEnabled("a")}
               value="a"
               name="radio button enabled"
@@ -54,6 +62,7 @@ export default function RadioCanTransport(){
           control={
             <Radio
               checked={selectedEnabled === "b"}
+              //onChange={onChangeSuitcaseValue("b", "Large Package (5kg)")}
               onChange={() => setSelectedEnabled("b")}
               value="b"
               name="radio button enabled"
@@ -82,6 +91,7 @@ export default function RadioCanTransport(){
           control={
             <Radio
               checked={selectedEnabled === "c"}
+              //onChange={onChangeSuitcaseValue("c", "Full Suitcase")}
               onChange={() => setSelectedEnabled("c")}
               value="c"
               name="radio button enabled"
@@ -110,6 +120,7 @@ export default function RadioCanTransport(){
           control={
             <Radio
               checked={selectedEnabled === "d"}
+              //onChange={onChangeSuitcaseValue("d", "Larger Amount")}
               onChange={() => setSelectedEnabled("d")}
               value="d"
               name="radio button enabled"

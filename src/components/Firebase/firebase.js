@@ -35,6 +35,7 @@ class Firebase {
     this.db = app.firestore();
 
     this.user = this.user.bind(this);
+    this.chapter = this.chapter.bind(this);
   }
 
   // *** Auth API ***
@@ -84,6 +85,7 @@ class Firebase {
 
   // get chapters
   getChapters = () => this.db.collection('chapters');
+  chapter = (id) => this.db.doc(`chapters/${id}`);
 
   // trips
   tripsByUser = (uid) => {
@@ -91,5 +93,24 @@ class Firebase {
     return this.db.collection('trips')
       .where('user', '==', userRef)
   }
+
+  // write new trip data to "trip" collection
+  setNewTrip = (uid, tripData) => {
+    const userRef = this.user(uid)
+    const chapterRef = this.chapter(tripData.chapterId)
+
+    return this.db.collection('trips').add({
+      airline_name: tripData.airline,
+      comments: tripData.comments,
+      departure_date: tripData.departureDate,
+      destination: tripData.destination,
+      return_date: tripData.returnDate,
+      supplies: tripData.supplies,
+      suitcase: tripData.suitcase,
+      user: userRef,
+      chapter: chapterRef
+    });
+  }
+
 }
 export default Firebase;

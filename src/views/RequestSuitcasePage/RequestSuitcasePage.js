@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Select from '@material-ui/core/Select'
 
 // core components
 import Header from "components/Header/Header.js";
@@ -18,7 +19,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import classNames from "classnames";
 //creates dropdown
-import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
+// import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
 import Badge from 'components/Badge/Badge.js';
 // datetime dropdown
 import Datetime from "react-datetime";
@@ -27,9 +28,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import image from "assets/img/bg7.jpg";
-// Checkbox Radio Switch
+
+// checkboxes and radio switches
 import RadioAgreement from "./RadioAgreement.js";
 import RadioCanTransport from "./RadioCanTransport.js";
+import CheckboxBringingSupplies from "./CheckboxBringingSupplies.js";
 
 import * as ROUTES from 'constants/routes';
 // Custom hooksLibs
@@ -38,8 +41,8 @@ import { useFormFields } from "libs/hooksLibs";
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
 // Firebase
 import { withFirebase } from 'components/Firebase';
-
 const useStyles = makeStyles(styles);
+
 
 function RequestSuitcasePage(props) {
   const [checked, setChecked] = React.useState([24, 22]);
@@ -50,66 +53,82 @@ function RequestSuitcasePage(props) {
     classes.checkboxAndRadioHorizontal
   );
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  /*const handleToggle = value => {
-    const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-    setChecked(newChecked);
-  }; */
+
   const initialState = {
     destination: "",
-    comments: ""
+    airline: "",
+    comments: "",
+    departureDate: "",
+    returnDate: "",
+    supplies: "",
+    suitcase: "",
+    chapterId: ""
   }
+
   const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
+  // const [uid, setUid] = useState(null);
   const [chapterList, setChapterList] = useState([]);
   const [selectedChapter, setSelectedChapter] = useState("Select a Chapter");
 
   useEffect(() => {
     props.firebase.getChapters().onSnapshot(snapshot => {
       let chapterList = [];
-      snapshot.forEach(doc => chapterList.push({ ...doc.data(), uid: doc.id }));
+      snapshot.forEach(doc => chapterList.push({ ...doc.data(), id: doc.id }));
       setChapterList(chapterList);
-      console.log(chapterList);
     });
   }, []);
-
-  function validateForm() {
-    return (
-      fields.destination.length > 0 &&
-      fields.comments.length > 0
-    );
-  }
 
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
 
-  function onSubmit(e) {
-    const { destination, flightno, willingToCarry, whyTakeSuitcase, hearAboutNJT, comments } = fields;
-    const chapterId = chapterList.filter(chapter => chapter.name === selectedChapter)[0].uid;
-    /*props.firebase
-      .then({
-        .set({
-          destination,
-          flightno,
-          willingToCarry,
-          whyTakeSuitcase,
-          hearAboutNJT,
-          comments
-        })
+  function onDepartureDateChange(e) {
+    const dateValue = e.toDate()
+    fields.departureDate = dateValue
+  }
+
+  function onReturnDateChange(e) {
+    const dateValue = e.toDate()
+    fields.returnDate = dateValue
+  }
+
+  function onSubmit(authUser) {
+    return function(event) {
+      const uid = authUser.uid
+       console.log(fields)
+      props.firebase.setNewTrip(uid, fields)
+      .then(function(docRef) {
+        console.log("Trip Id", docRef.id)
       })
       .catch(error => {
         setError(null)
         setError(error)
         console.log(error)
       });
-    e.preventDefault();*/
+      event.preventDefault();
+    }
+  }
+
+  function suitcaseCallback(data) {
+    // use suitcase data
+    fields.suitcase = data
+  }
+
+  function suppliesCallback(data) {
+    // use supplies data
+    fields.supplies = data
+  }
+
+  function validateForm() {
+    return (
+      fields.destination.length > 0 &&
+      fields.airline.length > 0
+      // fields.departureDate.length > 0 &&
+      // fields.returnDate.length > 0
+      // fields.supplies.length > 0 &&
+      // fields.suitcase.length > 0
+    );
   }
 
   return (
@@ -132,7 +151,7 @@ function RequestSuitcasePage(props) {
       >
       <div className={classes.container}>
         <GridContainer justify="center">
-          <GridItem xs={24} sm={24} md={11}>
+          <GridItem xs={12}>
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form}>
                 <CardHeader color="primary" className={classes.cardHeader}>
@@ -143,19 +162,24 @@ function RequestSuitcasePage(props) {
                 <CardBody>
                   <p>Please select which chapter you belong to</p>
                     <div>
-                      <CustomDropdown
-                        buttonText={selectedChapter}
-                        dropdownList={chapterList.map(chapter => chapter.name)}
-                        onClick={(value) => {
-                          setSelectedChapter(value);
-                        }}
-                      />
+                      <Select
+                        native
+                        id="chapterId"
+                        onClick={(e) => handleFieldChange(e)}
+                      >
+                        {chapterList.map(chapter => (
+                          <option
+                            key={chapter.id}
+                            value={chapter.id}>{chapter.name}</option>
+                        ))}
+                      </Select>
                     </div>
                     <br />
                     <div>
                     <p>Please indicate your departure date and time</p>
                       <FormControl fullWidth>
                         <Datetime
+                          onChange={onDepartureDateChange}
                           inputProps={{ placeholder: "Select departure date and time..." }}
                         />
                       </FormControl>
@@ -165,6 +189,7 @@ function RequestSuitcasePage(props) {
                     <p>Please indicate your return date and time</p>
                       <FormControl fullWidth>
                         <Datetime
+                          onChange={onReturnDateChange}
                           inputProps={{ placeholder: "Select return date and time..." }}
                         />
                       </FormControl>
@@ -183,11 +208,25 @@ function RequestSuitcasePage(props) {
                     }}
                   />
                   <br />
+                  <CustomInput
+                    value={fields.airline}
+                    labelText="Airline..."
+                    id="airline"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      onChange: (e) => handleFieldChange(e),
+                      type: "text",
+                      autoComplete: "off"
+                    }}
+                  />
+                  <br />
                   <p>I can transport the following: </p>
-                  <RadioCanTransport />
+                  <RadioCanTransport callbackFromParent={suitcaseCallback}/>
                   <br />
                   <p>I am comfortable bringing the following: </p>
-                  <CheckboxBringingSupplies />
+                  <CheckboxBringingSupplies callbackFromParent={suppliesCallback}/>
                   <br />
                   <CustomInput
                       value={fields.comments}
@@ -198,7 +237,7 @@ function RequestSuitcasePage(props) {
                       }}
                       inputProps={{
                         onChange: (e) => handleFieldChange(e),
-                        type: "password",
+                        type: "text",
                         autoComplete: "off"
                       }}
                     />
@@ -229,7 +268,7 @@ function RequestSuitcasePage(props) {
                   <Button
                     disabled={!validateForm()}
                     color="primary" size="lg"
-                    onClick={onSubmit}
+                    onClick={onSubmit(authUser)}
                     href={ROUTES.HOME}>
                     Submit
                   </Button>
@@ -248,3 +287,17 @@ function RequestSuitcasePage(props) {
 }
 
 export default withFirebase(RequestSuitcasePage);
+
+
+
+/*const handleToggle = value => {
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const currentIndex = checked.indexOf(value);
+  const newChecked = [...checked];
+  if (currentIndex === -1) {
+    newChecked.push(value);
+  } else {
+    newChecked.splice(currentIndex, 1);
+  }
+  setChecked(newChecked);
+}; */
