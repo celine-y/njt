@@ -39,10 +39,9 @@ function Traveller(props) {
         setLoading(false);
         var trips = [];
         snapshot.forEach(doc => {
-          console.log(doc)
+          console.log(doc.data())
           trips.push(
-            { destination: doc.data().destination,
-              date: doc.data().departure_date.toDate(),
+            { ...doc.data(),
               status: "TODO",
               id: doc.id }
           );
@@ -74,7 +73,7 @@ function Traveller(props) {
       return(tripList.map(trip => <TripCard
               tripId ={trip.id}
               destination={trip.destination}
-              date={trip.date}
+              date={trip.departure_date.toDate()}
               status={trip.status} />
             )
           );
