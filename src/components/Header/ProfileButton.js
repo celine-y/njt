@@ -24,42 +24,74 @@ const useStyles = makeStyles(styles);
 const ProfileButton = (props) => {
   const classes = useStyles();
   const { initials } = props;
+
+  function getSignInLinks(authUser) {
+    let links = []
+
+    links.push(
+      (
+      <Link to={ROUTES.ACCOUNT} className={classes.dropdownLink}>
+        Profile
+      </Link>
+      )
+    )
+
+    if (authUser.roles[ROLES.ADMIN]) {
+      links.push(
+        <Link to={ROUTES.ADMIN_TRIPS} className={classes.dropdownLink}>
+          Admin Logs
+        </Link>
+      )
+    } else {
+      links.push(
+        (<Link to={ROUTES.REQUEST_SUITCASE} className={classes.dropdownLink}>
+          Take a Suitcase
+        </Link>),
+        (<Link to={ROUTES.SUBMIT_CLINIC} className={classes.dropdownLink}>
+          Submit a Clinic
+        </Link>)
+      )
+    }
+
+    links.push(
+      (<Link
+        to="#"
+        onClick={props.firebase.doSignOut}
+        className={classes.dropdownLink}
+        color="transparent">
+        Sign Out
+      </Link>)
+    )
+
+    return links
+  }
+
   return (
-    <ListItem className={classes.listItem}>
-      <CustomDropdown
-        noLiPadding
-        left
-        caret={false}
-        hoverColor="black"
-        buttonText={
-          <Avatar
-            className={classes.img, classes.avatar}
-            alt="profile">
-            {initials}
-          </Avatar>
-        }
-        buttonProps={{
-          className:
-            classes.navLink + " " + classes.imageDropdownButton,
-          color: "transparent"
-        }}
-        dropdownList={[
-          <Link to={ROUTES.ACCOUNT} className={classes.dropdownLink}>
-            Profile
-            </Link>,
-          <AuthUserContext.Consumer>
-            {authUser => authUser && authUser.roles[ROLES.ADMIN] && <Link to={ROUTES.ADMIN_TRIPS} className={classes.dropdownLink}>Admin Logs</Link>}
-          </AuthUserContext.Consumer>,
-          <Link
-            to="#"
-            onClick={props.firebase.doSignOut}
-            className={classes.dropdownLink}
-            color="transparent">
-            Sign Out
-            </Link>
-        ]}
-      />
-    </ListItem>
+    <AuthUserContext.Consumer>
+    {authUser => (
+      <ListItem className={classes.listItem}>
+        <CustomDropdown
+          noLiPadding
+          left
+          caret={false}
+          hoverColor="black"
+          buttonText={
+            <Avatar
+              className={classes.img, classes.avatar}
+              alt="profile">
+              {initials}
+            </Avatar>
+          }
+          buttonProps={{
+            className:
+              classes.navLink + " " + classes.imageDropdownButton,
+            color: "transparent"
+          }}
+          dropdownList={getSignInLinks(authUser)}
+        />
+      </ListItem>
+    )}
+    </AuthUserContext.Consumer>
   );
 }
 
