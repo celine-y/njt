@@ -5,6 +5,7 @@
   "private": true,
   "main": "dist/index.js",
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^2.1.1",
     "@material-ui/core": "4.3.2",
     "@material-ui/icons": "^4.2.1",
     "bootstrap": "^4.4.1",
