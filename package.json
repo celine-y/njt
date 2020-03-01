@@ -18,6 +18,7 @@
     "nouislider": "14.0.2",
     "prop-types": "15.7.2",
     "react": "^16.9.0",
+    "react-available-times": "^1.4.0",
     "react-calendar": "^2.19.2",
     "react-collapsible": "^2.7.0",
     "react-datetime": "2.16.3",
