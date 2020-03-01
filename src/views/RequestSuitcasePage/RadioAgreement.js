@@ -12,13 +12,18 @@ import styles from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
 const useStyles = makeStyles(styles);
 
 
-export default function RadioAgreement(){
+export default function RadioAgreement(props) {
   const [selectedEnabled, setSelectedEnabled] = React.useState("b");
   const classes = useStyles();
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
     classes.checkboxAndRadioHorizontal
   );
+
+  function onChangeAgreementValue(radioValue) {
+    setSelectedEnabled(radioValue)
+    props.callbackFromParent(radioValue == 'a' ? true : false)
+  }
   return (
     <div>
       <div className={wrapperDiv}>
@@ -26,7 +31,7 @@ export default function RadioAgreement(){
           control={
             <Radio
               checked={selectedEnabled === "a"}
-              onChange={() => setSelectedEnabled("a")}
+              onChange={() => onChangeAgreementValue("a")}
               value="a"
               name="radio button enabled"
               aria-label="A"
@@ -54,7 +59,7 @@ export default function RadioAgreement(){
           control={
             <Radio
               checked={selectedEnabled === "b"}
-              onChange={() => setSelectedEnabled("b")}
+              onChange={() => onChangeAgreementValue("b")}
               value="b"
               name="radio button enabled"
               aria-label="B"

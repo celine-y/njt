@@ -98,7 +98,6 @@ class Firebase {
   setNewTrip = (uid, tripData) => {
     const userRef = this.user(uid)
     const chapterRef = this.chapter(tripData.chapterId)
-
     return this.db.collection('trips').add({
       airline_name: tripData.airline,
       comments: tripData.comments,

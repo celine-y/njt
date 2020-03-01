@@ -1,5 +1,6 @@
 //import React, { Component } from "react";
 import React, { useEffect, useState } from "react";
+// import { withRouter } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -43,9 +44,7 @@ import { AuthUserContext, withAuthorization, helpers } from 'components/Session'
 import { withFirebase } from 'components/Firebase';
 const useStyles = makeStyles(styles);
 
-
 function RequestSuitcasePage(props) {
-  const [checked, setChecked] = React.useState([24, 22]);
   const classes = useStyles();
   const { ...rest } = props;
   const wrapperDiv = classNames(
@@ -60,16 +59,16 @@ function RequestSuitcasePage(props) {
     comments: "",
     departureDate: "",
     returnDate: "",
-    supplies: "",
+    supplies: [],
     suitcase: "",
     chapterId: ""
   }
 
   const [fields, handleFieldChange, resetFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
-  // const [uid, setUid] = useState(null);
   const [chapterList, setChapterList] = useState([]);
-  const [selectedChapter, setSelectedChapter] = useState("Select a Chapter");
+  const [selectedChapter, setSelectedChapter] = useState("");
+  const [isAgreed, setIsAgreed] = useState(false);
 
   useEffect(() => {
     props.firebase.getChapters().onSnapshot(snapshot => {
@@ -96,10 +95,11 @@ function RequestSuitcasePage(props) {
   function onSubmit(authUser) {
     return function(event) {
       const uid = authUser.uid
-       console.log(fields)
+      console.log("fields: ", fields)
       props.firebase.setNewTrip(uid, fields)
-      .then(function(docRef) {
-        console.log("Trip Id", docRef.id)
+      .then(() => {
+        // TODO: present modal for submit confirmation
+        props.history.push(ROUTES.HOME)
       })
       .catch(error => {
         setError(null)
@@ -120,15 +120,24 @@ function RequestSuitcasePage(props) {
     fields.supplies = data
   }
 
+  function agreementCallback(data) {
+    setIsAgreed(data)
+  }
+
   function validateForm() {
     return (
       fields.destination.length > 0 &&
-      fields.airline.length > 0
-      // fields.departureDate.length > 0 &&
-      // fields.returnDate.length > 0
-      // fields.supplies.length > 0 &&
-      // fields.suitcase.length > 0
+      fields.airline.length > 0 &&
+      fields.departureDate.toString().length > 0 &&
+      fields.returnDate.toString().length > 0 &&
+      isAgreed
     );
+  }
+
+  function handleChapterChange(e) {
+    const chapter = chapterList.find(chapter => chapter.id == e.target.value)
+    fields.chapterId = chapter.id
+    setSelectedChapter(chapter.name)
   }
 
   return (
@@ -165,8 +174,9 @@ function RequestSuitcasePage(props) {
                       <Select
                         native
                         id="chapterId"
-                        onClick={(e) => handleFieldChange(e)}
+                        onChange={(e) => handleChapterChange(e)}
                       >
+                      <option value="" />
                         {chapterList.map(chapter => (
                           <option
                             key={chapter.id}
@@ -262,7 +272,7 @@ function RequestSuitcasePage(props) {
                   <p>
                   6) Any photos received by Not Just Tourists become the property of the organization and can be used for marketing and promotional purposes.
                   </p>
-                  <RadioAgreement />
+                  <RadioAgreement callbackFromParent={agreementCallback}/>
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
                   <Button
@@ -287,17 +297,3 @@ function RequestSuitcasePage(props) {
 }
 
 export default withFirebase(RequestSuitcasePage);
-
-
-
-/*const handleToggle = value => {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  const currentIndex = checked.indexOf(value);
-  const newChecked = [...checked];
-  if (currentIndex === -1) {
-    newChecked.push(value);
-  } else {
-    newChecked.splice(currentIndex, 1);
-  }
-  setChecked(newChecked);
-}; */

@@ -13,7 +13,7 @@ const useStyles = makeStyles(styles);
 
 
 export default function RadioCanTransport(props) {
-  const [selectedEnabled, setSelectedEnabled] = React.useState("a");
+  const [selectedEnabled, setSelectedEnabled] = React.useState("");
   const classes = useStyles();
   const wrapperDiv = classNames(
     classes.checkboxAndRadio,
@@ -21,9 +21,8 @@ export default function RadioCanTransport(props) {
   );
 
   function onChangeSuitcaseValue(radioValue, suitcaseValue) {
-    // TODO: fix too many re-renders when using React.useState
-    // setSelectedEnabled(radioValue)
-    //props.callbackFromParent(suitcaseValue)
+    setSelectedEnabled(radioValue)
+    props.callbackFromParent(suitcaseValue)
   }
 
   return (
@@ -33,8 +32,7 @@ export default function RadioCanTransport(props) {
           control={
             <Radio
               checked={selectedEnabled === "a"}
-              //onChange={onChangeSuitcaseValue("a", "Small Package (5kg)")}
-              onChange={() => setSelectedEnabled("a")}
+              onChange={() => onChangeSuitcaseValue("a", "Small Package (5kg)")}
               value="a"
               name="radio button enabled"
               aria-label="A"
@@ -62,8 +60,7 @@ export default function RadioCanTransport(props) {
           control={
             <Radio
               checked={selectedEnabled === "b"}
-              //onChange={onChangeSuitcaseValue("b", "Large Package (5kg)")}
-              onChange={() => setSelectedEnabled("b")}
+              onChange={() => onChangeSuitcaseValue("b", "Large Package (5kg)")}
               value="b"
               name="radio button enabled"
               aria-label="B"
@@ -91,8 +88,7 @@ export default function RadioCanTransport(props) {
           control={
             <Radio
               checked={selectedEnabled === "c"}
-              //onChange={onChangeSuitcaseValue("c", "Full Suitcase")}
-              onChange={() => setSelectedEnabled("c")}
+              onChange={() => onChangeSuitcaseValue("c", "Full Suitcase")}
               value="c"
               name="radio button enabled"
               aria-label="C"
@@ -120,8 +116,7 @@ export default function RadioCanTransport(props) {
           control={
             <Radio
               checked={selectedEnabled === "d"}
-              //onChange={onChangeSuitcaseValue("d", "Larger Amount")}
-              onChange={() => setSelectedEnabled("d")}
+              onChange={() => onChangeSuitcaseValue("d", "Larger Amount")}
               value="d"
               name="radio button enabled"
               aria-label="D"
