@@ -84,5 +84,12 @@ class Firebase {
 
   // get chapters
   getChapters = () => this.db.collection('chapters');
+
+  // trips
+  tripsByUser = (uid) => {
+    const userRef = this.user(uid)
+    return this.db.collection('trips')
+      .where('user', '==', userRef)
+  }
 }
 export default Firebase;
