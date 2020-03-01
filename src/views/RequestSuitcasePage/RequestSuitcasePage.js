@@ -187,8 +187,8 @@ function RequestSuitcasePage(props) {
                   <RadioCanTransport />
                   <br />
                   <p>I am comfortable bringing the following: </p>
-                  // TO DO: add checklist
-
+                  <CheckboxBringingSupplies />
+                  <br />
                   <CustomInput
                       value={fields.comments}
                       labelText="Comments/Questions?"
