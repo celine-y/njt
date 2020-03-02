@@ -5,6 +5,7 @@
   "private": true,
   "main": "dist/index.js",
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^2.1.1",
     "@material-ui/core": "4.3.2",
     "@material-ui/icons": "^4.2.1",
     "asyncawait": "^3.0.0",
@@ -25,6 +26,7 @@
     "react-collapsible": "^2.7.0",
     "react-datetime": "2.16.3",
     "react-dom": "^16.9.0",
+    "react-load-script": "0.0.6",
     "react-router-dom": "5.0.1",
     "react-scripts": "^3.3.0",
     "react-slick": "0.25.2",

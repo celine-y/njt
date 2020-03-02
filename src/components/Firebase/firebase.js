@@ -52,7 +52,7 @@ class Firebase {
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
 
-  // user API
+  // ***USERS***
   user = uid => this.db.doc(`users/${uid}`);
   users = () => this.db.collection('users');
 
@@ -83,10 +83,12 @@ class Firebase {
 
   // *** OTHER APIs ***
 
+  // ***CHAPTERS***
   // get chapters
   getChapters = () => this.db.collection('chapters');
   chapter = (id) => this.db.doc(`chapters/${id}`);
 
+  // ***TRIPS***
   // get trips and users for admin
   async getAdminTrips(chapter) {
     var result = [];
@@ -136,6 +138,15 @@ class Firebase {
       chapter: chapterRef
     });
   }
+
+  // ***CLINIC***
+  setNewClinic = (clinicInfo) => {
+    return this.db.collection('clinics')
+    .doc(clinicInfo.place_id).set({
+      ...clinicInfo
+    })
+  }
+  clinics = () => this.db.collection('users');
 
 }
 export default Firebase;

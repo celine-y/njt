@@ -1,15 +1,8 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
-// @material-ui/icons
-import HomeIcon from '@material-ui/icons/Home';
 
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
@@ -18,101 +11,172 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-//gives imaage at the top
+
+//gives image at the top
 import Parallax from "components/Parallax/Parallax.js";
 import classNames from "classnames";
-//creates dropdown
-import CustomDropdown from 'components/CustomDropdown/CustomDropdown.js';
-import Badge from 'components/Badge/Badge.js';
 
 // material-ui components
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-import image from "assets/img/bg2.jpg";
+
+import { useFormFields } from "libs/hooksLibs";
+import { withFirebase } from 'components/Firebase';
+
+import AddressItem from 'components/Address/AddressItem';
+import AddressInput from 'components/Address/AddressInput';
 import * as ROUTES from 'constants/routes';
 
+// import {Client} from "@googlemaps/google-maps-services-js";
+import Script from 'react-load-script';
 
 const useStyles = makeStyles(styles);
-export default function FormSubmitClinic(props){
+function FormSubmitClinic(props){
   const classes = useStyles();
   const { ...rest } = props;
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [cardAnimaton, setCardAnimation] = useState("cardHidden");
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
 
+  const initialState = {
+    clinic_name: "",
+    street: "",
+    country: "",
+    province: "",
+    postal_code: "",
+    comments: "",
+    place_id: ""
+  }
+
+  const [fields, handleFieldChange, setFields] = useFormFields(initialState);
+  const [error, setError] = useState(null);
+
+  var autocomplete = null
+
+  function handleScriptLoad(){
+    // Declare Options For Autocomplete
+    const options = {
+      types: ['establishment'],
+    };
+
+    // Initialize Google Autocomplete
+    /*global google*/ // To disable any eslint 'google not defined' errors
+    autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('clinic_name'),
+      options
+    );
+
+    // Avoid paying for data that you don't need by restricting the set of
+    // place fields that are returned to just the address components and formatted
+    // address.
+    autocomplete.setFields(['place_id', 'formatted_address', 'address_components', 'name']);
+
+    // Fire Event when a suggested name is selected
+    autocomplete.addListener('place_changed', handlePlaceSelect);
+  }
+
+  function handlePlaceSelect(){
+    // Extract City From Address Object
+    const addressObject = autocomplete.getPlace();
+    console.log(addressObject)
+    if (addressObject) {
+      const components = addressObject.address_components;
+      const newFields = {
+        clinic_name: addressObject.name,
+        street: getStreetAddress(components),
+        country: getAddressComponent(components, "country"),
+        province: getAddressComponent(components, "administrative_area_level_1"),
+        comments: fields.comments,
+        place_id: addressObject.place_id,
+        postal_code: getAddressComponent(components, "postal_code")
+      }
+      setFields(newFields)
+    }
+  }
+
+  function getStreetAddress(components){
+    const num = getAddressComponent(components, "street_number")
+    const street = getAddressComponent(components, "route")
+    if (num !== ""){
+      return (num + " " + street)
+    } else {
+      return (street)
+    }
+  }
+
+  function getAddressComponent(components, componentName) {
+    var filtered_array = components.filter(function(address_component){
+        return address_component.types.includes(componentName);
+    });
+    return filtered_array.length > 0 ? filtered_array[0].long_name : ""
+  }
+
+  function onSubmit(e) {
+    props.firebase.setNewClinic(fields)
+    .then(() => {
+      console.log("Added Clinic", fields.place_id)
+      //TODO: confirm added
+    })
+    .catch(error => {
+      console.log("Error adding clinic", error)
+      // TODO: show error
+    })
+    e.preventDefault();
+  }
+
+  function getGoogleURL(){
+    return ("https://maps.googleapis.com/maps/api/js?key=AIzaSyCooo1YO7bBY4v5a_x2HJGPyiEGxD6DJj0&libraries=places")
+  }
+
+
   return (
-    <GridContainer justify="center">
-      <GridItem xs={24} sm={24} md={11}>
-        <Card className={classes[cardAnimaton]}>
-          <form className={classes.form}>
-            <CardHeader color="primary" className={classes.cardHeader}>
-              <h4>Submit a Clinic</h4>
-              <div className={classes.socialLine}>
-              </div>
-            </CardHeader>
-            <CardBody>
-            <p>Please fill out the following information regarding the clinic</p>
-              <CustomInput
-                labelText="Clinic Name..."
-                id="text"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "text",
-                  autoComplete: "off"
-                }}
-              />
-              <CustomInput
-                labelText="Street Name and Number..."
-                id="first"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "text",
-                }}
-              />
-              <CustomInput
-                labelText="Country..."
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "text",
-                  autoComplete: "on"
-                }}
-              />
-              <CustomInput
-                labelText="Province..."
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  autoComplete: "off"
-                }}
-              />
-              <CustomInput
-                  labelText="Additional Comments"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  inputProps={{
-                    autoComplete: "off"
-                  }}
+    <div>
+      <Script url={getGoogleURL()}
+        onLoad={handleScriptLoad}
+      />
+      <GridContainer justify="center">
+        <GridItem xs={12}>
+          <Card className={classes[cardAnimaton]}>
+            <form className={classes.form}>
+              <CardHeader color="primary" className={classes.cardHeader}>
+                <h4>Submit a Clinic</h4>
+                <div className={classes.socialLine}>
+                </div>
+              </CardHeader>
+              <CardBody>
+              <p>Please fill out the following information regarding the clinic</p>
+                <AddressItem
+                  labelText="Clinic Name..."
+                  id="clinic_name"
+                  onChange={handleFieldChange}
                 />
-            </CardBody>
-            <CardFooter className={classes.cardFooter}>
-              <Button color="primary" size="lg"
-                href={ROUTES.LOGIN}>
-                Submit
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
-      </GridItem>
-    </GridContainer>
+                <AddressInput
+                  fields={fields} />
+                <CustomInput
+                    labelText="Additional Comments"
+                    id="comments"
+                    value={fields.comments}
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      onChange: (e) => handleFieldChange(e),
+                      type: "text"
+                    }}
+                  />
+              </CardBody>
+              <CardFooter className={classes.cardFooter}>
+                <Button color="primary" size="lg"
+                  onClick={onSubmit}>
+                  Submit
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </div>
   );
 }
+
+export default withFirebase(FormSubmitClinic);
