@@ -41,14 +41,14 @@ function TripCard(props) {
           Trip to {destination}
         </h4>
         <ListItem>
-         <ListItemIcon><Event /></ListItemIcon>
-         <ListItemText primary={date.toString()} />
+          <ListItemIcon><Event /></ListItemIcon>
+          <ListItemText primary={date.toString()} />
         </ListItem>
         <p>Status: {status}</p>
         <Button
           color="primary"
           component={Link} to={`${ROUTES.TRIP_DETAILS}/${tripId}`}>
-          Details
+          View Details
         </Button>
       </CardBody>
     </Card>

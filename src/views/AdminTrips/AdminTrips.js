@@ -28,12 +28,6 @@ const useStyles = makeStyles(styles);
 
 export default function AdminTrips(props) {
   const classes = useStyles();
-  const imageClasses = classNames(
-    classes.imgRaised,
-    classes.imgRoundedCircle,
-    classes.imgFluid
-  );
-
   const { ...rest } = props;
 
   return (

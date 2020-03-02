@@ -13,8 +13,9 @@ import SignupPage from "views/SignupPage/SignupPage.js";
 import RequestSuitcasePage from "views/RequestSuitcasePage/RequestSuitcasePage.js";
 import SubmitClinicPage from "views/SubmitClinicPage/SubmitClinicPage.js"
 import AdminTrips from "views/AdminTrips/AdminTrips.js";
-import ClinicPage from "views/ClinicPage/ClinicPage.js"
-import TripDetails from "views/TravellerTrips/TripDetails.js"
+import AdminTripDetails from "views/AdminTripDetails/AdminTripDetails.js";
+import ClinicPage from "views/ClinicPage/ClinicPage.js";
+import TripDetails from "views/TravellerTrips/TripDetails.js";
 
 
 import Header from "components/Header/Header.js";
@@ -43,19 +44,20 @@ const App = (props) => {
             color: "white"
           }}
         />
-          <Switch>
-            <Route exact path={ROUTES.HOME} component={LandingPage} />
-            <Route path={ROUTES.ACCOUNT} component={ProfilePage} />
-            <Route path={ROUTES.LOGIN} component={LoginPage} />
-            <Route path={ROUTES.SIGN_UP} component={SignupPage} />
-            <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
-            <Route path={ROUTES.SUBMIT_CLINIC} component={SubmitClinicPage} />
-            <Route path={ROUTES.ADMIN_TRIPS} component={AdminTrips} />
-            <Route path={ROUTES.CLINIC_MAP} component={ClinicPage} />
-            <Route path={ROUTES.TRIP_DETAILS} component={TripDetails} />
-          </Switch>
-        </div>
-      </Router>
+        <Switch>
+          <Route exact path={ROUTES.HOME} component={LandingPage} />
+          <Route path={ROUTES.ACCOUNT} component={ProfilePage} />
+          <Route path={ROUTES.LOGIN} component={LoginPage} />
+          <Route path={ROUTES.SIGN_UP} component={SignupPage} />
+          <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
+          <Route path={ROUTES.SUBMIT_CLINIC} component={SubmitClinicPage} />
+          <Route path={ROUTES.ADMIN_TRIPS} component={AdminTrips} />
+          <Route path={ROUTES.ADMIN_TRIP_DETAILS} component={AdminTripDetails} />
+          <Route path={ROUTES.CLINIC_MAP} component={ClinicPage} />
+          <Route path={ROUTES.TRIP_DETAILS} component={TripDetails} />
+        </Switch>
+      </div>
+    </Router>
   )
 }
 
