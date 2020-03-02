@@ -9,17 +9,26 @@ function AddressInput(props) {
       <AddressItem
         labelText="Street Name and Number..."
         id="street"
-        onChange={props.onChange}
+        inputProps={{
+          disabled: true,
+          value:props.fields.street
+        }}
       />
       <AddressItem
         labelText="Country..."
         id="country"
-        onChange={props.onChange}
+        inputProps={{
+          disabled: true,
+          value:props.fields.country
+        }}
       />
       <AddressItem
         labelText="Province..."
         id="province"
-        onChange={props.onChange}
+        inputProps={{
+          disabled: true,
+          value:props.fields.province
+        }}
       />
     </div>
   )

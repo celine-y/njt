@@ -11,10 +11,8 @@ export function useFormFields(initialState) {
         [event.target.id]: event.target.value
       });
     },
-    function(init) {
-      setValues({
-        ...init
-      })
+    function(values) {
+      setValues(values)
     }
   ];
 }
