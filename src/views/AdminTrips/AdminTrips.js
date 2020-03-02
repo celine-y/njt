@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -15,11 +15,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import Button from "components/CustomButtons/Button.js";
-
-import { cardTitle } from "assets/jss/material-kit-react.js";
+import AdminTripCards from "./AdminTripCards.js"
 
 // Authorization
 import * as ROLES from 'constants/roles';
@@ -30,16 +26,6 @@ import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 const useStyles = makeStyles(styles);
 
-const cardStyles = {
-  cardTitle,
-  textCenter: {
-    textAlign: "center"
-  },
-  textRight: {
-    textAlign: "right"
-  }
-};
-
 export default function AdminTrips(props) {
   const classes = useStyles();
   const imageClasses = classNames(
@@ -49,6 +35,7 @@ export default function AdminTrips(props) {
   );
 
   const { ...rest } = props;
+
   return (
     <AuthUserContext.Consumer>
       {authUser => authUser && authUser.roles[ROLES.ADMIN] && (
@@ -62,19 +49,7 @@ export default function AdminTrips(props) {
                     <div>
                       <h3 className={classes.title}>Logs</h3>
                     </div>
-                    {/* filtered cards by chapter */}
-                    <Card style={{ width: "100%" }}>
-                      <CardBody>
-                        <h4 className={classes.cardTitle}>Traveller Name</h4>
-                        <p>
-                          Traveller's status: requested
-                    </p>
-                        <p>
-                          Country:
-                  </p>
-                        <Button color="primary">View Details</Button>
-                      </CardBody>
-                    </Card>
+                    <AdminTripCards authUser={authUser} />
                   </GridItem>
                 </GridContainer>
               </div>
