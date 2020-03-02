@@ -20,6 +20,7 @@ import classNames from "classnames";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import { useFormFields } from "libs/hooksLibs";
+import { withFirebase } from 'components/Firebase';
 
 import AddressItem from 'components/Address/AddressItem';
 import AddressInput from 'components/Address/AddressInput';
@@ -29,7 +30,7 @@ import * as ROUTES from 'constants/routes';
 import Script from 'react-load-script';
 
 const useStyles = makeStyles(styles);
-export default function FormSubmitClinic(props){
+function FormSubmitClinic(props){
   const classes = useStyles();
   const { ...rest } = props;
   const [cardAnimaton, setCardAnimation] = useState("cardHidden");
@@ -38,12 +39,13 @@ export default function FormSubmitClinic(props){
   }, 700);
 
   const initialState = {
-    clinicName: "",
+    clinic_name: "",
     street: "",
     country: "",
     province: "",
+    postal_code: "",
     comments: "",
-    placeId: ""
+    place_id: ""
   }
 
   const [fields, handleFieldChange, setFields] = useFormFields(initialState);
@@ -60,7 +62,7 @@ export default function FormSubmitClinic(props){
     // Initialize Google Autocomplete
     /*global google*/ // To disable any eslint 'google not defined' errors
     autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('clinicName'),
+      document.getElementById('clinic_name'),
       options
     );
 
@@ -76,17 +78,29 @@ export default function FormSubmitClinic(props){
   function handlePlaceSelect(){
     // Extract City From Address Object
     const addressObject = autocomplete.getPlace();
+    console.log(addressObject)
     if (addressObject) {
       const components = addressObject.address_components;
       const newFields = {
-        clinicName: addressObject.name,
-        street: getAddressComponent(components, "route"),
+        clinic_name: addressObject.name,
+        street: getStreetAddress(components),
         country: getAddressComponent(components, "country"),
-        province: getAddressComponent(components, "locality"),
+        province: getAddressComponent(components, "administrative_area_level_1"),
         comments: fields.comments,
-        placeId: addressObject.place_id
+        place_id: addressObject.place_id,
+        postal_code: getAddressComponent(components, "postal_code")
       }
       setFields(newFields)
+    }
+  }
+
+  function getStreetAddress(components){
+    const num = getAddressComponent(components, "street_number")
+    const street = getAddressComponent(components, "route")
+    if (num !== ""){
+      return (num + " " + street)
+    } else {
+      return (street)
     }
   }
 
@@ -98,7 +112,15 @@ export default function FormSubmitClinic(props){
   }
 
   function onSubmit(e) {
-    console.log(fields);
+    props.firebase.setNewClinic(fields)
+    .then(() => {
+      console.log("Added Clinic", fields.place_id)
+      //TODO: confirm added
+    })
+    .catch(error => {
+      console.log("Error adding clinic", error)
+      // TODO: show error
+    })
     e.preventDefault();
   }
 
@@ -125,7 +147,7 @@ export default function FormSubmitClinic(props){
               <p>Please fill out the following information regarding the clinic</p>
                 <AddressItem
                   labelText="Clinic Name..."
-                  id="clinicName"
+                  id="clinic_name"
                   onChange={handleFieldChange}
                 />
                 <AddressInput
@@ -156,3 +178,5 @@ export default function FormSubmitClinic(props){
     </div>
   );
 }
+
+export default withFirebase(FormSubmitClinic);

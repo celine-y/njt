@@ -15,6 +15,14 @@ function AddressInput(props) {
         }}
       />
       <AddressItem
+        labelText="Province..."
+        id="province"
+        inputProps={{
+          disabled: true,
+          value:props.fields.province
+        }}
+      />
+      <AddressItem
         labelText="Country..."
         id="country"
         inputProps={{
@@ -23,11 +31,11 @@ function AddressInput(props) {
         }}
       />
       <AddressItem
-        labelText="Province..."
+        labelText="Postal Code..."
         id="province"
         inputProps={{
           disabled: true,
-          value:props.fields.province
+          value:props.fields.postal_code
         }}
       />
     </div>
