@@ -49,7 +49,7 @@ function ProfilePage(props) {
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-  function showProfilePage(authUser){
+  function showProfilePage(authUser) {
     if (authUser.roles[ROLES.ADMIN]) {
       return (
         <Admin authUser={authUser} />

@@ -87,7 +87,33 @@ class Firebase {
   getChapters = () => this.db.collection('chapters');
   chapter = (id) => this.db.doc(`chapters/${id}`);
 
-  // trips
+  // get trips and users for admin
+  async getAdminTrips(chapter) {
+    var result = [];
+    let tripsRef = await this.db.collection('trips').where('chapter', '==', chapter).get();
+    for (var trip of tripsRef.docs) {
+      let data = { ...trip.data(), tripUid: trip.id };
+      const userId = trip.data().user.id;
+      let userRef = await this.db.doc(`users/${userId}`).get();
+      data = { ...data, ...userRef.data(), userUid: userRef.id };
+      result.push(data);
+    }
+    return result;
+  }
+
+  async getAdminTripDetails(tripId) {
+    let tripRef = await this.db.doc(`trips/${tripId}`).get();
+    const userId = tripRef.data().user.id;
+    let userRef = await this.db.doc(`users/${userId}`).get();
+    return {
+      ...userRef.data(),
+      ...tripRef.data(),
+      userUid: userRef.ida,
+      tripUid: tripRef.id
+    };
+  }
+
+  // trips by userId
   tripsByUser = (uid) => {
     const userRef = this.user(uid)
     return this.db.collection('trips')

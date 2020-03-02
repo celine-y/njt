@@ -26,12 +26,12 @@ const ProfileButton = (props) => {
   const { initials } = props;
 
   function getSignInLinks(authUser) {
-    let links = []
+    let links = [];
 
     links.push(
       (
-      <Link to={ROUTES.ACCOUNT} className={classes.dropdownLink}>
-        Profile
+        <Link to={ROUTES.ACCOUNT} className={classes.dropdownLink}>
+          Profile
       </Link>
       )
     )
@@ -68,29 +68,29 @@ const ProfileButton = (props) => {
 
   return (
     <AuthUserContext.Consumer>
-    {authUser => (
-      <ListItem className={classes.listItem}>
-        <CustomDropdown
-          noLiPadding
-          left
-          caret={false}
-          hoverColor="black"
-          buttonText={
-            <Avatar
-              className={classes.img, classes.avatar}
-              alt="profile">
-              {initials}
-            </Avatar>
-          }
-          buttonProps={{
-            className:
-              classes.navLink + " " + classes.imageDropdownButton,
-            color: "transparent"
-          }}
-          dropdownList={getSignInLinks(authUser)}
-        />
-      </ListItem>
-    )}
+      {authUser => (
+        <ListItem className={classes.listItem}>
+          <CustomDropdown
+            noLiPadding
+            left
+            caret={false}
+            hoverColor="black"
+            buttonText={
+              <Avatar
+                className={classes.img, classes.avatar}
+                alt="profile">
+                {initials}
+              </Avatar>
+            }
+            buttonProps={{
+              className:
+                classes.navLink + " " + classes.imageDropdownButton,
+              color: "transparent"
+            }}
+            dropdownList={getSignInLinks(authUser)}
+          />
+        </ListItem>
+      )}
     </AuthUserContext.Consumer>
   );
 }

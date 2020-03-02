@@ -39,11 +39,10 @@ function Admin(props) {
 
   // Requests
   useEffect(() => {
-    console.log(props.firebase.db);
     props.firebase.getChapters().onSnapshot(snapshot => {
       let chapterList = [];
       snapshot.forEach(doc => chapterList.push({ ...doc.data(), uid: doc.id }));
-      const selectedChapter = props.authUser.chapter_id ? chapterList.filter(chapter => chapter.uid === props.authUser.chapter_id.id)[0].name : "Select a Chapter";
+      const selectedChapter = props.authUser.chapter ? chapterList.filter(chapter => chapter.uid === props.authUser.chapter.id)[0].name : "Select a Chapter";
       setChapterList(chapterList);
       setSelectedChapter(selectedChapter);
     });
@@ -81,7 +80,7 @@ function Admin(props) {
                     const chapterId = chapterList.filter(chapter => chapter.name === value)[0].uid;
                     // update DB
                     props.firebase.user(authUser.uid)
-                      .set({ chapter_id: props.firebase.db.doc(`chapters/${chapterId}`) }, { merge: true });
+                      .set({ chapter: props.firebase.db.doc(`chapters/${chapterId}`) }, { merge: true });
                   }}
                 />
               }</p>

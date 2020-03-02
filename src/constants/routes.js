@@ -13,5 +13,6 @@ export const SUBMIT_CLINIC = '/submit-clinic'
 export const CLINIC_MAP = '/clinic-map'
 export const REQUEST_SUITCASE = '/request-suitcase';
 export const ADMIN_TRIPS = '/admin-trips';
+export const ADMIN_TRIP_DETAILS = '/admin-trip-details/:id';
 export const SIGNOUT = '/signout'
 export const TRIP_DETAILS = '/trip-details/:id'
