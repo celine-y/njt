@@ -15,7 +15,7 @@ function AddressItem(props) {
       inputProps={{
         type: "text",
         autoComplete: "off",
-        onChange: (e) => props.onChange(e)
+        ...props.inputProps
       }}
     />
   )

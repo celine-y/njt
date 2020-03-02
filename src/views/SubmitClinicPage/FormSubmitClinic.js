@@ -25,7 +25,8 @@ import AddressItem from 'components/Address/AddressItem';
 import AddressInput from 'components/Address/AddressInput';
 import * as ROUTES from 'constants/routes';
 
-import {Client} from "@googlemaps/google-maps-services-js";
+// import {Client} from "@googlemaps/google-maps-services-js";
+import Script from 'react-load-script';
 
 const useStyles = makeStyles(styles);
 export default function FormSubmitClinic(props){
@@ -41,46 +42,76 @@ export default function FormSubmitClinic(props){
     street: "",
     country: "",
     province: "",
-    comments: ""
+    comments: "",
+    placeId: ""
   }
 
   const [fields, handleFieldChange, setFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
 
-  const client = new Client({});
+  var autocomplete = null
 
-  function changeQuery(q){
-      if(q) {
-        client
-        .textSearch({
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:3000/"
-          },
-          params: {
-            query: [q],
-            fields: 'place_id',
-            key: process.env.GOOGLE_MAPS_API_KEY,
-          },
-          timeout: 1000 // milliseconds
-        })
-        .then(r => {
-          console.log(r.data.results);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-      }
+  function handleScriptLoad(){
+    // Declare Options For Autocomplete
+    const options = {
+      types: ['establishment'],
+    };
+
+    // Initialize Google Autocomplete
+    /*global google*/ // To disable any eslint 'google not defined' errors
+    autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('clinicName'),
+      options
+    );
+
+    // Avoid paying for data that you don't need by restricting the set of
+    // place fields that are returned to just the address components and formatted
+    // address.
+    autocomplete.setFields(['place_id', 'formatted_address', 'address_components', 'name']);
+
+    // Fire Event when a suggested name is selected
+    autocomplete.addListener('place_changed', handlePlaceSelect);
   }
 
+  function handlePlaceSelect(){
+    // Extract City From Address Object
+    const addressObject = autocomplete.getPlace();
+    if (addressObject) {
+      const components = addressObject.address_components;
+      const newFields = {
+        clinicName: addressObject.name,
+        street: getAddressComponent(components, "route"),
+        country: getAddressComponent(components, "country"),
+        province: getAddressComponent(components, "locality"),
+        comments: fields.comments,
+        placeId: addressObject.place_id
+      }
+      setFields(newFields)
+    }
+  }
+
+  function getAddressComponent(components, componentName) {
+    var filtered_array = components.filter(function(address_component){
+        return address_component.types.includes(componentName);
+    });
+    return filtered_array.length > 0 ? filtered_array[0].long_name : ""
+  }
 
   function onSubmit(e) {
     console.log(fields);
     e.preventDefault();
   }
 
+  function getGoogleURL(){
+    return ("https://maps.googleapis.com/maps/api/js?key=AIzaSyCooo1YO7bBY4v5a_x2HJGPyiEGxD6DJj0&libraries=places")
+  }
 
 
   return (
+    <div>
+      <Script url={getGoogleURL()}
+        onLoad={handleScriptLoad}
+      />
       <GridContainer justify="center">
         <GridItem xs={12}>
           <Card className={classes[cardAnimaton]}>
@@ -95,14 +126,14 @@ export default function FormSubmitClinic(props){
                 <AddressItem
                   labelText="Clinic Name..."
                   id="clinicName"
-                  onChange={changeQuery}
+                  onChange={handleFieldChange}
                 />
                 <AddressInput
-                  onChange={handleFieldChange}
-                 />
+                  fields={fields} />
                 <CustomInput
                     labelText="Additional Comments"
                     id="comments"
+                    value={fields.comments}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -122,5 +153,6 @@ export default function FormSubmitClinic(props){
           </Card>
         </GridItem>
       </GridContainer>
+    </div>
   );
 }
