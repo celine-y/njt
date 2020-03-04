@@ -34,10 +34,13 @@ function AdminTripCards(props) {
       });
   }, []);
 
-  const toDateTime = (secs) => {
+  const toDateTime = secs => {
     var t = new Date(1970, 0, 1); // Epoch
     t.setSeconds(secs);
-    return t;
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    const result = `${t.toLocaleDateString("en-US", options)} at ${t.toLocaleTimeString()}`;
+    return result;
   };
 
   const [tripList, setTripList] = useState([]);
