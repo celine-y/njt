@@ -12,7 +12,6 @@ import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
-import InfoArea from "components/InfoArea/InfoArea.js";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Check from "@material-ui/icons/Check";
@@ -83,6 +82,12 @@ function AdminTripDetails(props) {
     }
   ];
 
+  const toDateTime = (secs) => {
+    var t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(secs);
+    return t;
+  };
+
   return (
     <AuthUserContext.Consumer>
       {authUser => authUser && authUser.roles[ROLES.ADMIN] && (
@@ -93,7 +98,7 @@ function AdminTripDetails(props) {
               <div className={classes.container}>
                 <GridContainer justify="center">
                   <GridItem xs={12} sm={12} md={6}>
-                    {!loading ? <div>
+                    {!loading ? <div style={{ "paddingBottom": "30px" }}>
                       <h3 className={classes.title}>{`${tripDetails.firstName}'s Trip Details`}</h3>
                       <h3>Traveller's status</h3>
                       {statusOrder.map(status =>
@@ -120,13 +125,19 @@ function AdminTripDetails(props) {
                       <h3>{`Traveller's Information`}</h3>
                       <h5>{`First name: ${tripDetails.firstName}`}</h5>
                       <h5>{`Last name: ${tripDetails.lastName}`}</h5>
+                      <h5>{`Email: ${tripDetails.email}`}</h5>
+                      <h5>{`Air line: ${tripDetails.airline_name}`}</h5>
+                      <h5>{`Departure date: ${toDateTime(get(tripDetails, 'departure_date.seconds', ''))}`}</h5>
+                      <h5>{`Return date: ${toDateTime(get(tripDetails, 'return_date.seconds', ''))}`}</h5>
+                      <h5>{`Suitcase size: ${tripDetails.suitcase}`}</h5>
+                      <h5>{`Supplies traveller is willing to carry:`}
+                        {get(tripDetails, 'supplies', []).map(supply => <li key={supply}>{supply}</li>)}
+                      </h5>
                     </div> :
-                      <InfoArea
-                        title="Loading..."
-                        description=""
-                        icon={AutorenewIcon}
-                        iconColor="rose"
-                      />
+                      <div style={{ "display": "flex", "flexFlow": "row", "alignItems": "center", "justifyContent": "center", "margin": "30px 0px" }}>
+                        <AutorenewIcon />
+                        <h4 className={classes.title} style={{ "margin": "0 5px", "minHeight": "0" }}>Loading...</h4>
+                      </div>
                     }
                   </GridItem>
                 </GridContainer>

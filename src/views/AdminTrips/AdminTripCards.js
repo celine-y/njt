@@ -12,7 +12,6 @@ import Badge from 'components/Badge/Badge.js';
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
-import InfoArea from "components/InfoArea/InfoArea.js";
 
 // @material-ui/icons
 import AutorenewIcon from '@material-ui/icons/Autorenew';
@@ -35,19 +34,26 @@ function AdminTripCards(props) {
       });
   }, []);
 
+  const toDateTime = (secs) => {
+    var t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(secs);
+    return t;
+  };
+
   const [tripList, setTripList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   return !loading ? tripList.map(trip => (
     <Card key={trip.tripUid}>
       <CardBody>
-        <span style={{ "display": "in-line" }}>
+        <span>
           <span style={{ "fontSize": "20px" }}>{`${trip.firstName} ${trip.lastName}`}</span>
           <span style={{ "float": "right" }}>
             {get(trip, 'availabilities.completed', false) && !get(trip, 'confirmed_time.completed', false) && <Badge color="danger">Action Required</Badge>}
           </span>
         </span>
-        <p>{`Destination: ${trip.destination}`}</p>
+        <p style={{ "marginTop": "10px", "marginBottom": "0" }}>{`Destination: ${trip.destination}`}</p>
+        <p style={{ "marginTop": "0px" }}>{`Departure Date: ${toDateTime(get(trip, 'departure_date.seconds', ''))}`}</p>
         <Button
           color="primary"
           component={Link}
@@ -58,11 +64,9 @@ function AdminTripCards(props) {
       </CardBody>
     </Card >
   )) :
-    <InfoArea
-      title="Loading..."
-      description=""
-      icon={AutorenewIcon}
-      iconColor="rose"
-    />
+    <div style={{ "display": "flex", "flexFlow": "row", "alignItems": "center", "justifyContent": "center", "marginBottom": "30px" }}>
+      <AutorenewIcon />
+      <h4 className={classes.title} style={{ "margin": "0 5px", "minHeight": "0" }}>Loading...</h4>
+    </div>
 }
 export default withFirebase(AdminTripCards);
