@@ -99,7 +99,7 @@ function RequestSuitcasePage(props) {
       props.firebase.setNewTrip(uid, fields)
       .then(() => {
         // TODO: present modal for submit confirmation
-        props.history.push(ROUTES.HOME)
+        props.history.push(ROUTES.TRIP_DETAILS)
       })
       .catch(error => {
         setError(null)
@@ -279,7 +279,7 @@ function RequestSuitcasePage(props) {
                     disabled={!validateForm()}
                     color="primary" size="lg"
                     onClick={onSubmit(authUser)}
-                    href={ROUTES.HOME}>
+                    href={ROUTES.TRIP_DETAILS}>
                     Submit
                   </Button>
                 </CardFooter>
