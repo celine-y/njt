@@ -55,6 +55,15 @@ class Firebase {
   // ***USERS***
   user = uid => this.db.doc(`users/${uid}`);
   users = () => this.db.collection('users');
+  addTripToUser = (uid, tripRef) => {
+    return this.user(uid)
+      .set(
+        {
+          trips: [tripRef]
+        },
+        { merge: true }
+      )
+  }
 
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
@@ -135,7 +144,10 @@ class Firebase {
       supplies: tripData.supplies,
       suitcase: tripData.suitcase,
       user: userRef,
-      chapter: chapterRef
+      chapter: chapterRef,
+      requested: {
+        completed: true
+      }
     });
   }
 

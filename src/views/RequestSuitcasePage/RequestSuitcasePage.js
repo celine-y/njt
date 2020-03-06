@@ -97,9 +97,17 @@ function RequestSuitcasePage(props) {
       const uid = authUser.uid
       console.log("fields: ", fields)
       props.firebase.setNewTrip(uid, fields)
-      .then(() => {
-        // TODO: present modal for submit confirmation
-        props.history.push(ROUTES.TRIP_DETAILS)
+      .then(tripRef => {
+        console.log("Created new trip with id:", tripRef.id)
+        props.firebase.addTripToUser(uid, tripRef)
+          .then(() => {
+            props.history.push(`${ROUTES.TRIP_DETAILS}/${tripRef.id}`)
+          })
+          .catch(error => {
+            setError(null)
+            setError(error)
+            console.log(error)
+          });
       })
       .catch(error => {
         setError(null)
@@ -278,8 +286,7 @@ function RequestSuitcasePage(props) {
                   <Button
                     disabled={!validateForm()}
                     color="primary" size="lg"
-                    onClick={onSubmit(authUser)}
-                    href={ROUTES.TRIP_DETAILS}>
+                    onClick={onSubmit(authUser)}>
                     Submit
                   </Button>
                 </CardFooter>
