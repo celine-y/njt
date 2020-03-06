@@ -35,23 +35,23 @@ function TripCard(props) {
   } = props;
 
   return (
-    <Card key={tripId}>
-      <CardBody>
-        <h4 className={classes.cardTitle}>
-          Trip to {destination}
-        </h4>
-        <ListItem>
-          <ListItemIcon><Event /></ListItemIcon>
-          <ListItemText primary={date.toString()} />
-        </ListItem>
-        <p>Status: {status}</p>
-        <Button
-          color="primary"
-          component={Link} to={`${ROUTES.TRIP_DETAILS}/${tripId}`}>
-          View Details
-        </Button>
-      </CardBody>
-    </Card>
+      <Card>
+        <CardBody>
+          <h4 className={classes.cardTitle}>
+            Trip to {destination}
+          </h4>
+          <ListItem>
+            <ListItemIcon><Event /></ListItemIcon>
+            <ListItemText primary={date.toString()} />
+          </ListItem>
+          <p>Status: {status}</p>
+          <Button
+            color="primary"
+            component={Link} to={`${ROUTES.TRIP_DETAILS}/${tripId}`}>
+            View Details
+          </Button>
+        </CardBody>
+      </Card>
   )
 }
 export default TripCard;

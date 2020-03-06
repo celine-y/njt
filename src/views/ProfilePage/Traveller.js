@@ -69,11 +69,14 @@ function Traveller(props) {
         </p>
       )
     } else {
-      return(tripList.map(trip => <TripCard
-              tripId ={trip.id}
-              destination={trip.destination}
-              date={trip.departure_date.toDate()}
-              status={trip.status} />
+      return(tripList.map(trip =>
+            <div key={trip.id}>
+              <TripCard
+                tripId ={trip.id}
+                destination={trip.destination}
+                date={trip.departure_date.toDate()}
+                status={trip.status} />
+            </div>
             )
           );
     }
