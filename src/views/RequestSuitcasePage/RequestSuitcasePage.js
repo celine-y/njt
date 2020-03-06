@@ -296,4 +296,6 @@ function RequestSuitcasePage(props) {
   );
 }
 
-export default withFirebase(RequestSuitcasePage);
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(RequestSuitcasePage);
