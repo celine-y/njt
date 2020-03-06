@@ -39,7 +39,6 @@ function Traveller(props) {
         setLoading(false);
         var trips = [];
         snapshot.forEach(doc => {
-          console.log(doc.data())
           trips.push(
             { ...doc.data(),
               status: "TODO",

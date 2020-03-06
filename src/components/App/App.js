@@ -52,9 +52,9 @@ const App = (props) => {
           <Route path={ROUTES.REQUEST_SUITCASE} component={RequestSuitcasePage} />
           <Route path={ROUTES.SUBMIT_CLINIC} component={SubmitClinicPage} />
           <Route path={ROUTES.ADMIN_TRIPS} component={AdminTrips} />
-          <Route path={ROUTES.ADMIN_TRIP_DETAILS} component={AdminTripDetails} />
+          <Route path={ROUTES.ADMIN_TRIP_DETAILS + '/:id'} component={AdminTripDetails} />
           <Route path={ROUTES.CLINIC_MAP} component={ClinicPage} />
-          <Route path={ROUTES.TRIP_DETAILS} component={TripDetails} />
+          <Route path={ROUTES.TRIP_DETAILS + '/:id'} component={TripDetails} />
         </Switch>
       </div>
     </Router>
