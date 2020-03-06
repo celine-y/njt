@@ -35,7 +35,6 @@ function HeaderLinks(props) {
         <Button
           href={ROUTES.ABOUT_US}
           color="transparent"
-          target="_blank"
           className={classes.navLink}
         >About Us
         </Button>
@@ -53,13 +52,11 @@ function HeaderLinks(props) {
             <Link to={ROUTES.REQUEST_SUITCASE} className={classes.dropdownLink}>
               Take a Suitcase
             </Link>,
-            <a
-              href={ROUTES.VOLUNTEER}
-              target="_blank"
-              className={classes.dropdownLink}
-            >
+            <Link
+              to={ROUTES.VOLUNTEER}
+              className={classes.dropdownLink}>
               Help Pack Supplies
-            </a>
+            </Link>
           ]}
         />
       </ListItem>
@@ -67,7 +64,6 @@ function HeaderLinks(props) {
         <Button
           href={ROUTES.DONATE}
           color="transparent"
-          target="_blank"
           className={classes.navLink}
         >Donate
         </Button>
