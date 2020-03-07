@@ -104,7 +104,6 @@ function HeaderLinks(props) {
         <Button
           href={ROUTES.CONTACT_US}
           color="transparent"
-          target="_blank"
           className={classes.navLink}
         >Contact
         </Button>
