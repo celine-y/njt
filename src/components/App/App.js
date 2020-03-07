@@ -19,6 +19,7 @@ import TripDetails from "views/TravellerTrips/TripDetails.js";
 import AboutUs from "views/AboutUs/AboutUs.js"
 import DonateMedSupplies from "views/DonateMedSupplies/DonateMedSupplies.js"
 import ContactUs from "views/ContactUs/ContactUs.js"
+import StartChapter from "views/StartChapter/StartChapter.js"
 
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -60,6 +61,7 @@ const App = (props) => {
           <Route path={ROUTES.ABOUT_US} component={AboutUs} />
           <Route path={ROUTES.DONATE} component={DonateMedSupplies} />
           <Route path={ROUTES.CONTACT_US} component={ContactUs} />
+          <Route path={ROUTES.START_CHAPTER} component={StartChapter} />
         </Switch>
       </div>
     </Router>

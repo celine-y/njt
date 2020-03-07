@@ -95,7 +95,6 @@ function HeaderLinks(props) {
         <Button
           href={ROUTES.START_CHAPTER}
           color="transparent"
-          target="_blank"
           className={classes.navLink}
         >Start a Chapter
         </Button>
