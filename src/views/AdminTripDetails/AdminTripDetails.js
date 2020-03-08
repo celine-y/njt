@@ -58,11 +58,11 @@ function AdminTripDetails(props) {
     },
     {
       "key": "availabilities",
-      "description": "availabilities"
+      "description": "Filled availabilities"
     },
     {
       "key": "confirmed_time",
-      "description": "Confirmed suitcase pick-up date, time, and location with a NJT admin"
+      "description": "Confirmed suitcase pick-up date and location"
     },
     {
       "key": "picked_up",
