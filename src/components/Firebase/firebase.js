@@ -17,6 +17,9 @@ const devConfig = {
   projectId: process.env.REACT_APP_DEV_PROJECT_ID,
   storageBucket: process.env.REACT_APP_DEV_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_DEV_MESSAGING_SENDER_ID,
+
+
+
 };
 const config =
   process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
@@ -109,6 +112,7 @@ class Firebase {
       data = { ...data, ...userRef.data(), userUid: userRef.id };
       result.push(data);
     }
+
     return result;
   }
 
@@ -139,6 +143,30 @@ class Firebase {
     };
   }
 
+  //get tripDetail
+  async getTripDetails(tripId) {
+
+    let tripsRef = await this.db.doc(`trips/${tripId}`).get();
+    return {
+      ...tripsRef.data()
+    }
+
+  }
+
+  //get clinics
+  async getClinics() {
+    var clinics = [];
+    let clinicRef = await this.db.collection('clinics').get();
+    for (var clinic of clinicRef.docs) {
+      let data = {
+        ...clinic.data(),
+        clinicUid: clinic.id
+      };
+      clinics.push(data);
+    }
+    return clinics;
+  }
+
   // trips by userId
   tripsByUser = (uid) => {
     const userRef = this.user(uid)
@@ -166,6 +194,239 @@ class Firebase {
     });
   }
 
+  //write new Trip detail request data to "trips" collection
+  setRequestTripDetail = (tripID, requestValue) => {
+    let completed = true;
+    if (requestValue !== 'Yes') completed = false;
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            requested: {
+              completed: completed
+            }
+          });
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            requested: {
+              completed: completed
+            }
+          });
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+
+  }
+
+  //write new Trip detail print data to "trips" collection
+  setPrintTripDetail = (tripID, printValue) => {
+    let completed = true;
+    if (printValue !== 'Yes') completed = false;
+
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            printed_forms: {
+              completed: completed
+            }
+          });
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            printed_forms: {
+              completed: completed
+            }
+          });
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+  }
+
+  //write new Trip detail pick up to "trips" collection
+  setPrickupTripDetail = (tripID, pickValue) => {
+    let completed = true;
+    if (pickValue !== 'Yes') completed = false;
+
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            picked_up: {
+              completed: completed
+            }
+          });
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            picked_up: {
+              completed: completed
+            }
+          });
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+
+
+
+  }
+
+  // write new Trip detail feedback to "trips" collection
+
+  setFeedbackTripDetail = (tripID, feedbackValue) => {
+
+    let completed = true;
+    if (feedbackValue !== 'Yes') completed = false;
+
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            feedback: {
+              completed: completed,
+              feedback: ""
+            }
+          });
+
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            feedback: {
+              completed: completed,
+              feedback: ""
+            }
+          });
+
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+
+
+  }
+
+  // write new Trip detail delivered to "trips" collection
+
+  setDeliveredTripDetail = (tripID, deliverValue, dClinic) => {
+
+    let completed = true;
+    if (deliverValue !== 'Yes') completed = false;
+
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            delivered: {
+              clinic: `/clinics/${dClinic}`,
+              completed: completed
+            }
+          });
+
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            delivered: {
+              clinic: `/clinics/${dClinic}`,
+              completed: completed
+            }
+          });
+
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+  }
+
+  // write new Trip detail confirmed time to "trips" collection
+
+  setAvailTimeTripDetail = (tripID, confirmTimeValue, objectArrayTime) => {
+
+    let completed = true;
+    if (confirmTimeValue !== 'Yes') completed = false;
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            availabilities: {
+              completed: completed,
+              time: objectArrayTime
+            }
+          });
+
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            availabilities: {
+              completed: completed,
+              time: objectArrayTime
+            }
+          });
+
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+
+
+  }
+
+  setAvailTimeCompletedTripDetail = (tripID, confirmTimeValue, objectArrayTime) => {
+
+    let completed = true;
+    if (confirmTimeValue !== 'Yes') completed = false;
+    let tripDetailRef = this.db.collection('trips').doc(tripID);
+    tripDetailRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          return this.db.collection('trips').doc(tripID).set({
+            availabilities: {
+              completed: completed,
+              time: objectArrayTime
+            }
+          });
+
+        } else {
+          return this.db.collection('trips').doc(tripID).update({
+            availabilities: {
+              completed: completed,
+              time: objectArrayTime
+            }
+          });
+
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return {};
+      });
+
+
+
+  }
+
+
   // ***CLINIC***
   setNewClinic = (clinicInfo) => {
     return this.db.collection('clinics')
@@ -174,6 +435,8 @@ class Firebase {
       })
   }
   clinics = () => this.db.collection('users');
+
+
 
 }
 export default Firebase;
