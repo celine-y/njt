@@ -11,13 +11,16 @@ import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
 
 import styles from "assets/jss/material-kit-react/views/infoPages.js";
+import styles2 from "assets/jss/material-kit-react/views/landingPage.js";
 
 import Contact from "./Contact.js"
 
 const useStyles = makeStyles(styles);
+const useStyles2 = makeStyles(styles2);
 
 function AboutUs(props) {
   const classes = useStyles();
+  const classes2 = useStyles2();
   const { ...rest } = props;
 
   const njtContacts = [
@@ -59,14 +62,24 @@ function AboutUs(props) {
 
   return (
     <div>
-      <Parallax small filter image={require("assets/img/profile-bg.jpg")}/>
+      <Parallax small filter image={require("assets/img/profile-bg.jpg")}>
+        <div className={classes2.container}>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <h2 className={classes2.title}>Contact Us</h2>
+              <br />
+            </GridItem>
+          </GridContainer>
+        </div>
+      </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-          <div className={classes.container}>
+        <div className={classes.container}>
           <div className={classes.section}>
-              <GridContainer justify="center">
-                <GridItem xs={6}>
-                  <div>
-                    <h3 className={classes.title}>Contact Us</h3>
+            <GridContainer justify="center">
+              <GridItem xs={6}>
+                <div>
+                  {/* <h3 className={classes.title}>Contact Us</h3> */}
+                  <br />
                   {
                     njtContacts.map(contact =>
                       <div key={contact.location}>
@@ -74,11 +87,11 @@ function AboutUs(props) {
                       </div>
                     )
                   }
-                  </div>
-                </GridItem>
-              </GridContainer>
-            </div>
+                </div>
+              </GridItem>
+            </GridContainer>
           </div>
+        </div>
       </div>
       <Footer />
     </div>
