@@ -124,15 +124,27 @@ class Firebase {
     };
   }
 
+  // set confirmed time
+  async setConfirmedTime(tripId, date) {
+    await this.db.doc(`trips/${tripId}`)
+      .set({ confirmed_time: { completed: true, time: date } }, { merge: true });;
+    let tripRef = await this.db.doc(`trips/${tripId}`).get();
+    const userId = tripRef.data().user.id;
+    let userRef = await this.db.doc(`users/${userId}`).get();
+    return {
+      ...userRef.data(),
+      ...tripRef.data(),
+      userUid: userRef.ida,
+      tripUid: tripRef.id
+    };
+  }
+
   // trips by userId
   tripsByUser = (uid) => {
     const userRef = this.user(uid)
     return this.db.collection('trips')
       .where('user', '==', userRef)
   }
-
-  // trip by tripId
-  tripByTripId = id => this.db.doc(`trips/${id}`);
 
   // write new trip data to "trip" collection
   setNewTrip = (uid, tripData) => {

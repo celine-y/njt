@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // @material-ui/icons
 import AutorenewIcon from '@material-ui/icons/Autorenew';
+import Check from "@material-ui/icons/Check";
+import Warning from "@material-ui/icons/Warning";
 
 // core components
 import Footer from "components/Footer/Footer.js";
@@ -14,11 +16,11 @@ import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Check from "@material-ui/icons/Check";
 import checkBoxStyles from "assets/jss/material-kit-react/customCheckboxRadioSwitch.js";
 import AvailableTimes from 'react-available-times';
 import Datetime from "react-datetime";
 import Badge from 'components/Badge/Badge.js';
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 import Button from "components/CustomButtons/Button.js";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -98,7 +100,6 @@ function AdminTripDetails(props) {
     return result;
   };
 
-
   const appendConfirmTime = secs => {
     statusOrder[2].description = `Confirmed suitcase pick-up date and location: ${toDateTime(secs)}`;
   }
@@ -116,6 +117,8 @@ function AdminTripDetails(props) {
 
   // const [availableTimes, setavailableTimes] = useState([]);
   const [confirmedDate, setConfirmedDate] = useState(null);
+  const [confirmedDateSuccess, setConfirmedDateSuccess] = useState(null);
+  const [confirmedDateFail, setConfirmedDateFail] = useState(null);
 
   const handleConfirmTime = tripDetails => {
     console.log(confirmedDate);
@@ -123,7 +126,6 @@ function AdminTripDetails(props) {
 
     var availableTimes = getAvailableTimes(tripDetails.availabilities.times);
     availableTimes.forEach(date => {
-      console.log(date);
       if (confirmedDate >= date.start && confirmedDate <= date.end) {
         isValid = true;
       }
@@ -131,51 +133,48 @@ function AdminTripDetails(props) {
 
     if (confirmedDate && isValid) {
       console.log("IN RANGE");
-      props.firebase.tripByTripId(tripDetails.tripUid)
-        .set({ confirmed_time: { completed: true, time: confirmedDate } }, { merge: true });
+      props.firebase.setConfirmedTime(tripDetails.tripUid, confirmedDate)
+        .then((res) => {
+          setConfirmedDateSuccess(true);
+          setTripDetails(res);
+          console.log(res);
+        });
     } else {
-      console.log("NOT IN RANGE");
+      setConfirmedDateFail(true);
     }
   };
 
-  const availabilityCalendar = tripDetails => {
-    var availableTimes = getAvailableTimes(tripDetails.availabilities.times);
-    console.log(availableTimes);
-    return (
-      <>
-        <br />
-        <span>
-          <span style={{ "fontSize": "1.5625rem", "marginRight": "5px" }}>Confirm meet up time</span>
-          <span style={{ "verticalAlign": "text-bottom" }}><Badge color="danger">Action Required</Badge></span>
-        </span>
-        <span>
-          <Datetime
-            inputProps={{ placeholder: "Pick a Date and Time here" }}
-            onChange={e => setConfirmedDate(e.toDate())}
-          />
-          <Button color="primary" type="button" onClick={() => handleConfirmTime(tripDetails)}>Confirm Time</Button>
-        </span>
-        <h5>{`Refer to ${tripDetails.firstName}'s availabilities in green below.`}</h5>
-        <AvailableTimes
-          weekStartsOn="sunday"
-          onChange={(selections) => {
-            selections.forEach(({ start, end }) => {
-              console.log('Start:', start, 'End:', end);
-            })
-          }}
-          onEventsRequested={({ calendarId, start, end, callback }) => {
-            // loadMoreEvents(calendarId, start, end).then(callback);
-          }}
-          initialSelections={availableTimes}
-          height={400}
-          recurring={false}
-          availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']}
-          availableHourRange={{ start: 0, end: 0 }}
+  const showConfirmationBlock = tripDetails => (
+    <>
+      <br />
+      <span>
+        <span style={{ "fontSize": "1.5625rem", "marginRight": "5px" }}>Confirm meet up time</span>
+        <span style={{ "verticalAlign": "text-bottom" }}><Badge color="danger">Action Required</Badge></span>
+      </span>
+      <br />
+      <p>{`Please refer to ${tripDetails.firstName}'s availabilities below.`}</p>
+      <div>
+        <Datetime
+          inputProps={{ placeholder: "Pick a Date and Time here" }}
+          onChange={e => setConfirmedDate(e.toDate())}
         />
-        <br />
-      </>
-    )
-  }
+        <Button color="primary" type="button" onClick={() => handleConfirmTime(tripDetails)}>Confirm Time</Button>
+      </div>
+      <br />
+      {confirmedDateFail && (
+        <SnackbarContent
+          message={
+            <span>
+              <b>Error: </b>
+              {`Please select a date and time that ${tripDetails.firstName} is available.`}
+            </span>
+          }
+          color="danger"
+          icon="info_outline"
+        />
+      )}
+    </>
+  );
 
   return (
     <AuthUserContext.Consumer>
@@ -191,10 +190,22 @@ function AdminTripDetails(props) {
                       <h3 className={classes.title}>{`${tripDetails.firstName}'s Trip Details`}</h3>
                       {
                         get(tripDetails, 'availabilities.completed', false) && !get(tripDetails, 'confirmed_time.completed', false) ?
-                          availabilityCalendar(tripDetails) :
+                          showConfirmationBlock(tripDetails) :
                           get(tripDetails, 'confirmed_time.completed', false) &&
                           appendConfirmTime(tripDetails.confirmed_time.time.seconds)
                       }
+                      {confirmedDateSuccess && (
+                        <SnackbarContent
+                          message={
+                            <span>
+                              <b>SUCCESS: </b>{`You've confirmed suitcase pick up at ${toDateTime(get(tripDetails, 'confrimed_time.time.seconds', ''))}`}
+                            </span>
+                          }
+                          close
+                          color="success"
+                          icon={Check}
+                        />
+                      )}
                       <h3>Traveller's status</h3>
                       {statusOrder.map(status =>
                         <div className={wrapperDiv} key={status.key}>
@@ -228,6 +239,23 @@ function AdminTripDetails(props) {
                       <h5>{`Supplies traveller is willing to carry:`}
                         {get(tripDetails, 'supplies', []).map(supply => <li key={supply}>{supply}</li>)}
                       </h5>
+                      {get(tripDetails, 'availabilities.completed', false) && (
+                        <>
+                          <h3>{`Traveller's Availabilities`}</h3>
+                          <p>{`Available times shown in green`}</p>
+                          <AvailableTimes
+                            weekStartsOn="sunday"
+                            onEventsRequested={({ calendarId, start, end, callback }) => {
+                              // loadMoreEvents(calendarId, start, end).then(callback);
+                            }}
+                            initialSelections={getAvailableTimes(tripDetails.availabilities.times)}
+                            height={400}
+                            recurring={false}
+                            availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']}
+                            availableHourRange={{ start: 0, end: 0 }}
+                          />
+                        </>
+                      )}
                     </div> :
                       <div style={{ "display": "flex", "flexFlow": "row", "alignItems": "center", "justifyContent": "center", "margin": "30px 0px" }}>
                         <AutorenewIcon />
