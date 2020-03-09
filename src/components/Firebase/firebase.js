@@ -131,6 +131,9 @@ class Firebase {
       .where('user', '==', userRef)
   }
 
+  // trip by tripId
+  tripByTripId = id => this.db.doc(`trips/${id}`);
+
   // write new trip data to "trip" collection
   setNewTrip = (uid, tripData) => {
     const userRef = this.user(uid)
@@ -154,9 +157,9 @@ class Firebase {
   // ***CLINIC***
   setNewClinic = (clinicInfo) => {
     return this.db.collection('clinics')
-    .doc(clinicInfo.place_id).set({
-      ...clinicInfo
-    })
+      .doc(clinicInfo.place_id).set({
+        ...clinicInfo
+      })
   }
   clinics = () => this.db.collection('users');
 
