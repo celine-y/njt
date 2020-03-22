@@ -104,7 +104,10 @@ class Firebase {
   // get trips and users for admin
   async getAdminTrips(chapter) {
     var result = [];
-    let tripsRef = await this.db.collection('trips').where('chapter', '==', chapter).get();
+    let tripsRef = await this.db.collection('trips')
+      .where('chapter', '==', chapter)
+      .orderBy("departure_date", "asc")
+      .get();
     for (var trip of tripsRef.docs) {
       let data = { ...trip.data(), tripUid: trip.id };
       const userId = trip.data().user.id;

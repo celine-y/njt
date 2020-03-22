@@ -23,25 +23,37 @@ import { AuthUserContext } from 'components/Session';
 
 import profile from "assets/img/faces/christian.jpg";
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
+import styles2 from "assets/jss/material-kit-react/views/landingPage.js";
 
 const useStyles = makeStyles(styles);
+const useStyles2 = makeStyles(styles2);
 
 export default function AdminTrips(props) {
   const classes = useStyles();
+  const classes2 = useStyles2();
   const { ...rest } = props;
 
   return (
     <AuthUserContext.Consumer>
       {authUser => authUser && authUser.roles[ROLES.ADMIN] && (
         <div>
-          <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
+          <Parallax small filter image={require("assets/img/profile-bg.jpg")}>
+            <div className={classes2.container}>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <h2 className={classes2.title}>Requested Trips</h2>
+                  <br />
+                </GridItem>
+              </GridContainer>
+            </div>
+          </Parallax>
           <div className={classNames(classes.main, classes.mainRaised)}>
             <div>
               <div className={classes.container}>
                 <GridContainer justify="center">
                   <GridItem xs={12} sm={12} md={6}>
                     <div>
-                      <h3 className={classes.title}>Logs</h3>
+                      <br />
                     </div>
                     <AdminTripCards authUser={authUser} />
                   </GridItem>
