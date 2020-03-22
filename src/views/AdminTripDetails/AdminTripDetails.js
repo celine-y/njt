@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import * as moment from 'moment';
+
 // nodejs library that concatenates classes
 import classNames from "classnames";
 import { get } from 'lodash';
@@ -35,13 +37,17 @@ import { AuthUserContext } from 'components/Session';
 
 import profile from "assets/img/faces/christian.jpg";
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
+import styles3 from "assets/jss/material-kit-react/views/landingPage.js";
 
 const useStyles = makeStyles(styles);
 const useStyles2 = makeStyles(checkBoxStyles);
+const useStyles3 = makeStyles(styles3);
 
 function AdminTripDetails(props) {
   const classes = useStyles();
   const classes2 = useStyles2();
+  const classes3 = useStyles3();
+
   const { ...rest } = props;
   const wrapperDiv = classNames(
     classes2.checkboxAndRadio,
@@ -54,7 +60,6 @@ function AdminTripDetails(props) {
       .then((res) => {
         setLoading(false);
         setTripDetails(res);
-        console.log(res);
       });
   }, []);
 
@@ -71,7 +76,7 @@ function AdminTripDetails(props) {
     },
     {
       "key": "confirmed_time",
-      "description": "Confirmed suitcase pick-up date and location"
+      "description": "Confirmed suitcase pick-up date"
     },
     {
       "key": "picked_up",
@@ -101,7 +106,7 @@ function AdminTripDetails(props) {
   };
 
   const appendConfirmTime = secs => {
-    statusOrder[2].description = `Confirmed suitcase pick-up date and location: ${toDateTime(secs)}`;
+    statusOrder[2].description = `Confirmed suitcase pick-up date: ${toDateTime(secs)}`;
   }
 
   const getAvailableTimes = (times) => {
@@ -121,7 +126,6 @@ function AdminTripDetails(props) {
   const [confirmedDateFail, setConfirmedDateFail] = useState(null);
 
   const handleConfirmTime = tripDetails => {
-    console.log(confirmedDate);
     var isValid = false;
 
     var availableTimes = getAvailableTimes(tripDetails.availabilities.times);
@@ -132,12 +136,12 @@ function AdminTripDetails(props) {
     });
 
     if (confirmedDate && isValid) {
-      console.log("IN RANGE");
-      props.firebase.setConfirmedTime(tripDetails.tripUid, confirmedDate)
+      // convert time to UTC for firebase
+      const utcTime = confirmedDate.subtract({ 'hours': 4 });
+      props.firebase.setConfirmedTime(tripDetails.tripUid, utcTime.toDate())
         .then((res) => {
           setConfirmedDateSuccess(true);
           setTripDetails(res);
-          console.log(res);
         });
     } else {
       setConfirmedDateFail(true);
@@ -156,7 +160,7 @@ function AdminTripDetails(props) {
       <div>
         <Datetime
           inputProps={{ placeholder: "Pick a Date and Time here" }}
-          onChange={e => setConfirmedDate(e.toDate())}
+          onChange={e => setConfirmedDate(e)}
         />
         <Button color="primary" type="button" onClick={() => handleConfirmTime(tripDetails)}>Confirm Time</Button>
       </div>
@@ -180,14 +184,23 @@ function AdminTripDetails(props) {
     <AuthUserContext.Consumer>
       {authUser => authUser && authUser.roles[ROLES.ADMIN] && (
         <div>
-          <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
+          <Parallax small filter image={require("assets/img/profile-bg.jpg")}>
+            <div className={classes3.container}>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <h2 className={classes3.title}>Trip Details</h2>
+                  <br />
+                </GridItem>
+              </GridContainer>
+            </div>
+          </Parallax>
           <div className={classNames(classes.main, classes.mainRaised)}>
             <div>
               <div className={classes.container}>
                 <GridContainer justify="center">
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={8}>
                     {!loading ? <div style={{ "paddingBottom": "30px" }}>
-                      <h3 className={classes.title}>{`${tripDetails.firstName}'s Trip Details`}</h3>
+                      <h3 className={classes.title}>{`${tripDetails.firstName} ${tripDetails.lastName}`}</h3>
                       {
                         get(tripDetails, 'availabilities.completed', false) && !get(tripDetails, 'confirmed_time.completed', false) ?
                           showConfirmationBlock(tripDetails) :
@@ -198,7 +211,7 @@ function AdminTripDetails(props) {
                         <SnackbarContent
                           message={
                             <span>
-                              <b>SUCCESS: </b>{`You've confirmed suitcase pick up at ${toDateTime(get(tripDetails, 'confrimed_time.time.seconds', ''))}`}
+                              <b>SUCCESS: </b>{`You've confirmed suitcase pick up date and time`}
                             </span>
                           }
                           close
