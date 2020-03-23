@@ -175,7 +175,7 @@ class Firebase {
     const userRef = this.user(uid)
     return this.db.collection('trips')
       .where('user', '==', userRef)
-      .orderBy('departure_date')
+      .orderBy('departure_date', 'asc')
   }
 
   // write new trip data to "trip" collection
@@ -194,6 +194,21 @@ class Firebase {
       chapter: chapterRef,
       requested: {
         completed: true
+      },
+      printed_forms: {
+        completed: false
+      },
+      picked_up: {
+        completed: false
+      },
+      feedback: {
+        completed: false
+      },
+      delivered: {
+        completed: false
+      },
+      availabilities: {
+        completed: false
       }
     });
   }

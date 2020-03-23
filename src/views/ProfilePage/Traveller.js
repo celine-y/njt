@@ -30,6 +30,10 @@ function Traveller(props) {
   const [loading, setLoading] = useState(true);
   const [tripList, setTripList] = useState([]);
 
+  function checkCompleted(string, data){
+    return (string in data && data[string]['completed'])
+  }
+
   useEffect(() => {
     if (!hasTrips(props.authUser)){
       setLoading(false);
@@ -39,9 +43,26 @@ function Traveller(props) {
         setLoading(false);
         var trips = [];
         snapshot.forEach(doc => {
+          var data = doc.data()
+          var status = "Unavailable"
+
+          if (checkCompleted('feedback', data)) {
+            status = "Trip completed. Thanks!"
+          } else if (checkCompleted('delivered', data)){
+            status = "Feedback required."
+          } else if (checkCompleted('printed_forms', data)){
+            status = "Pending suitcase delivery."
+          } else if (checkCompleted('picked_up', data)){
+            status = "Please print travel forms."
+          } else if (checkCompleted('availabilities', data)){
+            status = "Pending suitcase pickup."
+          } else if (checkCompleted('requested', data)){
+            status = "Please select your availabilities."
+          }
+          
           trips.push(
-            { ...doc.data(),
-              status: "TODO",
+            { ...data,
+              status: status,
               id: doc.id }
           );
         });

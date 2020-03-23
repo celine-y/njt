@@ -11,6 +11,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 //gives image at the top
 import Parallax from "components/Parallax/Parallax.js";
@@ -50,6 +51,7 @@ function FormSubmitClinic(props){
 
   const [fields, handleFieldChange, setFields] = useFormFields(initialState);
   const [error, setError] = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   var autocomplete = null
 
@@ -115,11 +117,12 @@ function FormSubmitClinic(props){
     props.firebase.setNewClinic(fields)
     .then(() => {
       console.log("Added Clinic", fields.place_id)
-      //TODO: confirm added
+      setFeedback("Thanks for sumbiting a clinic!")
     })
     .catch(error => {
       console.log("Error adding clinic", error)
-      // TODO: show error
+      setError(null);
+      setError(error);
     })
     e.preventDefault();
   }
@@ -144,6 +147,20 @@ function FormSubmitClinic(props){
                 </div>
               </CardHeader>
               <CardBody>
+              { feedback &&
+                <SnackbarContent
+                 message={feedback}
+                 close
+                 color="success"
+                 icon="info_outline"/>
+              }
+              { error &&
+                <SnackbarContent
+                 message={error.message}
+                 close
+                 color="danger"
+                 icon="info_outline"/>
+              }
               <p>Please fill out the following information regarding the clinic</p>
                 <AddressItem
                   labelText="Clinic Name..."
