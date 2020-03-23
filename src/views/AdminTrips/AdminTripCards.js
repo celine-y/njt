@@ -50,14 +50,19 @@ function AdminTripCards(props) {
     <Card key={trip.tripUid}>
       <CardBody>
         <span>
-          <span style={{ "fontSize": "20px" }}>{`${trip.firstName} ${trip.lastName}`}</span>
+          <span style={{ "fontSize": "20px" }}><b>{`${trip.firstName} ${trip.lastName}`}</b></span>
           <span style={{ "float": "right" }}>
+            {get(trip, 'confirmed_time.completed', false) && <Badge color="success">Arranged</Badge>}
             {get(trip, 'availabilities.completed', false) && !get(trip, 'confirmed_time.completed', false) && <Badge color="danger">Action Required</Badge>}
           </span>
         </span>
-        <p style={{ "marginTop": "10px", "marginBottom": "0" }}>{`Destination: ${trip.destination}`}</p>
-        <p style={{ "marginTop": "0px" }}>{`Departure Date: ${toDateTime(get(trip, 'departure_date.seconds', ''))}`}</p>
+        <p style={{ "marginTop": "10px", "marginBottom": "0px" }}><b>Destination: </b>{`${trip.destination}`}</p>
+        <p style={{ "marginTop": "0px", "marginBottom": "0px" }}><b>Departure: </b>{`${toDateTime(get(trip, 'departure_date.seconds', ''))}`}</p>
+        {get(trip, 'confirmed_time.completed', false) && (
+          <p style={{ "marginTop": "0px", "marginBottom": "0px" }}><b>Suitcase Pick-up: </b>{`${toDateTime(get(trip, 'confirmed_time.time.seconds', ''))}`}</p>
+        )}
         <Button
+          style={{ "marginTop": "10px" }}
           color="primary"
           component={Link}
           to={`/admin-trip-details/${trip.tripUid}`}

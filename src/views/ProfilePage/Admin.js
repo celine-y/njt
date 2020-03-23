@@ -22,7 +22,7 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 import { AuthUserContext, withAuthorization, helpers } from 'components/Session';
 import { withFirebase } from 'components/Firebase';
 
-import profile from "assets/img/faces/christian.jpg";
+import profile from "assets/img/faces/blank.png";
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 const useStyles = makeStyles(styles);
