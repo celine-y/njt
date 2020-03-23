@@ -39,7 +39,7 @@ const ProfileButton = (props) => {
     if (authUser.roles[ROLES.ADMIN]) {
       links.push(
         <Link to={ROUTES.ADMIN_TRIPS} className={classes.dropdownLink}>
-          Admin Logs
+          Requested Trips
         </Link>
       )
     } else {
