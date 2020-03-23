@@ -30,7 +30,17 @@ function AdminTripCards(props) {
     props.firebase.getAdminTrips(props.authUser.chapter)
       .then((res) => {
         setLoading(false);
-        setTripList(res);
+        //order by action required
+        var actionRequired = [];
+        var noActionRequired = [];
+        res.map(trip => {
+          if (get(trip, 'availabilities.completed', false) && !get(trip, 'confirmed_time.completed', false)) {
+            actionRequired.push(trip);
+          } else {
+            noActionRequired.push(trip);
+          }
+        });
+        setTripList(actionRequired.concat(noActionRequired));
       });
   }, []);
 

@@ -128,7 +128,7 @@ function AdminTripDetails(props) {
   const handleConfirmTime = tripDetails => {
     var isValid = false;
 
-    var availableTimes = getAvailableTimes(tripDetails.availabilities.times);
+    var availableTimes = getAvailableTimes(tripDetails.availabilities.time);
     availableTimes.forEach(date => {
       if (confirmedDate >= date.start && confirmedDate <= date.end) {
         isValid = true;
@@ -261,7 +261,7 @@ function AdminTripDetails(props) {
                             onEventsRequested={({ calendarId, start, end, callback }) => {
                               // loadMoreEvents(calendarId, start, end).then(callback);
                             }}
-                            initialSelections={getAvailableTimes(tripDetails.availabilities.times)}
+                            initialSelections={getAvailableTimes(tripDetails.availabilities.time)}
                             height={400}
                             recurring={false}
                             availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']}
