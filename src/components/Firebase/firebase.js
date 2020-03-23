@@ -175,6 +175,7 @@ class Firebase {
     const userRef = this.user(uid)
     return this.db.collection('trips')
       .where('user', '==', userRef)
+      .orderBy('departure_date')
   }
 
   // write new trip data to "trip" collection
