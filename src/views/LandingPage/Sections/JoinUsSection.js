@@ -53,14 +53,14 @@ export default function JoinUsSection() {
           </GridItem>
           <GridItem xs={12} sm={12} md={3}>
             <InfoArea
-              title="Pack Supplies"
+              title="How we Pack Supplies"
               description="Join the cause! Help us pick up, sort and pack medical supplies, contact travellers, speak to groups and respond to emails."
               icon={CardTravelIcon}
               iconColor="success"
               vertical
             />
             <Button
-              href={ROUTES.VOLUNTEER}
+              href={ROUTES.PACK_SUPPLIES}
               color="primary"
               target="_blank"
             >Learn More

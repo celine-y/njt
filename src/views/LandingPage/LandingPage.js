@@ -39,10 +39,11 @@ export default function LandingPage(props) {
             <GridItem xs={12} sm={12} md={6}>
               <h1 className={classes.title}>Take a suitecase, change a life.</h1>
               <h4>
-                Every landing page needs a small description after the big bold
-                title, that{"'"}s why we added this text here. Add here all the
-                information that can make you or your product create the first
-                impression.
+              Our project is about love. Through the work of volunteers, we aspire to:
+              change the way people travel by starting the journey for
+              ordinary tourists to become humanitarians; and prevent
+              the waste of usable medical supplies and get them
+              to those in most need
               </h4>
               <br />
               <Button
@@ -55,10 +56,10 @@ export default function LandingPage(props) {
               </Button>
               <Button
                 size="lg"
-                href={ROUTES.VOLUNTEER}
+                href={ROUTES.PACK_SUPPLIES}
                 target="_blank"
                 rel="noopener noreferrer"
-              >Volunteer
+              >How we Pack Supplies
               </Button>
             </GridItem>
           </GridContainer>

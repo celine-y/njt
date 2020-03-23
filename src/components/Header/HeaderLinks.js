@@ -53,9 +53,9 @@ function HeaderLinks(props) {
               Take a Suitcase
             </Link>,
             <Link
-              to={ROUTES.VOLUNTEER}
+              to={ROUTES.PACK_SUPPLIES}
               className={classes.dropdownLink}>
-              Help Pack Supplies
+              How we Pack Supplies
             </Link>
           ]}
         />
