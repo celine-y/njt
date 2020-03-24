@@ -209,6 +209,9 @@ class Firebase {
       },
       availabilities: {
         completed: false
+      },
+      confirmed_time: {
+        completed: false
       }
     });
   }
