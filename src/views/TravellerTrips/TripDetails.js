@@ -51,7 +51,7 @@ import AvailableTimes from 'react-available-times';
 import Select from "react-dropdown-select";
 import SelectSearch from 'react-select-search'
 
-import profile from "assets/img/faces/BabbuMann.jpg";
+import profile from "assets/img/faces/blank.png";
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 import * as ROUTES from 'constants/routes';
@@ -116,7 +116,7 @@ function AdminTrips(props) {
     setTripID(tripId);
     props.firebase.getTripDetails(tripId)
       .then((res) => {
-       
+
         if(res !=={}) {
           setTripDetail(res);
           if(!res.requested.completed) setDropValue1("No");
@@ -127,13 +127,13 @@ function AdminTrips(props) {
           if(res.feedback.completed) setDropValue6("Yes");
           console.log(res);
         };
-      
+
       });
-  
+
   }, []);
- 
+
   useEffect(() => {
-    
+
     props.firebase.getClinics()
       .then((res) => {
        if(res !=={}){
@@ -142,40 +142,40 @@ function AdminTrips(props) {
           temp.push({ name: item.clinic_name, value: item.clinicUid })
         })
         setClinic(temp);
-       } 
-       
+       }
+
       });
   }, []);
 
   function onSubmitRequest(){
-  
+
    let requestResult=props.firebase.setRequestTripDetail(tripID,dropValue1);
     setOpen2(true)
     if(requestResult =={}){
          setCheckModal(false);
     }
-   
+
   }
-  
+
   function onSubmitPrint(){
-    
+
    let printResult= props.firebase.setPrintTripDetail(tripID,dropValue4);
     setOpen2(true);
     if(printResult =={}){
       setCheckModal(false);
     }
-  
+
   }
 
   function onSubmitPickup(){
-  
+
      let pickupResult= props.firebase.setPrickupTripDetail(tripID,dropValue3);
       setOpen2(true);
       if(pickupResult =={}){
         setCheckModal(false);
       }
-   
-   
+
+
 
   }
 
@@ -187,11 +187,11 @@ function AdminTrips(props) {
         setCheckModal(false);
       }
 
-  
+
 
   }
 
-  
+
   function onSubmitDelivered(){
     let Dclinic="";
     console.log(tripID)
@@ -205,12 +205,12 @@ function AdminTrips(props) {
 
   }
 
-    
+
   function onSubmitAvailTime(){
-    
+
       let availableResult= props.firebase.setAvailTimeTripDetail(tripID,dropValue2,objectArrayTime);
         setOpen(false);
-        setOpen1(true);     
+        setOpen1(true);
 
   }
 
@@ -221,7 +221,7 @@ function AdminTrips(props) {
       setCheckModal(false);
     }
   }
-  
+
   const handleClickOpen = () => {
     setOpen(true);
     setObjectArrayTime([]);
@@ -278,21 +278,21 @@ function AdminTrips(props) {
               <Card style={{ width: "100%" }}>
                 <CardBody>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                     <h4 className={classes.cardTitle}>1. Request</h4>
+                     <h4 className={classes.cardTitle}>1. Requested</h4>
                      {
                        dropValue1 ==='Yes' &&(
                         <img src={checkMarker}/>
                        )
                      }
-                  
+
                   </div>
-                 
+
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <p>Have you requested a suitcase?</p>
-                      
-                      <Dropdown 
-                      options={options} 
-                      className={classes2.cusButton} 
+                      <p>Have you Requested a Suitcase?</p>
+
+                      <Dropdown
+                      options={options}
+                      className={classes2.cusButton}
                       value={dropValue1}
                       onChange={(Dvalue)=>setDropValue1(Dvalue.value)}
                       controlClassName={classes2.controlButton}/>
@@ -315,7 +315,7 @@ function AdminTrips(props) {
               <Card style={{ width: "100%" }}>
                 <CardBody>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                  
+
                   <h4 className={classes.cardTitle}>2. Set Time</h4>
                   {
                     dropValue2 === 'Yes'&&(
@@ -324,14 +324,14 @@ function AdminTrips(props) {
                   }
                   </div>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <p>Have you set your avail?</p>
-                      <Dropdown 
-                      options={options} 
-                      className={classes2.cusButton} 
-                      value={dropValue2} 
+                      <p>Have you Set your Availability?</p>
+                      <Dropdown
+                      options={options}
+                      className={classes2.cusButton}
+                      value={dropValue2}
                       onChange={(Dvalue)=>setDropValue2(Dvalue.value)}
                       controlClassName={classes2.controlButton}/>
-                  
+
                   </div>
                   <div style={{paddingTop:20,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                     <Button
@@ -367,10 +367,10 @@ function AdminTrips(props) {
                   }
                 </div>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <p>Have you picked up suitcase?</p>
-                      <Dropdown 
-                      options={options} 
-                      className={classes2.cusButton} 
+                      <p>Have you Picked up a Suitcase?</p>
+                      <Dropdown
+                      options={options}
+                      className={classes2.cusButton}
                       value={dropValue3}
                       onChange={(Dvalue)=>setDropValue3(Dvalue.value)}
                       controlClassName={classes2.controlButton}/>
@@ -401,12 +401,12 @@ function AdminTrips(props) {
                     )
                   }
                 </div>
-                 
+
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <p>Have you printed the forms?</p>
-                      <Dropdown 
-                      options={options} 
-                      className={classes2.cusButton} 
+                      <p>Have you Printed the Forms?</p>
+                      <Dropdown
+                      options={options}
+                      className={classes2.cusButton}
                       value={dropValue4}
                       onChange={(Dvalue)=>setDropValue4(Dvalue.value)}
                       controlClassName={classes2.controlButton}/>
@@ -438,31 +438,38 @@ function AdminTrips(props) {
                 </div>
 
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                     <p>Have you delivered to a suitcase?</p> 
-                      <Dropdown 
-                      options={options} 
-                      className={classes2.cusButton} 
-                      value={dropValue5} 
+                     <p>Have you Delivered to a Clinic?</p>
+                      <Dropdown
+                      options={options}
+                      className={classes2.cusButton}
+                      value={dropValue5}
                       onChange={(Dvalue)=>setDropValue5(Dvalue.value)}
                       controlClassName={classes2.controlButton}/>
                   </div>
-                <div style={{paddingTop:20,display:'flex',justifyContent:'space-between',alignItems: 'center',}}>
+
                  <div style={{display:'flex',justifyContent:'flex-first',alignItems:'center'}}>
-                  <p style={{marginRight:5}}>
-                    which clinic 
-                  </p>
+
                 <Select
                    options={clinic}
                    searchable={true}
                    multi={false}
                    dropdownHeight="200px"
                    color="#16917D"
-                   placeholder="Search Clinic" 
+                   placeholder="Search Clinic"
                    labelField="name"
                    clearable={true}
                    onChange={(value)=>setClinicValue(value)}
-                   />             
+                   />
                    </div>
+            <div style={{paddingTop:20,display:'flex',justifyContent:'space-between',alignItems: 'center',}}>
+
+            <Button
+             color="primary"
+             size="sm"
+             href={ROUTES.SUBMIT_CLINIC}
+             target="_blank"
+             rel="noopener noreferrer">Add New Clinic</Button>
+
                   <Button
                         color="primary"
                         size="sm"
@@ -488,11 +495,11 @@ function AdminTrips(props) {
                   }
                 </div>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <p>Have you completed feedback?</p>
-                      <Dropdown 
-                      options={options} 
-                      className={classes2.cusButton} 
-                      value={dropValue6} 
+                      <p>Have you Completed Feedback?</p>
+                      <Dropdown
+                      options={options}
+                      className={classes2.cusButton}
+                      value={dropValue6}
                       onChange={(Dvalue)=>setDropValue6(Dvalue.value)}
                       controlClassName={classes2.controlButton}/>
                   </div>
@@ -553,7 +560,7 @@ function AdminTrips(props) {
             availableHourRange={{ start: 0, end: 24 }}
           />
         <DialogActions>
-         
+
           <Button onClick={onSubmitAvailTime} color="primary" autoFocus>
             Done
           </Button>
@@ -586,7 +593,7 @@ function AdminTrips(props) {
               </Button>
             </DialogActions>
           </Dialog>
-          
+
 
       <Footer />
     </div >
